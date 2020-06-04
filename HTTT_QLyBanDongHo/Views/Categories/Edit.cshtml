@@ -1,0 +1,144 @@
+﻿@model HTTT_QLyBanDongHo.Models.Category
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared_Admin/_Layout.cshtml";
+}
+
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1 style="line-height:40px">Quản lý danh mục</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <div class="btn-group">
+                                <a href="@Url.Action("Create", "Categories")" class="btn btn-primary">
+                                    Tạo mới &nbsp;
+                                    <i class="fa fa-plus"></i>
+                                </a>
+
+                            </div>
+
+
+                        </ol>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Edit Data Category </strong>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                              
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.ID)
+
+                                <div class="form-group ">
+                                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Lưu" class="btn  btn-primary" />
+                                        <button type="button" class="btn btn-default">@Html.ActionLink("Quay lại", "Index")</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+@{
+    if ((string)TempData["message"] == "Create")
+    {
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Created',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
+    }
+    else if ((string)TempData["message"] == "Edit")
+    {
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Edited',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
+    }
+    else if ((string)TempData["message"] == "Fail")
+    {
+        <script type="text/javascript">
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Category name already exists ! Please enter again !'
+            })
+        </script>
+    }
+    else if ((string)TempData["message"] == "Delete")
+    {
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Deleted',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
+    }
+}
