@@ -6,7 +6,7 @@
                 <li class="active">
                     <a href="index.html"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
                 </li>
-            
+
 
                 @* <li class="menu-item-has-children dropdown"> *@
                 @*     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>Components</a> *@
@@ -42,13 +42,21 @@
                 <li class="menu-title">Table</li><!-- /.menu-title -->
 
                 <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Category</a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Quản lý danh mục</a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-fort-awesome"></i><a href="@Url.Action("Index","Categories")">List Category</a></li>
-                        <li><i class="menu-icon ti-themify-logo"></i><a href="@Url.Action("Create","Categories")">Add Category</a></li>
+                        <li><i class="menu-icon fa fa-fort-awesome"></i><a href="@Url.Action("Index","Categories")">Danh sách danh mục</a></li>
+                        <li><i class="menu-icon ti-themify-logo"></i><a href="@Url.Action("Create","Categories")">Thêm danh mục</a></li>
                     </ul>
                 </li>
-            
+
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Quản lý nhà sản xuất</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><i class="menu-icon fa fa-fort-awesome"></i><a href="@Url.Action("Index","Manufactures")">Danh sách nhà sản xuất</a></li>
+                        <li><i class="menu-icon ti-themify-logo"></i><a href="@Url.Action("Create","Manufactures")">Thêm nhà sản xuất</a></li>
+                    </ul>
+                </li>
+
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>
