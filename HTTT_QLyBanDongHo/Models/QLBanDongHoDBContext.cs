@@ -43,10 +43,6 @@ namespace HTTT_QLyBanDongHo.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Account>()
-                .Property(e => e.RoleID)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Account>()
                 .HasOptional(e => e.Customer)
                 .WithRequired(e => e.Account);
 
@@ -117,10 +113,6 @@ namespace HTTT_QLyBanDongHo.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<OrderStatu>()
-                .Property(e => e.Status)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<OrderStatu>()
                 .HasMany(e => e.Orders)
                 .WithRequired(e => e.OrderStatu)
                 .HasForeignKey(e => e.OrderStatusID)
@@ -165,23 +157,7 @@ namespace HTTT_QLyBanDongHo.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<User>()
-                .Property(e => e.Status)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
                 .Property(e => e.RoleID)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
-                .Property(e => e.Email)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
-                .Property(e => e.Password)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
-                .Property(e => e.Username)
                 .IsUnicode(false);
 
             modelBuilder.Entity<User>()

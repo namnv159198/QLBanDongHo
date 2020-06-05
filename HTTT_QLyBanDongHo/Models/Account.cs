@@ -27,10 +27,6 @@ namespace HTTT_QLyBanDongHo.Models
         [StringLength(255)]
         public string Password { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        public string RoleID { get; set; }
-
         [Column("Create At")]
         public DateTime? Create_At { get; set; }
 

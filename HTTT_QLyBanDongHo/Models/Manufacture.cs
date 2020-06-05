@@ -31,6 +31,9 @@ namespace HTTT_QLyBanDongHo.Models
         [Column("Create At")]
         public DateTime? Create_At { get; set; }
 
+        [StringLength(255)]
+        public string Status { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products { get; set; }
     }
