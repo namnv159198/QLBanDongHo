@@ -1,11 +1,15 @@
 ﻿@model PagedList.IPagedList<HTTT_QLyBanDongHo.Models.Category>
+@using System.IdentityModel.Protocols.WSTrust
 @using PagedList.Mvc;
 @using HTTT_QLyBanDongHo.Models
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared_Admin/_Layout.cshtml";
-    string listCheckID;
+    var ActiveStatus = "Đã kích hoạt";
+    var DeActiveStatus = "Chưa kích hoạt";
+    int STT = 0;
+    
 }
 
 
@@ -30,7 +34,7 @@
                                 </a>
 
                             </div>
-                            
+
 
                         </ol>
                     </div>
@@ -60,6 +64,7 @@
                         <input type="hidden" name="start" value="" />
                         <input type="hidden" name="end" value="" />
                         <input type="hidden" name="sortOrder" value="" />
+                    
                         <div class="row card-body">
 
                             <div class="col-sm-4">
@@ -68,18 +73,28 @@
                             </div>
 
                             <div class="col-sm-4">
-                                <label class="text-uppercase"> Tìm kiếm theo thời gian</label>
+                                <label class="text-uppercase"> Lọc theo thời gian</label>
                                 <input type="text" name="daterange" value="" class="form-control  " />
                             </div>
+                            <div class="col-sm-3">
+                                <label class="text-uppercase"> Lọc theo trạng thái</label>
 
-                            <div class="cols-sm-2 ">
-                                <label class="text-uppercase"> Hiển thị  </label>
+                                @Html.DropDownList("Status", new List<SelectListItem>
+                                {
+                                    new SelectListItem {Text = "Kích hoạt", Value = @ActiveStatus },
+                                    new SelectListItem {Text = "Tắt kích hoạt", Value = @DeActiveStatus},
+
+                                }, "Chọn trạng thái ", new { @class = "form-control" })
+                            </div>
+
+                            <div class="col-sm-1">
+                                <label class="text-uppercase"> Show  </label>
                                 @Html.DropDownList("pageSize", null, null, new { @class = "form-control", style = "width: 70px;" })
                             </div>
-                            <div class="col-sm-2 mt-4">
+                            <div class="col-sm-2 mt-3">
 
                                 <div>
-                                    <button type="submit" class="btn btn-primary ml-4 mt-2">
+                                    <button type="submit" class="btn btn-primary mt-2">
                                         Tìm kiếm
                                     </button>
                                 </div>
@@ -93,43 +108,43 @@
 
                     @if (Model.Count() != 0)
                     {
-                       
-                            <div class="row card-body">
-                                <div class="col-sm-4">
-                                    <button type="button" id="delete" value="delete" data-toggle="modal" data-target="#myModal_delete" class="btn btn-sm btn-danger rounded-0"><i class="fa fa-trash-o"></i>&nbsp; Xóa</button>
-                                    <div class="modal" id="myModal_delete">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
 
-                                                <!-- Modal Header -->
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Message</h4>
+                        <div class="row card-body">
+                            <div class="col-sm-4">
+                                <button type="button" id="delete" value="delete" data-toggle="modal" data-target="#myModal_delete" class="btn btn-sm btn-danger rounded-0"><i class="fa fa-trash-o"></i>&nbsp; Xóa</button>
+                                <div class="modal" id="myModal_delete">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
 
-                                                </div>
-
-                                                <!-- Modal body -->
-                                                <div class="modal-body">
-                                                    <span>Bạn có chắc muốn xóa ?</span> 
-                                                </div>
-
-                                                <!-- Modal footer -->
-                                                <div class="modal-footer">
-                                                    <!-- Cỏntroller -->
-                                                    @using (Html.BeginForm("CheckList", "Categories"))
-                                                    {
-                                                    <input type="hidden" name="ListCategoryIDs" value="" />
-                                                    <input type="submit" value="Delete" class="btn btn-default btn-danger" />
-                                                    }
-
-
-                                                </div>
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Message</h4>
 
                                             </div>
+
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                <span>Bạn có chắc muốn xóa ?</span>
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <!-- Cỏntroller -->
+                                                @using (Html.BeginForm("CheckList", "Categories"))
+                                                {
+                                                    <input type="hidden" name="ListCategoryIDs" value="" />
+                                                    <input type="submit" value="Delete" class="btn btn-default btn-danger" />
+                                                }
+
+
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        
+                        </div>
+
 
                     }
                     @if (!Model.Any())
@@ -141,14 +156,16 @@
                     <div class="card-body">
                         <table id="bootstrap-data-table" class="table table-striped table-bordered">
                             <thead>
-
+                                
                                 <tr>
+
                                     @if (Model.Count() != 0)
                                     {
                                         <th>
-                                            <input type="checkbox" id="checkAll" /> &nbsp; Chọn tất cả
+                                            <input type="checkbox" id="checkAll" /> &nbsp; Tất cả
                                         </th>
                                     }
+                                    <th>STT</th>
                                     <th>
                                         Tên danh mục
 
@@ -158,6 +175,9 @@
                                         <i class="fa fa-arrow-up iconSort" name="name-asc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconUp"></i>
 
 
+                                    </th>
+                                    <th>
+                                        Trạng thái
                                     </th>
                                     <th>
                                         Ngày tạo
@@ -175,25 +195,42 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
+                                    <tr class="text-center">
                                         <td>
                                             <input type="checkbox" class="checkBox"
                                                    value="@item.ID" />
                                         </td>
+                                        <td >
+                                            @{
+                                                STT = +1;
+                                            }
+                                            @STT
+                                        </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @if (item.Status == ViewBag.Active)
+                                            {
+                                                <p class="bg-success text-light text-center">@item.Status</p>
+                                            }
+                                            @if (item.Status == ViewBag.DeActive)
+                                            {
+                                                <p class="bg-danger text-light text-center">@item.Status</p>
+                                            }
+
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Create_At)
                                         </td>
                                         <td>
                                             <a href="@Url.Action("Edit", "Categories", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
-                                            
+
                                             <button type="button" class="btn btn-sm btn-danger  " data-toggle="modal" data-target="#myModal_@item.ID">
                                                 <i class="fa fa-trash"></i>
                                             </button>
 
-                                           
+
 
 
                                             <!-- Modal delete -->
@@ -203,7 +240,7 @@
 
                                                         <!-- Modal Header -->
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title">Message</h4>
+                                                            <h4 class="modal-title">Thông báo</h4>
 
                                                         </div>
 
@@ -218,8 +255,8 @@
                                                             @using (Html.BeginForm("Delete", "Categories", new { id = item.ID }))
                                                             {
                                                                 @Html.AntiForgeryToken()
-                                                                <input type="submit" value="Delete" class="btn btn-default btn-danger" />
-                                                                <input type="button" class=" btn btn-default " data-dismiss="modal" value="Cancel" />
+                                                                <input type="submit" value="Xóa" class="btn btn-default btn-danger" />
+                                                                <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
                                                             }
 
 
@@ -275,6 +312,9 @@
     <script type="text/javascript">
 
         $('select[name="pageSize"]').change(function () {
+            $('form[name="search-form"]').submit();
+        });
+        $('select[name="Status"]').change(function () {
             $('form[name="search-form"]').submit();
         });
         $('body').on("click", "i.iconSort", function () {
@@ -347,6 +387,7 @@
             })
         </script>
     }
+    
     else if ((string)TempData["message"] == "CheckFail")
     {
         <script type="text/javascript">

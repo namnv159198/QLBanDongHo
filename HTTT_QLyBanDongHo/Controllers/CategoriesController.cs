@@ -16,9 +16,12 @@ namespace HTTT_QLBanDongHo.Controllers
         private QLBanDongHoDBContext db = new QLBanDongHoDBContext();
 
         // GET: Categories
-        
-        public ActionResult Index(string sortOrder,int? page, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize)
+        public static string ActiveStatus = "Đã kích hoạt";
+        public static string DeActiveStatus = "Chưa kích hoạt";
+        public ActionResult Index(string sortOrder,int? page, string Status, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize)
         {
+            ViewBag.Active = ActiveStatus;
+            ViewBag.DeActive = DeActiveStatus;
             var categories = from s in db.Categories select s;
             categories = categories.AsQueryable();
             ViewBag.TotalEnity = categories.Count();
@@ -35,6 +38,10 @@ namespace HTTT_QLBanDongHo.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 categories = categories.Where(s => s.Name.Contains(searchString));
+            }
+            if (!String.IsNullOrEmpty(Status))
+            {
+                categories = categories.Where(s => s.Status.Contains(Status));
             }
             if (string.IsNullOrEmpty(sortOrder) || sortOrder.Equals("date-asc"))
             {
@@ -148,6 +155,7 @@ namespace HTTT_QLBanDongHo.Controllers
                 var checkCategory = db.Categories.AsEnumerable().Where(c => c.Name.ToString() == category.Name);
                 if (!checkCategory.Any())
                 {
+                    category.Status = ActiveStatus;
                     db.Categories.Add(category);
                     db.SaveChanges();
                     TempData["message"] = "Create";
@@ -173,6 +181,9 @@ namespace HTTT_QLBanDongHo.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Active = ActiveStatus;
+            ViewBag.DeActive = DeActiveStatus;
             return View(category);
         }
 
@@ -181,21 +192,20 @@ namespace HTTT_QLBanDongHo.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Create_At")] Category category)
+        public ActionResult Edit([Bind(Include = "ID,Name,Create_At")] Category category,string Status)
         {
 
             var checkCategory = db.Categories.Where(c => c.Name.ToString() == category.Name && c.ID != category.ID);
             if (checkCategory.Any())
             {
-
                 TempData["message"] = "Fail";
                 return View(category);
             }
             if (ModelState.IsValid)
             {
-                db.Entry(category).State = EntityState.Modified;
-                
-                    db.SaveChanges();
+                     category.Status = Status;
+                     db.Entry(category).State = EntityState.Modified;
+                     db.SaveChanges();
                     TempData["message"] = "Edit";
                     return RedirectToAction("Index");
             }
@@ -217,10 +227,11 @@ namespace HTTT_QLBanDongHo.Controllers
                 return HttpNotFound();
             }
             db.Entry(category).State = EntityState.Modified;
-            db.Categories.Remove(category);
-            db.SaveChanges();
-            TempData["message"] = "Delete";
-            return RedirectToAction("Index");
+           
+                db.Categories.Remove(category);
+                db.SaveChanges();
+                TempData["message"] = "Delete";
+                return RedirectToAction("Index");
         }
         protected override void Dispose(bool disposing)
         {
