@@ -20,6 +20,11 @@ namespace HTTT_QLyBanDongHo.Models
         [StringLength(255)]
         public string Type { get; set; }
 
+        [StringLength(50)]
+        public string Status { get; set; }
+        [Column("Create At")]
+        public DateTime? Create_At { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Customer> Customers { get; set; }
     }
