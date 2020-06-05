@@ -9,13 +9,12 @@
     [Table("Category")]
     public partial class Category
     {
-        public static string ActiveStatus = "Đã kích hoạt";
-        public static string DeActiveStatus = "Chưa kích hoạt";
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
         {
             Products = new HashSet<Product>();
-            this.Create_At = DateTime.Now;
+          
         }
 
         public int ID { get; set; }

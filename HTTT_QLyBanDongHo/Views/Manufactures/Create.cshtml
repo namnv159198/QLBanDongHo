@@ -1,4 +1,4 @@
-﻿@model HTTT_QLyBanDongHo.Models.Category
+﻿@model HTTT_QLyBanDongHo.Models.Manufacture
 
 @{
     ViewBag.Title = "Create";
@@ -13,7 +13,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1 style="line-height:40px">Quản lý danh mục</h1>
+                        <h1 style="line-height:40px">Quản lý nhà sản xuất</h1>
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
                             <div class="btn-group">
-                                <a href="@Url.Action("Create", "Categories")" class="btn btn-primary">
+                                <a href="@Url.Action("Create", "Manufactures")" class="btn btn-primary">
                                     Tạo mới &nbsp;
                                     <i class="fa fa-plus"></i>
                                 </a>
@@ -51,7 +51,7 @@
                         <strong class="card-title">Tạo danh mục </strong>
                     </div>
                     <div class="card-body">
-                        @using (Html.BeginForm())
+                        @using (Html.BeginForm("Create", "Manufactures", FormMethod.Post, new { @class = "product-form" }))
                         {
                             @Html.AntiForgeryToken()
 
@@ -59,17 +59,22 @@
 
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                <div class="form-group ">
+                                <div class="form-group row ">
                                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-4">
                                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                     </div>
+                                    @Html.LabelFor(model => model.Logo, htmlAttributes: new { @class = "control-label ml-4" })
+                                    <div class="col-md-5 uploaded">
+                                        <button type="button" id="upload_widget" class="btn bg-primary text-light">Upload files</button>
+                                        @Html.ValidationMessageFor(model => model.Logo, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
 
 
-                                <div class="form-group">
-                                    <div class="col-md-offset-2 col-md-10">
+                                <div class="form-group ml-5" >
+                                    <div class="col-md-offset-2 col-md-10 right" style="margin-left:110px">
                                         <input type="submit" value="Lưu" class="btn  btn-primary" />
                                         <button type="button" class="btn btn-default">@Html.ActionLink("Quay lại", "Index")</button>
                                     </div>
@@ -82,9 +87,54 @@
                 </div>
             </div>
 
+
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        function showUploadWidget() {
+            cloudinary.openUploadWidget({
+                cloudName: "namnguyen159198",
+                uploadPreset: "ml_default",
+                sources: [
+                    "local",
+                    "url",
+                    "camera",
+                    "image_search",
+                    "facebook",
+                    "dropbox",
+                    "instagram",
+                    "shutterstock"
+                ],
+                form: ".product-form",
+                fieldName: "thumbnails[]",
+                thumbnails: ".uploaded",
+                multiple: true,
+            },
+                (err, info) => {
+                    if (!err) {
+                        console.log("Upload Widget event - ", info);
+                    }
+                });
+        }
+
+        $('body').on('click', '.cloudinary-delete', function () {
+            var spiltedLink = $(this).prev().attr('src').split('/');
+            var imgId = spiltedLink[spiltedLink.length - 1].split('.')[0];
+            alert(imgId);
+            $(`input[data-cloudinary-public-id="${imgId}"]`).remove();
+        });
+       
+        document.getElementById("upload_widget").addEventListener("click", function () {
+            showUploadWidget();
+        }, false);
+    </script>
+}
 @if ((string)TempData["message"] == "Fail")
 {
     <script type="text/javascript">
@@ -95,4 +145,3 @@
         })
     </script>
 }
-

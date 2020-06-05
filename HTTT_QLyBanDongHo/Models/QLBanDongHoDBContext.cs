@@ -83,10 +83,6 @@ namespace HTTT_QLyBanDongHo.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Manufacture>()
-                .Property(e => e.ProductID)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Manufacture>()
                 .HasMany(e => e.Products)
                 .WithRequired(e => e.Manufacture)
                 .WillCascadeOnDelete(false);

@@ -1,7 +1,7 @@
-﻿@model PagedList.IPagedList<HTTT_QLyBanDongHo.Models.Category>
-@using System.IdentityModel.Protocols.WSTrust
+﻿@model PagedList.IPagedList<HTTT_QLyBanDongHo.Models.Manufacture>
 @using PagedList.Mvc;
 @using HTTT_QLyBanDongHo.Models
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared_Admin/_Layout.cshtml";
@@ -18,7 +18,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1 style="line-height:40px">Quản lý danh mục</h1>
+                        <h1 style="line-height:40px">Quản lý nhà sản xuất</h1>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
                             <div class="btn-group">
-                                <a href="@Url.Action("Create", "Categories")" class="btn btn-primary">
+                                <a href="@Url.Action("Create", "manufactures")" class="btn btn-primary">
                                     Tạo mới &nbsp;
                                     <i class="fa fa-plus"></i>
                                 </a>
@@ -57,7 +57,7 @@
                     </div>
 
 
-                    @using (Html.BeginForm("Index", "Categories", FormMethod.Get, new { @name = "search-form" }))
+                    @using (Html.BeginForm("Index", "manufactures", FormMethod.Get, new { @name = "search-form" }))
                     {
 
                         <input type="hidden" name="start" value="" />
@@ -129,7 +129,7 @@
                                             <!-- Modal footer -->
                                             <div class="modal-footer">
                                                 <!-- Cỏntroller -->
-                                                @using (Html.BeginForm("CheckList", "Categories"))
+                                                @using (Html.BeginForm("CheckList", "Manufactures"))
                                                 {
                                                     <input type="hidden" name="ListCategoryIDs" value="" />
                                                     <input type="submit" value="Delete" class="btn btn-default btn-danger" />
@@ -166,7 +166,7 @@
                                     }
                                     <th>STT</th>
                                     <th>
-                                        Tên danh mục
+                                        Tên nhà sản xuất
 
                                         <i class="fa fa-arrow-down iconSort" name="name-desc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconDown"></i>
 
@@ -174,6 +174,9 @@
                                         <i class="fa fa-arrow-up iconSort" name="name-asc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconUp"></i>
 
 
+                                    </th>
+                                    <th>
+                                        Logo
                                     </th>
                                     <th>
                                         Trạng thái
@@ -194,79 +197,82 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    <tr class="text-center">
-                                        <td>
-                                            <input type="checkbox" class="checkBox"
-                                                   value="@item.ID" />
-                                        </td>
-                                        <td>
-                                            @{
-                                                STT = +1;
-                                            }
-                                            @STT
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Name)
-                                        </td>
-                                        <td>
-                                            @if (item.Status == ViewBag.Active)
-                                            {
-                                                <p class="bg-success text-light text-center">@item.Status</p>
-                                            }
-                                            @if (item.Status == ViewBag.DeActive)
-                                            {
-                                                <p class="bg-danger text-light text-center">@item.Status</p>
-                                            }
+                                <tr class="text-center">
+                                    <td>
+                                        <input type="checkbox" class="checkBox"
+                                               value="@item.ID" />
+                                    </td>
+                                    <td>
+                                        @{
+                                            STT = STT+1;
+                                        }
+                                        @STT
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        <img src="@item.GetDefaultThumbnails()" alt="Thumbnail" class="img-thumbnail" width="100" height="100" />
+                                    </td>
+                                    <td>
+                                        @if (item.Status == ViewBag.Active)
+                                        {
+                                            <p class="bg-success text-light text-center">@item.Status</p>
+                                        }
+                                        @if (item.Status == ViewBag.DeActive)
+                                        {
+                                            <p class="bg-danger text-light text-center">@item.Status</p>
+                                        }
 
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Create_At)
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("Edit", "Categories", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Create_At)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "Manufactures", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
 
-                                            <button type="button" class="btn btn-sm btn-danger  " data-toggle="modal" data-target="#myModal_@item.ID">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-
-
-
-
-                                            <!-- Modal delete -->
-                                            <div class="modal" id="myModal_@item.ID">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-
-                                                        <!-- Modal Header -->
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Thông báo</h4>
-
-                                                        </div>
-
-                                                        <!-- Modal body -->
-                                                        <div class="modal-body">
-                                                            <span>Bạn có chắc muốn xóa</span> <span class="text-uppercase" style="text-decoration: underline; font-weight: bold">@item.Name </span> ?
-                                                        </div>
-
-                                                        <!-- Modal footer -->
-                                                        <div class="modal-footer">
-                                                            <!-- Cỏntroller -->
-                                                            @using (Html.BeginForm("Delete", "Categories", new { id = item.ID }))
-                                                            {
-                                                                @Html.AntiForgeryToken()
-                                                                <input type="submit" value="Xóa" class="btn btn-default btn-danger" />
-                                                                <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
-                                                            }
+                                        <button type="button" class="btn btn-sm btn-danger  " data-toggle="modal" data-target="#myModal_@item.ID">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
 
 
-                                                        </div>
+
+
+                                        <!-- Modal delete -->
+                                        <div class="modal" id="myModal_@item.ID">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Thông báo</h4>
 
                                                     </div>
+
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+                                                        <span>Bạn có chắc muốn xóa</span> <span class="text-uppercase" style="text-decoration: underline; font-weight: bold">@item.Name </span> ?
+                                                    </div>
+
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <!-- Cỏntroller -->
+                                                        @using (Html.BeginForm("Delete", "Manufactures", new { id = item.ID }))
+                                                        {
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="submit" value="Xóa" class="btn btn-default btn-danger" />
+                                                            <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
+                                                        }
+
+
+                                                    </div>
+
                                                 </div>
                                             </div>
+                                        </div>
 
-                                        </td>
-                                    </tr>
+                                    </td>
+                                </tr>
 
                                 }
                             </tbody>
@@ -382,7 +388,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi...',
-                text: 'Tên danh mục đã tồn tại ! vui lòng nhập lại !'
+                text: 'Tên đã tồn tại ! vui lòng nhập lại !'
             })
         </script>
     }
@@ -403,7 +409,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi...',
-                text: 'Không tìm thấy danh mục!'
+                text: 'Không tìm thấy !'
             })
         </script>
     }
