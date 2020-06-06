@@ -86,9 +86,28 @@
                                 <tr>
                                     <td width="30%"> Loại trạng thái</td>
                                     <td>
-                                        Sản phẩm bán chạy : <span class="text-success"> @Html.DisplayFor(model => model.isBestSeller)</span> |
-                                        Sản phẩm mới :<span class="text-success">@Html.DisplayFor(model => model.isNew) </span>|
-                                        Sản phẩm đặc biết :<span class="text-success"> @Html.DisplayFor(model => model.isSpecial)</span>
+                                        Sản phẩm bán chạy : <span class="text-success">
+                                            @if (Model.isBestSeller.HasValue.Equals(0))
+                                            {
+                                                <p>Không</p>
+                                            }
+                                            Có
+
+                                        </span> |
+                                        Sản phẩm mới :<span class="text-success">
+                                            @if (Model.isNew.HasValue.Equals(0))
+                                            {
+                                                <p>Không</p>
+                                            }
+                                            Có
+                                        </span>|
+                                        Sản phẩm đặc biết :<span class="text-success">
+                                            @if (Model.isSpecial.HasValue.Equals(0))
+                                            {
+                                                <p>Không</p>
+                                            }
+                                            Có
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
