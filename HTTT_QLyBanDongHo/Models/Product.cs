@@ -27,8 +27,9 @@ namespace HTTT_QLyBanDongHo.Models
         public decimal? AfterPrice { get; set; }
 
         [StringLength(255)]
+        
         public string Thumbnails { get; set; }
-
+        [Required]
         public int? Discount { get; set; }
 
         public int? isBestSeller { get; set; }
@@ -93,6 +94,7 @@ namespace HTTT_QLyBanDongHo.Models
         {
             var idThumbnail = new List<string>();
             var thumbnails = GetThumbnails();
+            
             foreach (var i in thumbnails)
             {
                 // image/upload/v1587720852/trang-phuc-nakroth-bboy-cong-nghe-compressed_ewu3rb_qj7zct.jpg#81ad3dee47db0da23fae48523665b35024516448
@@ -107,8 +109,7 @@ namespace HTTT_QLyBanDongHo.Models
                 idThumbnail.Add(SplittedThumbnails[3].Split('.')[0]);
                 // [trang-phuc-nakroth-bboy-cong-nghe-compressed_ewu3rb_qj7zct , jpg#81ad3dee47db0da23fae48523665b35024516448]
                 // id = trang-phuc-nakroth-bboy-cong-nghe-compressed_ewu3rb_qj7zct 
-
-            }
+                 }
             return idThumbnail.ToArray();
         }
     }

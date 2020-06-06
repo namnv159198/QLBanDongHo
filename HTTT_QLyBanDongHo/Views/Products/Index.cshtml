@@ -7,8 +7,7 @@
     Layout = "~/Views/Shared_Admin/_Layout.cshtml";
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared_Admin/_Layout.cshtml";
-    var ActiveStatus = "Đã kích hoạt";
-    var DeActiveStatus = "Chưa kích hoạt";
+ 
     int STT = 0;
 
 }
@@ -51,6 +50,8 @@
     </div>
 </div>
 
+
+
 <div class="content">
     <div class="animated fadeIn">
         <div class="row">
@@ -67,7 +68,7 @@
 
                         <input type="hidden" name="start" value="" />
                         <input type="hidden" name="end" value="" />
-                        <input type="hidden" name="sortOrder" value="" />
+                        <input type="hidden" name="start" value="" />
 
                         <div class="row card-body">
 
@@ -76,7 +77,7 @@
                                 @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Nhập từ khóa  . . . " })
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <label class="text-uppercase"> Lọc theo thời gian</label>
                                 <input type="text" name="daterange" value="" class="form-control  " />
                             </div>
@@ -85,20 +86,27 @@
 
                                 @Html.DropDownList("Status", new List<SelectListItem>
                                 {
-                                    new SelectListItem {Text = "Kích hoạt", Value = @ActiveStatus },
-                                    new SelectListItem {Text = "Tắt kích hoạt", Value = @DeActiveStatus},
+                                    new SelectListItem {Text = "Kích hoạt", Value = @ViewBag.Active },
+                                    new SelectListItem {Text = "Chưa kích hoạt", Value = @ViewBag.DeActiveStatus},
 
                                 }, "Chọn trạng thái ", new { @class = "form-control" })
                             </div>
-
                             <div class="col-sm-1">
                                 <label class="text-uppercase"> Show  </label>
                                 @Html.DropDownList("pageSize", null, null, new { @class = "form-control", style = "width: 70px;" })
                             </div>
                             <div class="col-sm-2 mt-3">
+                                <label class="text-uppercase"> Giá từ</label><input class="form-control" type="number" name="minPrice" value="" />
+                            </div>
+                            <div class="col-sm-2 mt-3">
+                                <label class="text-uppercase"> Đến </label>
+                                <input class="form-control" type="number" name="maxPrice" value="" />
+                            </div>
+
+                            <div class="col-sm-2 ">
 
                                 <div>
-                                    <button type="submit" class="btn btn-primary mt-2">
+                                    <button type="submit" class="btn btn-primary mt-5">
                                         Tìm kiếm
                                     </button>
                                 </div>
@@ -204,84 +212,84 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                <tr class="text-center">
-                                    <td>
-                                        <input type="checkbox" class="checkBox"
-                                               value="@item.ID" />
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td>
-                                        <img src="@item.GetDefaultThumbnails()" alt="Thumbnail" class="img-thumbnail" width="100" height="100" />
+                                    <tr class="text-center">
+                                        <td>
+                                            <input type="checkbox" class="checkBox"
+                                                   value="@item.ID" />
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            <img src="@item.GetDefaultThumbnails()" alt="Thumbnail" class="img-thumbnail" width="100" height="100" />
 
-                                    </td>
+                                        </td>
 
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.AfterPrice)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Category.Name)
-                                    </td>
-                                    <td>
-                                        @if (item.Status == ViewBag.Active)
-                                        {
-                                            <p class="bg-success text-light text-center">@item.Status</p>
-                                        }
-                                        @if (item.Status == ViewBag.DeActive)
-                                        {
-                                            <p class="bg-danger text-light text-center">@item.Status</p>
-                                        }
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.AfterPrice)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Category.Name)
+                                        </td>
+                                        <td>
+                                            @if (item.Status == ViewBag.Active)
+                                            {
+                                                <p class="bg-success text-light text-center">@item.Status</p>
+                                            }
+                                            @if (item.Status == ViewBag.DeActive)
+                                            {
+                                                <p class="bg-danger text-light text-center">@item.Status</p>
+                                            }
 
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Create_At)
-                                    </td>
-                                    <td>
-                                        <a href="@Url.Action("Edit", "products", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
-                                        <a href="@Url.Action("Details", "products", new {id = item.ID})" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a> |
-                                        <button type="button" class="btn btn-sm btn-danger  " data-toggle="modal" data-target="#myModal_@item.ID">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-
-
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Create_At)
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("Edit", "products", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
+                                            <a href="@Url.Action("Details", "products", new {id = item.ID})" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a> |
+                                            <button type="button" class="btn btn-sm btn-danger  " data-toggle="modal" data-target="#myModal_@item.ID">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
 
 
-                                        <!-- Modal delete -->
-                                        <div class="modal" id="myModal_@item.ID">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
 
-                                                    <!-- Modal Header -->
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title">Thông báo</h4>
+
+                                            <!-- Modal delete -->
+                                            <div class="modal" id="myModal_@item.ID">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Thông báo</h4>
+
+                                                        </div>
+
+                                                        <!-- Modal body -->
+                                                        <div class="modal-body">
+                                                            <span>Bạn có chắc muốn xóa</span> <span class="text-uppercase" style="text-decoration: underline; font-weight: bold">@item.Name </span> ?
+                                                        </div>
+
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <!-- Cỏntroller -->
+                                                            @using (Html.BeginForm("Delete", "products", new { id = item.ID }))
+                                                            {
+                                                                @Html.AntiForgeryToken()
+                                                                <input type="submit" value="Xóa" class="btn btn-default btn-danger" />
+                                                                <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
+                                                            }
+
+
+                                                        </div>
 
                                                     </div>
-
-                                                    <!-- Modal body -->
-                                                    <div class="modal-body">
-                                                        <span>Bạn có chắc muốn xóa</span> <span class="text-uppercase" style="text-decoration: underline; font-weight: bold">@item.Name </span> ?
-                                                    </div>
-
-                                                    <!-- Modal footer -->
-                                                    <div class="modal-footer">
-                                                        <!-- Cỏntroller -->
-                                                        @using (Html.BeginForm("Delete", "products", new { id = item.ID }))
-                                                        {
-                                                            @Html.AntiForgeryToken()
-                                                            <input type="submit" value="Xóa" class="btn btn-default btn-danger" />
-                                                            <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
-                                                        }
-
-
-                                                    </div>
-
                                                 </div>
                                             </div>
-                                        </div>
 
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
 
                                 }
                             </tbody>
@@ -324,7 +332,17 @@
 
 @section scripts{
     <script type="text/javascript">
+        var url_string = location.href;
+        var url = new URL(url_string);
+        var initMinPrice = url.searchParams.get("minPrice");
+        var initMaxPrice = url.searchParams.get("maxPrice");
 
+        if (initMinPrice != null) {
+            $('input[name="minPrice"]').val(initMinPrice);
+        }
+        if (initMaxPrice != null) {
+            $('input[name="maxPrice"]').val(initMaxPrice);
+        }
         $('select[name="pageSize"]').change(function () {
             $('form[name="search-form"]').submit();
         });
@@ -355,10 +373,6 @@
 
             });
         });
-
-
-
-
 
 
     </script>
@@ -416,9 +430,9 @@
     {
         <script type="text/javascript">
             Swal.fire({
-                icon: 'error',
-                title: 'Lỗi...',
-                text: 'Không tìm thấy !'
+                icon: 'warning',
+                title: 'Xin lỗi ...',
+                text: 'Không có danh mục nào !'
             })
         </script>
     }

@@ -27,8 +27,7 @@ namespace HTTT_QLyBanDongHo
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
             // bunder js admin template
-            bundles.Add(new ScriptBundle("~/bundles/AdminJS").Include(
-                "~/Scripts/ckeditor/ckeditor.js"));
+           
         }
     }
 }

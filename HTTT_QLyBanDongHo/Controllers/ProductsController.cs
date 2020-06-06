@@ -15,11 +15,11 @@ namespace HTTT_QLyBanDongHo.Controllers
     {
         private QLBanDongHoDBContext db = new QLBanDongHoDBContext();
 
-        public static string ActiveStatus = "Đã kích hoạt";
+        public static string ActiveStatus = "Kích hoạt";
         public static string DeActiveStatus = "Chưa kích hoạt";
 
         // GET: Products
-        public ActionResult Index(string sortOrder, int? page, string Status, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize)
+        public ActionResult Index(string sortOrder, int? page, string Status, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize,decimal? minPrice, decimal? maxPrice)
         {
             ViewBag.Active = ActiveStatus;
             ViewBag.DeActive = DeActiveStatus;
@@ -36,9 +36,18 @@ namespace HTTT_QLyBanDongHo.Controllers
                 searchString = currentFilter;
             }
             ViewBag.CurrentFilter = searchString;
+          
             if (!String.IsNullOrEmpty(searchString))
             {
                 products = products.Where(s => s.Name.Contains(searchString));
+            }
+            if (minPrice.HasValue)
+            {
+                products = products.Where(s => s.AfterPrice >= minPrice);
+            }
+            if (maxPrice.HasValue)
+            {
+                products = products.Where(s => s.AfterPrice <= maxPrice);
             }
             if (!String.IsNullOrEmpty(Status))
             {
@@ -49,7 +58,6 @@ namespace HTTT_QLyBanDongHo.Controllers
                 ViewBag.DateSort = "date-desc";
                 ViewBag.ColerSortIconUp = "black";
                 ViewBag.ColerSortIconDown = "#e0d2d2";
-
             }
             else if (sortOrder.Equals("date-desc"))
             {
@@ -85,7 +93,6 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             ViewBag.PageSize = new List<SelectListItem>()
             {
-
                 new SelectListItem() { Value="5", Text= "5" },
                 new SelectListItem() { Value="10", Text= "10" },
                 new SelectListItem() { Value="15", Text= "15" },
@@ -93,6 +100,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                 new SelectListItem() { Value="50", Text= "50" },
                 new SelectListItem() { Value = products.ToList().Count().ToString(), Text= "All" },
             };
+            
             switch (sortOrder)
             {
                 case "name-asc":
@@ -113,8 +121,11 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
 
             int pageNumber = (page ?? 1);
-           
-            
+
+            if (!products.Any())
+            {
+                TempData["message"] = "NotFound";
+            }
             return View(products.ToPagedList(pageNumber, defaSize));
         }
         public ActionResult CheckList(string ListCategoryIDs)
@@ -139,6 +150,8 @@ namespace HTTT_QLyBanDongHo.Controllers
         // GET: Products/Details/5
         public ActionResult Details(int? id)
         {
+            ViewBag.Active = ActiveStatus;
+            ViewBag.DeActive = DeActiveStatus;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -163,20 +176,19 @@ namespace HTTT_QLyBanDongHo.Controllers
         // POST: Products/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Price,AfterPrice,Thumbnails,Discount,isBestSeller,isNew,isSpecial,Description,Status,Create_At,ManufactureID,CategoryID")] Product product, string[] thumbnails)
+        public ActionResult Create( Product product, string[] thumbnails)
         {
             if (ModelState.IsValid)
             {
-                var checkExists = db.Manufactures.AsEnumerable().Where(c => c.Name.ToString() == product.Name);
+                var checkExists = db.Products.AsEnumerable().Where(c => c.Name.ToString() == product.Name);
                 if (!checkExists.Any())
                 {
                     if (thumbnails != null && thumbnails.Length > 0)
                     {
                         product.Thumbnails = string.Join(",", thumbnails);
                     }
-                    product.Status = ActiveStatus;
                     product.Create_At = DateTime.Now;
                     db.Products.Add(product);
                     db.SaveChanges();
@@ -215,9 +227,9 @@ namespace HTTT_QLyBanDongHo.Controllers
         // POST: Products/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Price,AfterPrice,Thumbnails,Discount,isBestSeller,isNew,isSpecial,Description,Status,Create_At,ManufactureID,CategoryID")] Product product, string Status, string[] thumbnails)
+        public ActionResult Edit( Product product, string[] thumbnails)
         {
             var checkExists = db.Products.Where(c => c.Name.ToString() == product.Name && c.ID != product.ID);
             if (checkExists.Any())
@@ -231,7 +243,6 @@ namespace HTTT_QLyBanDongHo.Controllers
                 {
                     product.Thumbnails = string.Join(",", thumbnails);
                 }
-                product.Status = Status;
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["message"] = "Edit";
@@ -240,6 +251,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             TempData["message"] = "Fail";
             ViewBag.CategoryID = new SelectList(db.Categories, "ID", "Name", product.CategoryID);
             ViewBag.ManufactureID = new SelectList(db.Manufactures, "ID", "Name", product.ManufactureID);
+
             return View(product);
         }
 

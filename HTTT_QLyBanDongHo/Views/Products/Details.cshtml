@@ -5,119 +5,130 @@
     Layout = "~/Views/Shared_Admin/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1 style="line-height: 40px">Quản lý sản phẩm</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <div class="btn-group">
+                                <a href="@Url.Action("Create", "products")" class="btn btn-primary">
+                                    Tạo mới &nbsp;
+                                    <i class="fa fa-plus"></i>
+                                </a>
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Category.Name)
-        </dt>
+                            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Manufacture.Name)
-        </dt>
+                        </ol>
+                    </div>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Manufacture.Name)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AfterPrice)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AfterPrice)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Thumbnails)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Thumbnails)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Discount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Discount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.isBestSeller)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.isBestSeller)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.isNew)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.isNew)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.isSpecial)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.isSpecial)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Create_At)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Create_At)
-        </dd>
-
-    </dl>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Chi tiết sản phẩm : ID @Model.ID </strong>
+                    </div>
+                    <div class="card-body">
+
+                        <div>
+                            <button type="button" class="btn  bg-primary text-light">
+                                @Html.ActionLink("Sửa sản phẩm", "Edit", new { id = Model.ID }, new { @style = "color:white;" })
+                            </button>
+                            <hr />
+
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td width="30%"> Tên sản phẩm</td>
+                                    <td> @Html.DisplayFor(model => model.Name)</td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Ảnh</td>
+                                    <td>
+                                        <img src="@Model.GetDefaultThumbnails()" alt="Thumbnail" class="img-thumbnail" width="100" height="100" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Mô tả sản phẩm </td>
+                                    <td>   @Html.Raw(Model.Description)  </td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Giá nhập</td>
+                                    <td> @Html.DisplayFor(model => model.Price)</td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Giá bán</td>
+                                    <td> @Html.DisplayFor(model => model.AfterPrice)</td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Giảm giá</td>
+                                    <td> @Html.DisplayFor(model => model.Discount) %</td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Loại trạng thái</td>
+                                    <td>
+                                        Sản phẩm bán chạy : <span class="text-success"> @Html.DisplayFor(model => model.isBestSeller)</span> |
+                                        Sản phẩm mới :<span class="text-success">@Html.DisplayFor(model => model.isNew) </span>|
+                                        Sản phẩm đặc biết :<span class="text-success"> @Html.DisplayFor(model => model.isSpecial)</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Danh mục sản phẩm</td>
+                                    <td> @Html.DisplayFor(model => model.Category.Name) </td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Nhà sản xuất</td>
+                                    <td> @Html.DisplayFor(model => model.Manufacture.Name) </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="30%"> Trạng thái</td>
+                                    <td>
+                                        @if (Model.Status == ViewBag.Active)
+                                        {
+                                            <p class="text-success ">@Model.Status</p>
+                                        }
+                                        @if (Model.Status == ViewBag.DeActive)
+                                        {
+                                            <p class="text-danger ">@Model.Status</p>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                            <button type="button" class="btn  bg-primary text-light">
+                                <i class="fa fa-arrow-left"></i>
+                                @Html.ActionLink("Quay lại", "Index", null, new { @style = "color:white;" })
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
