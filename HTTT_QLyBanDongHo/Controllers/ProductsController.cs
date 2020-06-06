@@ -219,8 +219,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             ViewBag.CategoryID = new SelectList(db.Categories, "ID", "Name", product.CategoryID);
             ViewBag.ManufactureID = new SelectList(db.Manufactures, "ID", "Name", product.ManufactureID);
-            ViewBag.Active = ActiveStatus;
-            ViewBag.DeActive = DeActiveStatus;
+
             return View(product);
         }
 
