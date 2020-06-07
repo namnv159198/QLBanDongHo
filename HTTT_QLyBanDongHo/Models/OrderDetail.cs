@@ -10,7 +10,7 @@ namespace HTTT_QLyBanDongHo.Models
     {
         public int? Quantity { get; set; }
 
-        public decimal? UnitPrice { get; set; }
+        public float? UnitPrice { get; set; }
 
         [Key]
         [Column(Order = 0)]

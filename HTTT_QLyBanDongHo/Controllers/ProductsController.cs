@@ -43,11 +43,11 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             if (minPrice.HasValue)
             {
-                products = products.Where(s => s.AfterPrice >= minPrice);
+                products = products.Where(s => s.AfterPrice >= (double?) minPrice);
             }
             if (maxPrice.HasValue)
             {
-                products = products.Where(s => s.AfterPrice <= maxPrice);
+                products = products.Where(s => s.AfterPrice <= (double?) maxPrice);
             }
             if (!String.IsNullOrEmpty(Status))
             {
@@ -83,13 +83,13 @@ namespace HTTT_QLyBanDongHo.Controllers
             {
                 var startDate = start.GetValueOrDefault().Date;
                 startDate = startDate.Date + new TimeSpan(0, 0, 0);
-                products = products.Where(p => p.Create_At >= startDate);
+                products = products.Where(p => p.CreateAt >= startDate);
             }
             if (end != null)
             {
                 var endDate = end.GetValueOrDefault().Date;
                 endDate = endDate.Date + new TimeSpan(23, 59, 59);
-                products = products.Where(p => p.Create_At <= endDate);
+                products = products.Where(p => p.CreateAt <= endDate);
             }
             ViewBag.PageSize = new List<SelectListItem>()
             {
@@ -110,13 +110,13 @@ namespace HTTT_QLyBanDongHo.Controllers
                     products = products.OrderByDescending(p => p.Name);
                     break;
                 case "date-asc":
-                    products = products.OrderBy(p => p.Create_At);
+                    products = products.OrderBy(p => p.CreateAt);
                     break;
                 case "date-desc":
-                    products = products.OrderByDescending(p => p.Create_At);
+                    products = products.OrderByDescending(p => p.CreateAt);
                     break;
                 default:
-                    products = products.OrderByDescending(p => p.Create_At);
+                    products = products.OrderByDescending(p => p.CreateAt);
                     break;
             }
 
@@ -189,7 +189,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                     {
                         product.Thumbnails = string.Join(",", thumbnails);
                     }
-                    product.Create_At = DateTime.Now;
+                    product.CreateAt = DateTime.Now;
                     db.Products.Add(product);
                     db.SaveChanges();
                     TempData["message"] = "Create";

@@ -22,26 +22,26 @@ namespace HTTT_QLyBanDongHo.Models
         public int? Total_Quantity { get; set; }
 
         [Column("Total Price")]
-        public decimal? Total_Price { get; set; }
-
-        [Column("Payment Type")]
-        [StringLength(255)]
-        public string Payment_Type { get; set; }
+        public float? Total_Price { get; set; }
 
         public int? Discount { get; set; }
 
         [Column("Create At")]
         public DateTime? Create_At { get; set; }
 
-        public int OrderStatusID { get; set; }
-
-        [Required]
+ 
         [StringLength(255)]
         public string CustomerID { get; set; }
 
+        public int OrderStatusID { get; set; }
+
+        public int PaymentTypeID { get; set; }
+
         public virtual Customer Customer { get; set; }
 
-        public virtual OrderStatu OrderStatu { get; set; }
+        public virtual OrderStatus OrderStatus { get; set; }
+
+        public virtual PaymentType PaymentType { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

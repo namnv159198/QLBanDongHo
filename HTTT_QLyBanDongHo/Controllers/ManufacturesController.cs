@@ -17,7 +17,7 @@ namespace HTTT_QLyBanDongHo.Controllers
         public static string ActiveStatus = "Đã kích hoạt";
         public static string DeActiveStatus = "Chưa kích hoạt";
         // GET: Manufactures
-        public ActionResult Index(string sortOrder, int? page, string Status, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize)
+        public ActionResult Index(string sortOrder, int? page, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize)
         {
             ViewBag.Active = ActiveStatus;
             ViewBag.DeActive = DeActiveStatus;
@@ -38,10 +38,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             {
                 manufacture = manufacture.Where(s => s.Name.Contains(searchString));
             }
-            if (!String.IsNullOrEmpty(Status))
-            {
-                manufacture = manufacture.Where(s => s.Status.Contains(Status));
-            }
+            
             if (string.IsNullOrEmpty(sortOrder) || sortOrder.Equals("date-asc"))
             {
                 ViewBag.DateSort = "date-desc";
@@ -69,18 +66,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
 
 
-            if (start != null)
-            {
-                var startDate = start.GetValueOrDefault().Date;
-                startDate = startDate.Date + new TimeSpan(0, 0, 0);
-                manufacture = manufacture.Where(p => p.Create_At >= startDate);
-            }
-            if (end != null)
-            {
-                var endDate = end.GetValueOrDefault().Date;
-                endDate = endDate.Date + new TimeSpan(23, 59, 59);
-                manufacture = manufacture.Where(p => p.Create_At <= endDate);
-            }
+            
             ViewBag.PageSize = new List<SelectListItem>()
             {
 
@@ -99,14 +85,9 @@ namespace HTTT_QLyBanDongHo.Controllers
                 case "name-desc":
                     manufacture = manufacture.OrderByDescending(p => p.Name);
                     break;
-                case "date-asc":
-                    manufacture = manufacture.OrderBy(p => p.Create_At);
-                    break;
-                case "date-desc":
-                    manufacture = manufacture.OrderByDescending(p => p.Create_At);
-                    break;
+               
                 default:
-                    manufacture = manufacture.OrderByDescending(p => p.Create_At);
+                    manufacture = manufacture.OrderByDescending(p => p.Name);
                     break;
             }
 
@@ -146,19 +127,18 @@ namespace HTTT_QLyBanDongHo.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Logo,ProductID,Create_At,Status")] Manufacture manufacture, string[] thumbnails)
+        public ActionResult Create( Manufacture manufacture, string[] thumbnails)
         {
             if (ModelState.IsValid)
             {
-                var checkExists = db.Manufactures.AsEnumerable().Where(c => c.Name.ToString() == manufacture.Name);
+                var checkExists = db.Manufactures.Where(c => c.Name.ToString() == manufacture.Name);
                 if (!checkExists.Any())
                 {
                     if (thumbnails != null && thumbnails.Length > 0)
                     {
                         manufacture.Logo = string.Join(",", thumbnails);
                     }
-                    manufacture.Status = ActiveStatus;
-                    manufacture.Create_At = DateTime.Now;
+                  
                     db.Manufactures.Add(manufacture);
                     db.SaveChanges();
                     TempData["message"] = "Create";
@@ -209,7 +189,6 @@ namespace HTTT_QLyBanDongHo.Controllers
                 {
                     manufacture.Logo = string.Join(",", thumbnails);
                 }
-                manufacture.Status = Status;
                 db.Entry(manufacture).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["message"] = "Edit";

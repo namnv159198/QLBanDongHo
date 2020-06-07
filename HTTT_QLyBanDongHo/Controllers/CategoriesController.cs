@@ -18,7 +18,7 @@ namespace HTTT_QLBanDongHo.Controllers
         // GET: Categories
         public static string ActiveStatus = "Đã kích hoạt";
         public static string DeActiveStatus = "Chưa kích hoạt";
-        public ActionResult Index(string sortOrder,int? page, string Status, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize)
+        public ActionResult Index(string sortOrder,int? page, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize)
         {
             ViewBag.Active = ActiveStatus;
             ViewBag.DeActive = DeActiveStatus;
@@ -39,10 +39,7 @@ namespace HTTT_QLBanDongHo.Controllers
             {
                 categories = categories.Where(s => s.Name.Contains(searchString));
             }
-            if (!String.IsNullOrEmpty(Status))
-            {
-                categories = categories.Where(s => s.Status.Contains(Status));
-            }
+           
             if (string.IsNullOrEmpty(sortOrder) || sortOrder.Equals("date-asc"))
             {
                 ViewBag.DateSort = "date-desc";
@@ -70,18 +67,7 @@ namespace HTTT_QLBanDongHo.Controllers
             }
 
 
-            if (start != null)
-            {
-                var startDate = start.GetValueOrDefault().Date;
-                startDate = startDate.Date + new TimeSpan(0, 0, 0);
-                categories = categories.Where(p => p.Create_At >= startDate);
-            }
-            if (end != null)
-            {
-                var endDate = end.GetValueOrDefault().Date;
-                endDate = endDate.Date + new TimeSpan(23, 59, 59);
-                categories = categories.Where(p => p.Create_At <= endDate);
-            }
+         
             ViewBag.PageSize = new List<SelectListItem>()
             {
                
@@ -100,14 +86,9 @@ namespace HTTT_QLBanDongHo.Controllers
                 case "name-desc":
                     categories = categories.OrderByDescending(p => p.Name);
                     break;
-                case "date-asc":
-                    categories = categories.OrderBy(p => p.Create_At);
-                    break;
-                case "date-desc":
-                    categories = categories.OrderByDescending(p => p.Create_At);
-                    break;
+              
                 default:
-                    categories = categories.OrderByDescending(p => p.Create_At);
+                    categories = categories.OrderByDescending(p => p.Name);
                     break;
             }
 
@@ -155,8 +136,7 @@ namespace HTTT_QLBanDongHo.Controllers
                 var checkCategory = db.Categories.AsEnumerable().Where(c => c.Name.ToString() == category.Name);
                 if (!checkCategory.Any())
                 {
-                    category.Status = ActiveStatus;
-                    category.Create_At = DateTime.Now;
+                   
                     db.Categories.Add(category);
                     db.SaveChanges();
                     TempData["message"] = "Create";
@@ -204,7 +184,7 @@ namespace HTTT_QLBanDongHo.Controllers
             }
             if (ModelState.IsValid)
             {
-                     category.Status = Status;
+                
                      db.Entry(category).State = EntityState.Modified;
                      db.SaveChanges();
                     TempData["message"] = "Edit";

@@ -12,6 +12,7 @@ namespace HTTT_QLyBanDongHo.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
+            Customers = new HashSet<Customer>();
             Users = new HashSet<User>();
         }
 
@@ -27,10 +28,10 @@ namespace HTTT_QLyBanDongHo.Models
         [StringLength(255)]
         public string Password { get; set; }
 
-        [Column("Create At")]
-        public DateTime? Create_At { get; set; }
+        public DateTime? CreateAt { get; set; }
 
-        public virtual Customer Customer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Customer> Customers { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }

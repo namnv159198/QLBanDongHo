@@ -18,7 +18,8 @@ namespace HTTT_QLyBanDongHo.Models
         public virtual DbSet<CustomerType> CustomerTypes { get; set; }
         public virtual DbSet<Manufacture> Manufactures { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<OrderStatu> OrderStatus { get; set; }
+        public virtual DbSet<OrderStatus> OrderStatus { get; set; }
+        public virtual DbSet<PaymentType> PaymentTypes { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -26,6 +27,7 @@ namespace HTTT_QLyBanDongHo.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Account>()
                 .Property(e => e.ID)
                 .IsUnicode(false);
@@ -43,8 +45,9 @@ namespace HTTT_QLyBanDongHo.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Account>()
-                .HasOptional(e => e.Customer)
-                .WithRequired(e => e.Account);
+                .HasMany(e => e.Customers)
+                .WithRequired(e => e.Account)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Account>()
                 .HasMany(e => e.Users)
@@ -66,6 +69,10 @@ namespace HTTT_QLyBanDongHo.Models
 
             modelBuilder.Entity<Customer>()
                 .Property(e => e.Phonenumber)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Customer>()
+                .Property(e => e.AccountID)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Customer>()
@@ -92,14 +99,6 @@ namespace HTTT_QLyBanDongHo.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Order>()
-                .Property(e => e.Total_Price)
-                .HasPrecision(19, 0);
-
-            modelBuilder.Entity<Order>()
-                .Property(e => e.Payment_Type)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Order>()
                 .Property(e => e.CustomerID)
                 .IsUnicode(false);
 
@@ -108,19 +107,16 @@ namespace HTTT_QLyBanDongHo.Models
                 .WithRequired(e => e.Order)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<OrderStatu>()
+            modelBuilder.Entity<OrderStatus>()
                 .HasMany(e => e.Orders)
-                .WithRequired(e => e.OrderStatu)
+                .WithRequired(e => e.OrderStatus)
                 .HasForeignKey(e => e.OrderStatusID)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Product>()
-                .Property(e => e.Price)
-                .HasPrecision(10, 0);
-
-            modelBuilder.Entity<Product>()
-                .Property(e => e.AfterPrice)
-                .HasPrecision(19, 0);
+            modelBuilder.Entity<PaymentType>()
+                .HasMany(e => e.Orders)
+                .WithRequired(e => e.PaymentType)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Product>()
                 .Property(e => e.Thumbnails)
@@ -161,12 +157,9 @@ namespace HTTT_QLyBanDongHo.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<OrderDetail>()
-                .Property(e => e.UnitPrice)
-                .HasPrecision(19, 0);
-
-            modelBuilder.Entity<OrderDetail>()
                 .Property(e => e.OrderID)
                 .IsUnicode(false);
         }
+
     }
 }

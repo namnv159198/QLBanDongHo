@@ -40,10 +40,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             {
                 cus = cus.Where(s => s.Type.Contains(searchString));
             }
-            if (!String.IsNullOrEmpty(Status))
-            {
-                cus = cus.Where(s => s.Status.Contains(Status));
-            }
+            
             if (string.IsNullOrEmpty(sortOrder) || sortOrder.Equals("date-asc"))
             {
                 ViewBag.DateSort = "date-desc";
@@ -71,18 +68,6 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
 
             
-            if (start != null)
-            {
-                var startDate = start.GetValueOrDefault().Date;
-                startDate = startDate.Date + new TimeSpan(0, 0, 0);
-                cus = cus.Where(p => p.Create_At >= startDate);
-            }
-            if (end != null)
-            {
-                var endDate = end.GetValueOrDefault().Date;
-                endDate = endDate.Date + new TimeSpan(23, 59, 59);
-                cus = cus.Where(p => p.Create_At <= endDate);
-            }
             ViewBag.PageSize = new List<SelectListItem>()
             {
 
@@ -101,14 +86,9 @@ namespace HTTT_QLyBanDongHo.Controllers
                 case "name-desc":
                     cus = cus.OrderByDescending(p => p.Type);
                     break;
-                case "date-asc":
-                    cus = cus.OrderBy(p => p.Create_At);
-                    break;
-                case "date-desc":
-                    cus = cus.OrderByDescending(p => p.Create_At);
-                    break;
+            
                 default:
-                    cus = cus.OrderByDescending(p => p.Create_At);
+                    cus = cus.OrderByDescending(p => p.Type);
                     break;
             }
 
@@ -155,8 +135,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                 var checkCategory = db.CustomerTypes.AsEnumerable().Where(c => c.Type.ToString() == customerType.Type);
                 if (!checkCategory.Any())
                 {
-                    customerType.Status = ActiveStatus;
-                    customerType.Create_At = DateTime.Now;
+                   
                     db.CustomerTypes.Add(customerType);
                     db.SaveChanges();
                     TempData["message"] = "Create";
@@ -199,7 +178,6 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             if (ModelState.IsValid)
             {
-                customerType.Status = Status;
                 db.Entry(customerType).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["message"] = "Edit";

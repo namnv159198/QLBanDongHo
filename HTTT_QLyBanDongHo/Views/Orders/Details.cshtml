@@ -1,0 +1,75 @@
+﻿@model HTTT_QLyBanDongHo.Models.Order
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared_Admin/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderStatus.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderStatus.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total_Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total_Quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total_Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total_Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Payment_Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Payment_Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Discount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Discount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Create_At)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Create_At)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

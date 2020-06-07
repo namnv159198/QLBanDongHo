@@ -7,7 +7,6 @@
     Layout = "~/Views/Shared_Admin/_Layout.cshtml";
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared_Admin/_Layout.cshtml";
- 
     int STT = 0;
 
 }
@@ -37,8 +36,6 @@
                                 </a>
 
                             </div>
-
-
                         </ol>
                     </div>
                 </div>
@@ -59,7 +56,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">Danh sách  dữ liệu quản lý danh mục</strong>
+                        <strong class="card-title">Danh sách  dữ liệu quản lý sản phẩm</strong>
                     </div>
 
 
@@ -146,6 +143,8 @@
                                                 {
                                                     <input type="hidden" name="ListCategoryIDs" value="" />
                                                     <input type="submit" value="Delete" class="btn btn-default btn-danger" />
+                                                    <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
+
                                                 }
 
 
@@ -243,7 +242,7 @@
 
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Create_At)
+                                            @Html.DisplayFor(modelItem => item.CreateAt)
                                         </td>
                                         <td>
                                             <a href="@Url.Action("Edit", "products", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |

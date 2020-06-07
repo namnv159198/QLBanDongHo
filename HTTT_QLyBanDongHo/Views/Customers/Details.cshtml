@@ -1,0 +1,115 @@
+﻿@model HTTT_QLyBanDongHo.Models.Customer
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared_Admin/_Layout.cshtml";
+}
+
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1 style="line-height: 40px">Quản lý khách hàng</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <div class="btn-group">
+                                <a href="@Url.Action("Create", "Customers")" class="btn btn-primary">
+                                    Tạo mới &nbsp;
+                                    <i class="fa fa-plus"></i>
+                                </a>
+
+                            </div>
+
+
+                        </ol>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Chi tiết thông tin khách hàng: ID @Model.ID </strong>
+                    </div>
+                    <div class="card-body">
+
+                        <div>
+                            <button type="button" class="btn  bg-primary text-light">
+                                @Html.ActionLink("Sửa thông tin khách hàng", "Edit", new { id = Model.ID }, new { @style = "color:white;" })
+                            </button>
+                            <hr />
+
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td width="30%"> Tên khách hàng</td>
+                                    <td> @Html.DisplayFor(model => model.Name)</td>
+                                </tr>
+
+                                <tr>
+                                    <td width="30%">Email</td>
+                                    <td> @Html.DisplayFor(model => model.Email)</td>
+                                </tr>
+                                <tr>
+                                    <td width="30%">Số điện thoại</td>
+                                    <td> @Html.DisplayFor(model => model.Phonenumber)</td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Giới tính</td>
+                                    <td> @Html.DisplayFor(model => model.Gender)</td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Year Old</td>
+                                    <td> @Html.DisplayFor(model => model.YearOld)</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"> Ngày sinh</td>
+                                    <td> @Html.DisplayFor(model => model.Birthday) </td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Địa chỉ</td>
+                                    <td> @Html.DisplayFor(model => model.Address) </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="30%"> Ngày tạo</td>
+                                    <td> @Html.DisplayFor(model => model.CreateAt) </td>
+                                </tr>
+                            </table>
+
+                            <button type="button" class="btn  bg-primary text-light">
+                                <i class="fa fa-arrow-left"></i>
+                                @Html.ActionLink("Quay lại", "Index", null, new { @style = "color:white;" })
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+

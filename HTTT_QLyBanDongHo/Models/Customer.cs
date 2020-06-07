@@ -34,14 +34,18 @@ namespace HTTT_QLyBanDongHo.Models
         public string Gender { get; set; }
 
         [Column(TypeName = "date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
 
         public int? YearOld { get; set; }
 
-        [Column("Create At")]
-        public DateTime? Create_At { get; set; }
+        public DateTime? CreateAt { get; set; }
 
         public int CustomerTypeID { get; set; }
+
+        [StringLength(255)]
+        public string AccountID { get; set; }
 
         public virtual Account Account { get; set; }
 

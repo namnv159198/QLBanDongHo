@@ -60,7 +60,7 @@
 
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 @Html.HiddenFor(model => model.ID)
-                                @Html.HiddenFor(model => model.Create_At)
+                               
 
                                 <div class="form-group ">
                                     @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -69,23 +69,7 @@
                                         @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <div class="form-group ">
-                                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-4">
-                                        @Html.DropDownListFor(m => m.Status, new List<SelectListItem>
-                                        {
-                                            new SelectListItem {Text = "Kích hoạt", Value = @ActiveStatus },
-                                            new SelectListItem {Text = "Tắt kích hoạt", Value = @DeActiveStatus},
-
-                                        }, "Chọn trạng thái ", new { @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    @Html.LabelFor(model => model.Create_At, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-4">
-                                        @Html.EditorFor(model => model.Create_At, new { htmlAttributes = new { @class = "form-control ", disabled = "disabled" } })
-                                    </div>
-                                </div>
+                                
                                 <div class="form-group">
                                     <div class="col-md-offset-2 col-md-10">
                                         <input type="submit" value="Lưu" class="btn  btn-primary" />

@@ -1,0 +1,136 @@
+﻿@model HTTT_QLyBanDongHo.Models.Customer
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared_Admin/_Layout.cshtml";
+}
+
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1 style="line-height: 40px">Quản lý khách hàng</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <div class="btn-group">
+                                <a href="@Url.Action("Create", "Customers")" class="btn btn-primary">
+                                    Tạo mới &nbsp;
+                                    <i class="fa fa-plus"></i>
+                                </a>
+
+                            </div>
+
+
+                        </ol>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Sửa thông  khách hàng </strong>
+                    </div>
+                    <div class="card-body">
+
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            <button type="button" class="btn  bg-primary text-light">
+                                <i class="fa fa-arrow-left"></i>
+                                @Html.ActionLink("Quay lại", "Index", null, new { @style = "color:white;" })
+                            </button>
+
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.ID)
+                            @Html.HiddenFor(model => model.CreateAt)
+                            <div class="form-group row">
+
+                                <div class="col-md-4">
+                                    <span class="mb-2">Tên</span>
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control mt-2" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="mb-2">Email</span>
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control mt-2" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-md-4">
+                                    <span class="mb-2">Số điện thoại</span>
+                                    @Html.EditorFor(model => model.Phonenumber, new { htmlAttributes = new { @class = "form-control mt-2" } })
+                                    @Html.ValidationMessageFor(model => model.Phonenumber, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mt-5">
+                                    <span class="mb-2 ">Giới tính </span>
+                                    <br />
+                                    @if (Model.Gender == "Nam")
+                                    {
+                                        <input type="radio" class="mt-4" value="Nam" name="Gender" checked="checked"> <span>Nam</span>
+                                        <input class="ml-4" type="radio" value="Nữ" name="Gender"> <span>Nữ</span> <br>
+                                    }
+                                    @if (Model.Gender == "Nữ")
+                                    {
+                                        <input type="radio" class="mt-4" value="Nam" name="Gender"> <span>Nam</span>
+                                        <input class="ml-4" type="radio" value="Nữ" name="Gender" checked="checked"> <span>Nữ</span> <br>
+                                    }
+                                    </div>
+                                <div class="col-md-4 mt-5">
+                                    <span class="mb-2">Ngày sinh :   <span class="text-uppercase">   @Model.Birthday.Value.ToString("dd/MM/yyyy")</span>  </span>
+                               
+                                    @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control mt-2" } })
+                                    @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4 mt-5">
+                                    <span class="mb-3">Loại khách hàng</span>
+                                    @Html.DropDownList("CustomerTypeID", null, htmlAttributes: new { @class = "form-control mt-2" })
+                                    @Html.ValidationMessageFor(model => model.CustomerTypeID, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-6 mt-5">
+                                    <span class="mb-2">Địa chỉ</span>
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control mt-2" } })
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="form-group mt-5">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Lưu" class="btn btn-primary" />
+                                    <input type="reset" id="Reset" value="Reset" class="btn btn-danger" />
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

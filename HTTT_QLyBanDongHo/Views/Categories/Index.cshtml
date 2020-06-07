@@ -75,16 +75,7 @@
                                 <label class="text-uppercase"> Lọc theo thời gian</label>
                                 <input type="text" name="daterange" value="" class="form-control  " />
                             </div>
-                            <div class="col-sm-3">
-                                <label class="text-uppercase"> Lọc theo trạng thái</label>
-
-                                @Html.DropDownList("Status", new List<SelectListItem>
-                                {
-                                    new SelectListItem {Text = "Kích hoạt", Value = @ActiveStatus },
-                                    new SelectListItem {Text = "Tắt kích hoạt", Value = @DeActiveStatus},
-
-                                }, "Chọn trạng thái ", new { @class = "form-control" })
-                            </div>
+                            
 
                             <div class="col-sm-1">
                                 <label class="text-uppercase"> Show  </label>
@@ -133,6 +124,8 @@
                                                 {
                                                     <input type="hidden" name="ListCategoryIDs" value="" />
                                                     <input type="submit" value="Delete" class="btn btn-default btn-danger" />
+                                                    <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
+
                                                 }
 
 
@@ -175,19 +168,7 @@
 
 
                                     </th>
-                                    <th>
-                                        Trạng thái
-                                    </th>
-                                    <th>
-                                        Ngày tạo
-                                        <i class="fa fa-arrow-down iconSort" name="date-desc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconDown"></i>
 
-
-                                        <i class="fa fa-arrow-up iconSort" name="date-asc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconUp"></i>
-
-
-
-                                    </th>
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
@@ -207,20 +188,6 @@
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Name)
-                                        </td>
-                                        <td>
-                                            @if (item.Status == ViewBag.Active)
-                                            {
-                                                <p class="bg-success text-light text-center">@item.Status</p>
-                                            }
-                                            @if (item.Status == ViewBag.DeActive)
-                                            {
-                                                <p class="bg-danger text-light text-center">@item.Status</p>
-                                            }
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Create_At)
                                         </td>
                                         <td>
                                             <a href="@Url.Action("Edit", "Categories", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |

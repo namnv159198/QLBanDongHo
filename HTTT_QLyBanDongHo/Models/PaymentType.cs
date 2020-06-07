@@ -6,18 +6,19 @@ namespace HTTT_QLyBanDongHo.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class OrderStatu
+    [Table("PaymentType")]
+    public partial class PaymentType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public OrderStatu()
+        public PaymentType()
         {
             Orders = new HashSet<Order>();
         }
 
-        public int ID { get; set; }
+        public int PaymentTypeID { get; set; }
 
         [StringLength(255)]
-        public string Status { get; set; }
+        public string Type { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
