@@ -10,20 +10,17 @@ namespace HTTT_QLyBanDongHo.Models
     {
         public int? Quantity { get; set; }
 
-        public float? UnitPrice { get; set; }
+        public Double? UnitPrice { get; set; }
 
-        [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+
+        [Key, Column(Order = 1)]
         public int ProductID { get; set; }
-
-        [Key]
-        [Column(Order = 1)]
+        [Key, Column(Order = 0)]
         [StringLength(255)]
         public string OrderID { get; set; }
-
+        [ForeignKey("OrderID")]
         public virtual Order Order { get; set; }
-
+        [ForeignKey("ProductID")]
         public virtual Product Product { get; set; }
     }
 }

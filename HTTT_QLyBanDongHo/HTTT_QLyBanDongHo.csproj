@@ -176,7 +176,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="ChartModel\ChartModel.cs" />
+    <Compile Include="ChartModel\ModelData.cs" />
+    <Compile Include="ChartModel\ModelData2.cs" />
+    <Compile Include="ChartModel\MultipleModelData.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\ChartController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
@@ -192,6 +196,26 @@
     <Compile Include="Migrations\202006071526150_SetUpEntity.cs" />
     <Compile Include="Migrations\202006071526150_SetUpEntity.Designer.cs">
       <DependentUpon>202006071526150_SetUpEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006081447297_setUpProduct.cs" />
+    <Compile Include="Migrations\202006081447297_setUpProduct.Designer.cs">
+      <DependentUpon>202006081447297_setUpProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006081450492_UpdatePriceDouble.cs" />
+    <Compile Include="Migrations\202006081450492_UpdatePriceDouble.Designer.cs">
+      <DependentUpon>202006081450492_UpdatePriceDouble.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006081638264_DiscountDouble.cs" />
+    <Compile Include="Migrations\202006081638264_DiscountDouble.Designer.cs">
+      <DependentUpon>202006081638264_DiscountDouble.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006081739243_SetDoubleOrderDetails.cs" />
+    <Compile Include="Migrations\202006081739243_SetDoubleOrderDetails.Designer.cs">
+      <DependentUpon>202006081739243_SetDoubleOrderDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006081814227_UpdateOrder.cs" />
+    <Compile Include="Migrations\202006081814227_UpdateOrder.Designer.cs">
+      <DependentUpon>202006081814227_UpdateOrder.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -797,7 +821,6 @@
     <Content Include="Views\Products\Details.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Views\Chart\Index.cshtml" />
     <Content Include="Views\Customers\Create.cshtml" />
     <Content Include="Views\Customers\Details.cshtml" />
     <Content Include="Views\Customers\Edit.cshtml" />
@@ -807,6 +830,9 @@
     <Content Include="Views\Orders\Details.cshtml" />
     <Content Include="Views\Orders\Edit.cshtml" />
     <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\Chart\CustomerChart.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Chart\ProductChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -827,6 +853,21 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202006071526150_SetUpEntity.resx">
       <DependentUpon>202006071526150_SetUpEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006081447297_setUpProduct.resx">
+      <DependentUpon>202006081447297_setUpProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006081450492_UpdatePriceDouble.resx">
+      <DependentUpon>202006081450492_UpdatePriceDouble.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006081638264_DiscountDouble.resx">
+      <DependentUpon>202006081638264_DiscountDouble.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006081739243_SetDoubleOrderDetails.resx">
+      <DependentUpon>202006081739243_SetDoubleOrderDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006081814227_UpdateOrder.resx">
+      <DependentUpon>202006081814227_UpdateOrder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

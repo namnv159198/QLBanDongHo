@@ -83,15 +83,21 @@
 
                                 @Html.DropDownList("Status", new List<SelectListItem>
                                 {
-                                    new SelectListItem {Text = "Kích hoạt", Value = @ViewBag.Active },
-                                    new SelectListItem {Text = "Chưa kích hoạt", Value = @ViewBag.DeActiveStatus},
+                                    new SelectListItem {Text = "Kích hoạt", Value = "Kích hoạt" },
+                                    new SelectListItem {Text = "Chưa kích hoạt", Value = "Chưa kích hoạt"},
 
                                 }, "Chọn trạng thái ", new { @class = "form-control" })
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-sm-1 ">
                                 <label class="text-uppercase"> Show  </label>
                                 @Html.DropDownList("pageSize", null, null, new { @class = "form-control", style = "width: 70px;" })
                             </div>
+                            <div class="col-sm-3 mt-3">
+                                <label class="text-uppercase"> Lọc theo danh mục</label>
+
+                                @Html.DropDownList("Category", (IEnumerable<SelectListItem>)ViewBag.Categorylist, "Chọn", new { @class = "form-control" })
+                            </div>
+
                             <div class="col-sm-2 mt-3">
                                 <label class="text-uppercase"> Giá từ</label><input class="form-control" type="number" name="minPrice" value="" />
                             </div>
@@ -188,7 +194,7 @@
                                     </th>
 
                                     <th>
-                                        Giá bán
+                                        Giá bán (VNĐ)
                                         <i class="fa fa-arrow-down iconSort" name="price-desc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconDown"></i>
                                         <i class="fa fa-arrow-up iconSort" name="price-asc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconUp"></i>
 
@@ -225,7 +231,10 @@
                                         </td>
 
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.AfterPrice)
+                                            @{
+                                                var p = (double)item.AfterPrice;
+                                            }
+                                            @p.ToString("#,##0").Replace(',', '.') 
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Category.Name)
@@ -242,7 +251,7 @@
 
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.CreateAt)
+                                            @item.CreateAt.Value.ToString("dd/MM/yyyy")
                                         </td>
                                         <td>
                                             <a href="@Url.Action("Edit", "products", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
@@ -343,6 +352,9 @@
             $('input[name="maxPrice"]').val(initMaxPrice);
         }
         $('select[name="pageSize"]').change(function () {
+            $('form[name="search-form"]').submit();
+        });
+        $('select[name="Category"]').change(function () {
             $('form[name="search-form"]').submit();
         });
         $('select[name="Status"]').change(function () {

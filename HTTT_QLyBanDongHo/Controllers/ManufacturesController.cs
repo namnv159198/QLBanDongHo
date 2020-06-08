@@ -85,9 +85,8 @@ namespace HTTT_QLyBanDongHo.Controllers
                 case "name-desc":
                     manufacture = manufacture.OrderByDescending(p => p.Name);
                     break;
-               
                 default:
-                    manufacture = manufacture.OrderByDescending(p => p.Name);
+                    manufacture = manufacture.OrderByDescending(p => p.ID);
                     break;
             }
 

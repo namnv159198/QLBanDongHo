@@ -22,7 +22,7 @@ namespace HTTT_QLyBanDongHo.Models
         public int? Total_Quantity { get; set; }
 
         [Column("Total Price")]
-        public float? Total_Price { get; set; }
+        public Double? Total_Price { get; set; }
 
         public int? Discount { get; set; }
 
@@ -45,5 +45,14 @@ namespace HTTT_QLyBanDongHo.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public void AddOrderDetails(OrderDetail orderDetails)
+        {
+            if (this.OrderDetails == null)
+            {
+                this.OrderDetails = new List<OrderDetail>();
+            }
+            this.Total_Price += orderDetails.UnitPrice* orderDetails.Quantity;
+            this.Total_Quantity += orderDetails.Quantity;
+        }
     }
 }

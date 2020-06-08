@@ -49,8 +49,7 @@
 <div class="content">
     <div class="animated fadeIn">
         <div class="row">
-
-            <div class="col-md-12">
+        <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <strong class="card-title">Danh sách  dữ liệu quản lý danh mục</strong>
@@ -75,16 +74,6 @@
                                 <label class="text-uppercase"> Lọc theo thời gian</label>
                                 <input type="text" name="daterange" value="" class="form-control  " />
                             </div>
-                            <div class="col-sm-3">
-                                <label class="text-uppercase"> Lọc theo trạng thái</label>
-
-                                @Html.DropDownList("Status", new List<SelectListItem>
-                                {
-                                    new SelectListItem {Text = "Kích hoạt", Value = @ActiveStatus },
-                                    new SelectListItem {Text = "Tắt kích hoạt", Value = @DeActiveStatus},
-
-                                }, "Chọn trạng thái ", new { @class = "form-control" })
-                            </div>
 
                             <div class="col-sm-1">
                                 <label class="text-uppercase"> Show  </label>
@@ -93,7 +82,7 @@
                             <div class="col-sm-2 mt-3">
 
                                 <div>
-                                    <button type="submit" class="btn btn-primary mt-2">
+                                    <button type="submit" class="btn btn-primary mt-3">
                                         Tìm kiếm
                                     </button>
                                 </div>
@@ -158,16 +147,16 @@
                         <table id="bootstrap-data-table" class="table table-striped table-bordered">
                             <thead>
 
-                                <tr>
+                                <tr class="text-center">
 
                                     @if (Model.Count() != 0)
                                     {
                                         <th>
-                                            <input type="checkbox" id="checkAll" /> &nbsp; Tất cả
+                                            <input type="checkbox" id="checkAll" />
                                         </th>
                                     }
                                     <th>STT</th>
-                                    <th>
+                                    <th >
                                         Tên nhà sản xuất
 
                                         <i class="fa fa-arrow-down iconSort" name="name-desc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconDown"></i>
@@ -179,19 +168,6 @@
                                     </th>
                                     <th>
                                         Logo
-                                    </th>
-                                    <th>
-                                        Trạng thái
-                                    </th>
-                                    <th>
-                                        Ngày tạo
-                                        <i class="fa fa-arrow-down iconSort" name="date-desc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconDown"></i>
-
-
-                                        <i class="fa fa-arrow-up iconSort" name="date-asc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconUp"></i>
-
-
-
                                     </th>
                                     <th>Thao tác</th>
                                 </tr>

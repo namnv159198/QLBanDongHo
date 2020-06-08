@@ -77,7 +77,12 @@
                                 </tr>
                                 <tr>
                                     <td width="30%"> Giá bán</td>
-                                    <td> @Html.DisplayFor(model => model.AfterPrice)</td>
+                                    <td>
+                                        @{
+                                            var p = (double)Model.AfterPrice;
+                                        }
+                                        @p.ToString("#,##0").Replace(',', '.')
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td width="30%"> Giảm giá</td>
@@ -86,28 +91,38 @@
                                 <tr>
                                     <td width="30%"> Loại trạng thái</td>
                                     <td>
-                                        Sản phẩm bán chạy : <span class="text-success">
-                                            @if (Model.isBestSeller.HasValue.Equals(0))
-                                            {
-                                                <p>Không</p>
-                                            }
-                                            Có
+                                                Sản phẩm bán chạy : <span class="text-success">
+            @if (Model.isBestSeller == 0)
+            {
+                                                                        <span>Không</span>
+            }
+            @if (Model.isBestSeller == 1)
+            {
+                <span>Có</span>
+            }
 
-                                        </span> |
-                                        Sản phẩm mới :<span class="text-success">
-                                            @if (Model.isNew.HasValue.Equals(0))
-                                            {
-                                                <p>Không</p>
-                                            }
-                                            Có
-                                        </span>|
+        </span> |
+                                            Sản phẩm mới :<span class="text-success">
+                                                                @if (Model.isNew == 0)
+                                                                {
+                                                                    <span>Không</span>
+                                                                }
+                                                                @if (Model.isNew == 1)
+                                                                {
+                                                                    <span>Có</span>
+                                                                }
+                                                            </span>|
                                         Sản phẩm đặc biết :<span class="text-success">
-                                            @if (Model.isSpecial.HasValue.Equals(0))
+                                            @if (Model.isSpecial == 0)
                                             {
-                                                <p>Không</p>
+                                                <span>Không</span>
                                             }
-                                            Có
-                                        </span>
+                                            @if (Model.isSpecial == 1)
+                                            {
+                                                           <span>Có</span>
+                                            }
+                                            
+</span>
                                     </td>
                                 </tr>
                                 <tr>

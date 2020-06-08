@@ -1,3 +1,5 @@
+using System.Configuration;
+
 namespace HTTT_QLyBanDongHo.Models
 {
     using System;
@@ -20,14 +22,14 @@ namespace HTTT_QLyBanDongHo.Models
         [StringLength(255)]
         public string Name { get; set; }
 
-        public float? Price { get; set; }
+        public Double? Price { get; set; }
 
-        public float? AfterPrice { get; set; }
+        public Double? AfterPrice { get; set; }
 
         [StringLength(255)]
         public string Thumbnails { get; set; }
 
-        public int? Discount { get; set; }
+        public double Discount { get; set; }
 
         public int? isBestSeller { get; set; }
 
@@ -35,12 +37,12 @@ namespace HTTT_QLyBanDongHo.Models
 
         public int? isSpecial { get; set; }
 
-        [StringLength(255)]
+        [StringLength(maximumLength:1000000)]
         public string Description { get; set; }
 
         [StringLength(255)]
         public string Status { get; set; }
-
+        [DataType(DataType.Date)]
         public DateTime? CreateAt { get; set; }
 
         public int ManufactureID { get; set; }
@@ -53,5 +55,58 @@ namespace HTTT_QLyBanDongHo.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public string GetDefaultThumbnails()
+        {
+            if (this.Thumbnails != null && this.Thumbnails.Length > 0)
+            {
+                var arrayThumbnails = this.Thumbnails.Split(',');
+                if (arrayThumbnails.Length > 0)
+                {
+                    return
+                        ConfigurationManager.AppSettings["CloudinaryPrefix"] + arrayThumbnails[0];
+                }
+
+            }
+
+            return
+                ConfigurationManager.AppSettings["ImageNull"];
+        }
+        public string[] GetThumbnails()
+        {
+            if (this.Thumbnails != null && this.Thumbnails.Length > 0)
+            {
+                var arrayThumbnails = this.Thumbnails.Split(',');
+                if (arrayThumbnails.Length > 0)
+                {
+                    return arrayThumbnails;
+                }
+
+            }
+
+            return new string[0];
+        }
+
+        public string[] GetThumbnailIDs()
+        {
+            var idThumbnail = new List<string>();
+            var thumbnails = GetThumbnails();
+            foreach (var i in thumbnails)
+            {
+                // image/upload/v1587720852/trang-phuc-nakroth-bboy-cong-nghe-compressed_ewu3rb_qj7zct.jpg#81ad3dee47db0da23fae48523665b35024516448
+                var SplittedThumbnails = i.Split('/');
+                // [image,   upload,  v1587720852,  trang-phuc-nakroth-bboy-cong-nghe-compressed_ewu3rb_qj7zct.jpg#81ad3dee47db0da23fae48523665b35024516448] = 4
+                //   0    ,  1 ,       2 ,             3]
+                if (SplittedThumbnails.Length != 4)
+                {
+                    continue;
+                }
+                //[trang-phuc-nakroth-bboy-cong-nghe-compressed_ewu3rb_qj7zct.jpg#81ad3dee47db0da23fae48523665b35024516448]
+                idThumbnail.Add(SplittedThumbnails[3].Split('.')[0]);
+                // [trang-phuc-nakroth-bboy-cong-nghe-compressed_ewu3rb_qj7zct , jpg#81ad3dee47db0da23fae48523665b35024516448]
+                // id = trang-phuc-nakroth-bboy-cong-nghe-compressed_ewu3rb_qj7zct 
+
+            }
+            return idThumbnail.ToArray();
+        }
     }
 }

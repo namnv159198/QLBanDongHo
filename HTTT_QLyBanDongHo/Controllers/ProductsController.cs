@@ -19,10 +19,15 @@ namespace HTTT_QLyBanDongHo.Controllers
         public static string DeActiveStatus = "Chưa kích hoạt";
 
         // GET: Products
-        public ActionResult Index(string sortOrder, int? page, string Status, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize,decimal? minPrice, decimal? maxPrice)
+        public ActionResult Index(string sortOrder,int? category, int? page, string Status, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize,decimal? minPrice, decimal? maxPrice)
         {
             ViewBag.Active = ActiveStatus;
             ViewBag.DeActive = DeActiveStatus;
+            var listOrderStatus = db.Categories.ToList();
+
+            SelectList Categorylist = new SelectList(listOrderStatus, "ID", "Name");
+            ViewBag.Categorylist = Categorylist;
+
             var products = db.Products.Include(p => p.Category).Include(p => p.Manufacture);
             products = products.AsQueryable();
             ViewBag.TotalEnity = products.Count();
@@ -41,6 +46,10 @@ namespace HTTT_QLyBanDongHo.Controllers
             {
                 products = products.Where(s => s.Name.Contains(searchString));
             }
+            if (category.HasValue)
+            {
+                products = products.Where(s => s.Category.ID == category);
+            }
             if (minPrice.HasValue)
             {
                 products = products.Where(s => s.AfterPrice >= (double?) minPrice);
@@ -51,7 +60,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             if (!String.IsNullOrEmpty(Status))
             {
-                products = products.Where(s => s.Status.Contains(Status));
+                products = products.Where(s => s.Status == Status);
             }
             if (string.IsNullOrEmpty(sortOrder) || sortOrder.Equals("date-asc"))
             {
@@ -189,6 +198,8 @@ namespace HTTT_QLyBanDongHo.Controllers
                     {
                         product.Thumbnails = string.Join(",", thumbnails);
                     }
+
+                    product.AfterPrice = product.AfterPrice - ((product.AfterPrice * product.Discount) / 100); 
                     product.CreateAt = DateTime.Now;
                     db.Products.Add(product);
                     db.SaveChanges();
@@ -242,6 +253,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                 {
                     product.Thumbnails = string.Join(",", thumbnails);
                 }
+                product.AfterPrice = product.AfterPrice - ((product.AfterPrice * product.Discount) / 100);
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["message"] = "Edit";

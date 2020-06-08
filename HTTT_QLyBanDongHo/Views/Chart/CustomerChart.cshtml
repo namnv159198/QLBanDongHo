@@ -1,0 +1,185 @@
+﻿@model HTTT_QLyBanDongHo.ChartModel.MultipleModelData
+@{
+    ViewBag.Title = "Index";
+    var k = 0;
+    var h = 0;
+    Layout = "~/Views/Shared_Admin/_Layout.cshtml";
+}
+
+
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header" style="background-color:white">
+                        <div class="row" >
+                            <div class="card-body row ">
+                                <div class="col-2">
+                                    Chart Type:
+                                    <select id="chartType" class="form-control" name="Chart Type">
+                                        <option value="line">Line</option>
+                                        <option value="column">Column</option>
+                                        <option value="bar">Bar</option>
+                                        <option value="pie">Pie</option>
+                                        <option value="doughnut">Doughnut</option>
+                                    </select>
+                                </div>
+                                <div id="chartContainer" class="col-lg-6" style="height: 370px; width: 100%;"></div>
+                                <div class="col-lg-4">
+                                    <h4>Bảng dữ liệu thống kê độ tuổi khách hàng</h4>
+                                    <table class="table table-bordered mt-5">
+                                        <thead>
+                                            <tr>
+                                                <th>Thống kê</th>
+                                                <th>Số lượng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var i in Model.ModelData)
+                                            {
+                                                <tr>
+                                                    <td>@i.label</td>
+                                                    <td>@i.y</td>
+                                                </tr>
+                                                k = (int)(k + i.y);
+
+                                            }
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Tổng số lượng </th>
+                                                <th>@k </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <br />
+
+                                <div class="col-lg-4 mt-5">
+                                    <h4 class="mt-5">Bảng dữ liệu thống kê giới tính khách hàng</h4>
+                                    <table class="table table-bordered mt-5">
+                                        <thead>
+                                            <tr>
+                                                <th>Thống kế</th>
+                                                <th>Số lượng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var i in Model.ModelData2)
+                                            {
+                                                <tr>
+                                                    <td>@i.gender</td>
+                                                    <td>@i.z</td>
+                                                </tr>
+                                                h = (int)(h + i.z);
+                                            }
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Tổng số lượng </th>
+                                                <th>@h </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div id="chartContainer2" class="col-lg-6 mt-5" style="height: 370px; width: 50%;"></div>
+                                <div class="col-2">
+                                    Chart Type:
+                                    <select id="chartType2" class="form-control" name="Chart Type">
+                                        <option value="line">Line</option>
+                                        <option value="column">Column</option>
+                                        <option value="bar">Bar</option>
+                                        <option value="pie">Pie</option>
+                                        <option value="doughnut">Doughnut</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+    window.onload = function () {
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "light2",
+            animationEnabled: true,
+            exportEnabled: true,
+            title: {
+                text: "Thống kê độ tuổi khách hàng "
+            },
+
+            axisY: {
+                title: "Số lượng",
+                gridThickness: 0
+            },
+
+            axisX: {
+                title: "Number of Nobel Prizes",
+                gridThickness: "{label}"
+            },
+            data: [{
+                type: "pie",
+                toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                indexLabel: "{y}",
+                showInLegend: true,
+                legendText: "{label}",
+                dataPoints: @Html.Raw(ViewBag.DataPoints)
+            }]
+        });
+        chart.render();
+
+        var chart2 = new CanvasJS.Chart("chartContainer2", {
+            theme: "light2",
+            animationEnabled: true,
+            exportEnabled: true,
+            title: {
+                text: "Thống kê giới tính khách hàng ",
+                margin: 10,
+               
+            },
+
+            axisY: {
+                title: "Số lượng",
+                gridThickness: 0,
+               
+            },
+
+            data: [{
+                type: "pie",
+                toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                indexLabel: "{y}",
+                showInLegend: true,
+                legendText: "{label}",
+                dataPoints: @Html.Raw(ViewBag.DataPoints2)
+            }]
+        });
+        chart2.render();
+        var chartType = document.getElementById('chartType');
+        chartType.addEventListener( "change",  function(){
+            chart.options.data[0].type = chartType.options[chartType.selectedIndex].value;
+            chart.render();
+        });
+        var chartType2 = document.getElementById('chartType2');
+        chartType2.addEventListener( "change",  function(){
+            chart2.options.data[0].type = chartType2.options[chartType2.selectedIndex].value;
+            chart2.render();
+        });
+    }
+
+
+</script>
