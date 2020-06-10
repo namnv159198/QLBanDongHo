@@ -16,11 +16,15 @@ namespace HTTT_QLyBanDongHo.Controllers
         private QLBanDongHoDBContext db = new QLBanDongHoDBContext();
 
         // GET: Orders
-        public ActionResult Index(string sortOrder, int? page, string Status, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize, decimal? minPrice, decimal? maxPrice)
+        public ActionResult Index(string sortOrder, int? page, string OrdersStatus, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize, decimal? minPrice, decimal? maxPrice)
         {
             var orders = db.Orders.Include(p => p.OrderStatus).Include(p => p.Customer);
             orders = orders.AsQueryable();
+
+
             ViewBag.TotalEnity = orders.Count();
+            ViewBag.minPrice = (minPrice * 1000000);
+            ViewBag.maxPrice = maxPrice * 1000000;
             int defaSize = (pageSize ?? 5);
             if (searchString != null)
             {
@@ -38,15 +42,16 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             if (minPrice.HasValue)
             {
-                orders = orders.Where(s => s.Total_Price >= (double?)minPrice);
+
+                orders = orders.Where(s => s.Total_Price >= (double?)minPrice* 1000000);
             }
             if (maxPrice.HasValue)
             {
-                orders = orders.Where(s => s.Total_Price <= (double?)maxPrice);
+                orders = orders.Where(s => s.Total_Price <= (double?)maxPrice * 1000000);
             }
-            if (!String.IsNullOrEmpty(Status))
+            if (!String.IsNullOrEmpty(OrdersStatus))
             {
-                orders = orders.Where(s => s.OrderStatus.ID.Equals(Status));
+                orders = orders.Where(s => s.OrderStatus.Status == OrdersStatus);
             }
             if (string.IsNullOrEmpty(sortOrder) || sortOrder.Equals("date-asc"))
             {
@@ -68,7 +73,31 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             else if (sortOrder.Equals("name-asc"))
             {
-                ViewBag.DateSort = "name-asc";
+                ViewBag.DateSort = "name-desc";
+                ViewBag.ColerSortIconUp = "#black";
+                ViewBag.ColerSortIconDown = "#e0d2d2";
+            }
+            else if (sortOrder.Equals("quantity-asc"))
+            {
+                ViewBag.DateSort = "quantity-desc";
+                ViewBag.ColerSortIconUp = "#black";
+                ViewBag.ColerSortIconDown = "#e0d2d2";
+            }
+            else if (sortOrder.Equals("quantity-desc"))
+            {
+                ViewBag.DateSort = "quantity-asc";
+                ViewBag.ColerSortIconUp = "#black";
+                ViewBag.ColerSortIconDown = "#e0d2d2";
+            }
+            else if (sortOrder.Equals("price-asc"))
+            {
+                ViewBag.DateSort = "price-desc";
+                ViewBag.ColerSortIconUp = "#black";
+                ViewBag.ColerSortIconDown = "#e0d2d2";
+            }
+            else if (sortOrder.Equals("price-desc"))
+            {
+                ViewBag.DateSort = "price-asc";
                 ViewBag.ColerSortIconUp = "#black";
                 ViewBag.ColerSortIconDown = "#e0d2d2";
             }
@@ -89,7 +118,7 @@ namespace HTTT_QLyBanDongHo.Controllers
 
             var listOrderStatus = db.OrderStatus.ToList();
 
-            SelectList statusList = new SelectList(listOrderStatus, "ID", "Status");
+            SelectList statusList = new SelectList(listOrderStatus, "Status", "Status");
             ViewBag.StatusList = statusList;
 
 
@@ -111,6 +140,18 @@ namespace HTTT_QLyBanDongHo.Controllers
                     break;
                 case "name-desc":
                     orders = orders.OrderByDescending(p => p.Customer.Name);
+                    break;
+                case "price-asc":
+                    orders = orders.OrderBy(p => p.Total_Price);
+                    break;
+                case "price-desc":
+                    orders = orders.OrderByDescending(p => p.Total_Price);
+                    break;
+                case "quantity-asc":
+                    orders = orders.OrderBy(p => p.Total_Quantity);
+                    break;
+                case "quantity-desc":
+                    orders = orders.OrderByDescending(p => p.Total_Quantity);
                     break;
                 case "date-asc":
                     orders = orders.OrderBy(p => p.Create_At);
@@ -161,7 +202,7 @@ namespace HTTT_QLyBanDongHo.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Total_Quantity,Total_Price,Payment_Type,Discount,Create_At,CustomerID,OrderStatusID")] Order order)
+        public ActionResult Create( Order order)
         {
             if (ModelState.IsValid)
             {
@@ -200,46 +241,23 @@ namespace HTTT_QLyBanDongHo.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Total_Quantity,Total_Price,Payment_Type,Discount,Create_At,CustomerID,OrderStatusID")] Order order)
+        public ActionResult Edit( Order order)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(order).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["message"] = "Edit";
                 return RedirectToAction("Index");
             }
-            ViewBag.PaymentTypeID = new SelectList(db.PaymentTypes, "PaymentTypeID", "Type", order.PaymentTypeID);
 
+            ViewBag.PaymentTypeID = new SelectList(db.PaymentTypes, "PaymentTypeID", "Type", order.PaymentTypeID);
             ViewBag.CustomerID = new SelectList(db.Customers, "ID", "Name", order.CustomerID);
             ViewBag.OrderStatusID = new SelectList(db.OrderStatus, "ID", "Status", order.OrderStatusID);
             return View(order);
         }
 
-        // GET: Orders/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Order order = db.Orders.Find(id);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
-        }
-
-        // POST: Orders/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
-        {
-            Order order = db.Orders.Find(id);
-            db.Orders.Remove(order);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+     
 
         protected override void Dispose(bool disposing)
         {

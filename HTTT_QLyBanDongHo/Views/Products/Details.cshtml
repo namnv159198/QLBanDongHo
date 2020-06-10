@@ -92,16 +92,16 @@
                                     <td width="30%"> Loại trạng thái</td>
                                     <td>
                                                 Sản phẩm bán chạy : <span class="text-success">
-            @if (Model.isBestSeller == 0)
-            {
-                                                                        <span>Không</span>
-            }
-            @if (Model.isBestSeller == 1)
-            {
-                <span>Có</span>
-            }
+                                                @if (Model.isBestSeller == 0)
+                                                {
+                                                    <span>Không</span>
+                                                }
+                                                @if (Model.isBestSeller == 1)
+                                                {
+                                                    <span>Có</span>
+                                                }
 
-        </span> |
+                                                </span> |
                                             Sản phẩm mới :<span class="text-success">
                                                                 @if (Model.isNew == 0)
                                                                 {

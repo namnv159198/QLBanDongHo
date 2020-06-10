@@ -65,8 +65,7 @@
 
                         <input type="hidden" name="start" value="" />
                         <input type="hidden" name="end" value="" />
-                        <input type="hidden" name="start" value="" />
-
+                        <input type="hidden" name="sortOrder" value="" />
                         <div class="row card-body">
 
                             <div class="col-sm-4">
@@ -99,11 +98,11 @@
                             </div>
 
                             <div class="col-sm-2 mt-3">
-                                <label class="text-uppercase"> Giá từ</label><input class="form-control" type="number" name="minPrice" value="" />
+                                <label class="text-uppercase"> Giá từ </label><input class="form-control" type="number" name="minPrice" value="" placeholder="...1000.000" />
                             </div>
                             <div class="col-sm-2 mt-3">
                                 <label class="text-uppercase"> Đến </label>
-                                <input class="form-control" type="number" name="maxPrice" value="" />
+                                <input class="form-control" type="number" name="maxPrice" value="" placeholder="...1000.000" />
                             </div>
 
                             <div class="col-sm-2 ">
@@ -234,7 +233,7 @@
                                             @{
                                                 var p = (double)item.AfterPrice;
                                             }
-                                            @p.ToString("#,##0").Replace(',', '.') 
+                                            @p.ToString("#,##0").Replace(',', '.')
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Category.Name)

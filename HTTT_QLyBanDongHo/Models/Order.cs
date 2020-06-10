@@ -1,3 +1,5 @@
+﻿using System.Configuration;
+
 namespace HTTT_QLyBanDongHo.Models
 {
     using System;
@@ -31,6 +33,7 @@ namespace HTTT_QLyBanDongHo.Models
 
  
         [StringLength(255)]
+        
         public string CustomerID { get; set; }
 
         public int OrderStatusID { get; set; }
@@ -54,5 +57,6 @@ namespace HTTT_QLyBanDongHo.Models
             this.Total_Price += orderDetails.UnitPrice* orderDetails.Quantity;
             this.Total_Quantity += orderDetails.Quantity;
         }
+     
     }
 }

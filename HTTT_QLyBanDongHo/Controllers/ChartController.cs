@@ -66,29 +66,52 @@ namespace HTTT_QLyBanDongHo.Controllers
                 listTableDataAge.Add(k);
             }
 
-            var DataGender = db.Customers.GroupBy(o => o.Gender).Select(group => new
+            Double k1 = 0;
+            Double k2 = 0;
+            Double k3 = 0;
+            //-------------------------------------------- Sale Customer Statical ---------------------------------------
+            Dictionary<String, Double> listSaleCustomerYears = new Dictionary<string, double>();
+            foreach (var i in db.Customers)
             {
-                Gender = group.Key,
-                Total = group.Count()
-            }).OrderBy(x => x.Gender);
-
-            List<ChartModel.ChartModel.DataPoint> dataPoints2 = new List<ChartModel.ChartModel.DataPoint>();
-
-            List<ModelData2> listTableDataGender = new List<ModelData2>();
-            foreach (var i in DataGender)
-            {
-                dataPoints2.Add(new ChartModel.ChartModel.DataPoint(i.Gender, i.Total));
-                var k = new ModelData2()
+                if (i.CreateAt.Value.Year == 2018)
                 {
-                    gender = i.Gender,
-                    z = i.Total
+                    k1 = k1 + 1;
+                }
+
+                if (i.CreateAt.Value.Year == 2019)
+                {
+                    k2 = k2 + 1;
+                }
+                if (i.CreateAt.Value.Year == 2020)
+                {
+                    k3 = k3 + 1;
+                }
+            };
+
+            listSaleCustomerYears.Add("Năm 2018", k1);
+            listSaleCustomerYears.Add("Năm 2019 ", k2);
+            listSaleCustomerYears.Add("Năm 2020", k3);
+            List<ChartModel.ChartModel.DataPoint> dataPoints1 = new List<ChartModel.ChartModel.DataPoint>();
+            List<ModelData> listTableSaleCustomerYears = new List<ModelData>();
+
+            foreach (var i in listSaleCustomerYears)
+            {
+                dataPoints1.Add(new ChartModel.ChartModel.DataPoint(i.Key, (double)i.Value));
+                var k = new ModelData()
+                {
+                    label = i.Key,
+                    y = i.Value
                 };
-                listTableDataGender.Add(k);
+                listTableSaleCustomerYears.Add(k);
             }
 
+            mymodel.ModelData1 = listTableSaleCustomerYears;
             mymodel.ModelData = listTableDataAge;
-            mymodel.ModelData2 = listTableDataGender;
-            ViewBag.DataPoints2 = JsonConvert.SerializeObject(dataPoints2);
+    
+
+
+            ViewBag.DataPoints1 = JsonConvert.SerializeObject(dataPoints1);
+       
             ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
 
             return View(mymodel);
@@ -103,40 +126,46 @@ namespace HTTT_QLyBanDongHo.Controllers
 
             
 
-            string n = "";
+        
             Double t1 = 0;
             Double t2 = 0;
             Double t3 = 0;
             Double t4 = 0;
+            Double t5 = 0;
             Dictionary<String, Double> listPricePercent = new Dictionary<string, double>();
 
             foreach (var i in db.Products)
             {
-                if (i.AfterPrice < 10000000)
+                if (i.AfterPrice < 1000000)
                 {
                     t1 += 1;
                 }
 
-                if (i.AfterPrice >= 10000000 && i.AfterPrice < 20000000)
+                if (i.AfterPrice >= 1000000 && i.AfterPrice < 5000000)
 
                 {
                     t2 += 1;
                 }
-                if (i.AfterPrice >= 20000000 && i.AfterPrice < 30000000)
+                if (i.AfterPrice >= 5000000 && i.AfterPrice < 10000000)
                 {
                     t3 += 1;
                 }
-                if (i.AfterPrice >= 30000000)
+                if (i.AfterPrice >= 10000000 && i.AfterPrice < 20000000)
                 {
                     t4 += 1;
+                }
+                if (i.AfterPrice >= 20000000)
+                {
+                    t5 += 1;
                 }
             }
             List<ModelData> listTableDataPriceProduct = new List<ModelData>();
 
-            listPricePercent.Add("Thấp hơn 10tr ", t1);
-            listPricePercent.Add("Từ 10tr đến 20tr", t2);
-            listPricePercent.Add("Từ 20tr đến 30tr ", t3);
-            listPricePercent.Add("Hơn 30tr ", t4);
+            listPricePercent.Add("Thấp hơn 1tr ", t1);
+            listPricePercent.Add("Từ 1tr đến 5tr", t2);
+            listPricePercent.Add("Từ 5tr đến 10tr ", t3);
+            listPricePercent.Add("Từ 10tr đến 20tr ", t4);
+            listPricePercent.Add("Hơn 20tr  ", t5);
             List<ChartModel.ChartModel.DataPoint> dataPoints = new List<ChartModel.ChartModel.DataPoint>();
 
             foreach (var i in listPricePercent)
@@ -159,37 +188,32 @@ namespace HTTT_QLyBanDongHo.Controllers
             Double k2 = 0;
             Double k3 = 0;
             Double k4 = 0;
-            Double k5 = 0;
-            Double k6 = 0;
+         
             Dictionary<String, Double> listDiscountPercent = new Dictionary<string, double>();
 
             foreach (var i in db.Products.ToList())
             {
-                if (i.Discount == 0)
+                if (i.CreateAt.Value.Year  == 2018 )
                 {
-                    k1 =+ 1;
+                    k1 = k1 + 1;
                 }
 
-                if (i.Discount == 10)
+                if (i.CreateAt.Value.Year == 2019)
                 {
-                    k2 =+ 1;
+                    k2 = k2 + 1;
                 }
-                if (i.Discount == 20)
+                if (i.CreateAt.Value.Year == 2020)
                 {
-                    k3 = +1;
+                    k3 = k3 + 1;
                 }
-                if (i.Discount == 30)
-                {
-                    k4 = +1;
-                }
+              
 
             }
             List<ModelData> listTableDataDiscount = new List<ModelData>();
 
-            listDiscountPercent.Add("0%", k1);
-            listDiscountPercent.Add("Khuyến mãi 10% ", k2);
-            listDiscountPercent.Add("Khuyến mãi 20% ", k3);
-            listDiscountPercent.Add("Khuyến mãi 30% ", k4);
+            listDiscountPercent.Add("Năm 2018", k1);
+            listDiscountPercent.Add("Năm 2019 ", k2);
+            listDiscountPercent.Add("Năm 2020", k3);
 
             List<ChartModel.ChartModel.DataPoint> dataPoints1 = new List<ChartModel.ChartModel.DataPoint>();
 

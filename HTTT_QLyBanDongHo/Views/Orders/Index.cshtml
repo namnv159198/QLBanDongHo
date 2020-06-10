@@ -38,7 +38,7 @@
 
                         <input type="hidden" name="start" value="" />
                         <input type="hidden" name="end" value="" />
-                        <input type="hidden" name="start" value="" />
+                        <input type="hidden" name="sortOrder" value="" />
 
                         <div class="row card-body">
 
@@ -54,18 +54,18 @@
                             <div class="col-sm-3">
                                 <label class="text-uppercase"> Lọc theo trạng thái</label>
 
-                                @Html.DropDownList("Status", (IEnumerable<SelectListItem>)ViewBag.StatusList,"Chọn", new { @class = "form-control" })
+                                @Html.DropDownList("OrdersStatus", (IEnumerable<SelectListItem>)ViewBag.StatusList, "Chọn", new { @class = "form-control" })
                             </div>
                             <div class="col-sm-1">
                                 <label class="text-uppercase"> Show  </label>
                                 @Html.DropDownList("pageSize", null, null, new { @class = "form-control", style = "width: 70px;" })
                             </div>
                             <div class="col-sm-2 mt-3">
-                                <label class="text-uppercase"> Giá từ</label><input class="form-control" type="number" name="minPrice" value="" />
+                                <label class="text-uppercase"> Giá từ </label><input class="form-control" type="number" name="minPrice" value="" placeholder=".. .000.000" />
                             </div>
                             <div class="col-sm-2 mt-3">
                                 <label class="text-uppercase"> Đến </label>
-                                <input class="form-control" type="number" name="maxPrice" value="" />
+                                <input class="form-control" type="number" name="maxPrice" value="" placeholder=".. .000.000" />
                             </div>
 
                             <div class="col-sm-2 ">
@@ -83,49 +83,7 @@
                         </div>
                     }
 
-                    @if (Model.Count() != 0)
-                    {
-
-                        <div class="row card-body">
-                            <div class="col-sm-4">
-                                <button type="button" id="delete" value="delete" data-toggle="modal" data-target="#myModal_delete" class="btn btn-sm btn-danger rounded-0"><i class="fa fa-trash-o"></i>&nbsp; Xóa</button>
-                                <div class="modal" id="myModal_delete">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!-- Modal Header -->
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Message</h4>
-
-                                            </div>
-
-                                            <!-- Modal body -->
-                                            <div class="modal-body">
-                                                <span>Bạn có chắc muốn xóa ?</span>
-                                            </div>
-
-                                            <!-- Modal footer -->
-                                            <div class="modal-footer">
-                                                <!-- Cỏntroller -->
-                                                @using (Html.BeginForm("CheckList", "products"))
-                                                {
-                                                    <input type="hidden" name="ListCategoryIDs" value="" />
-                                                    <input type="submit" value="Delete" class="btn btn-default btn-danger" />
-                                                    <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
-
-                                                }
-
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    }
+                   
                     @if (!Model.Any())
                     {
                         <div style="font-style: italic; text-align: center; font-size: 1.2em;">
@@ -145,14 +103,16 @@
                                         </th>
                                     }
                                     <th>
+                                        Ngày đặt
+                                        <i class="fa fa-arrow-down iconSort" name="date-desc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconDown"></i>
+                                        <i class="fa fa-arrow-up iconSort" name="date-asc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconUp"></i>
+                                    </th>
+                                    <th>
                                         Tên KH
-
                                         <i class="fa fa-arrow-down iconSort" name="name-desc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconDown"></i>
                                         <i class="fa fa-arrow-up iconSort" name="name-asc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconUp"></i>
                                     </th>
-                                    <th>
-                                        Email
-                                    </th>
+
                                     <th>
                                         Địa chỉ
                                     </th>
@@ -160,7 +120,14 @@
                                         SĐT
                                     </th>
                                     <th>
+                                        Số lượng
+                                        <i class="fa fa-arrow-down iconSort" name="quantity-desc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconDown"></i>
+                                        <i class="fa fa-arrow-up iconSort" name="quantity-asc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconUp"></i>
+                                    </th>
+                                    <th>
                                         Tổng Tiền
+                                        <i class="fa fa-arrow-down iconSort" name="price-desc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconDown"></i>
+                                        <i class="fa fa-arrow-up iconSort" name="price-asc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconUp"></i>
                                     </th>
                                     <th>
                                         Thanh toán
@@ -177,15 +144,16 @@
                                 @foreach (var item in Model)
                                 {
                                 <tr class="text-center">
+
                                     <td>
                                         <input type="checkbox" class="checkBox"
                                                value="@item.ID" />
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Customer.Name)
+                                        @Html.DisplayFor(modelItem => item.Create_At)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Customer.Email)
+                                        @Html.DisplayFor(modelItem => item.Customer.Name)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Customer.Address)
@@ -193,15 +161,20 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Customer.Phonenumber)
                                     </td>
-
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Total_Price)
+                                        @Html.DisplayFor(modelItem => item.Total_Quantity)
+                                    </td>
+                                    <td>
+                                        @{
+                                            var p = (double)item.Total_Price;
+                                        }
+                                        @p.ToString("#,##0").Replace(',', '.') VNĐ
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.PaymentType.Type)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.OrderStatus.Status)
+                                        @Html.DisplayFor(modelItem => item.OrderStatus.Status, new { @class = "text-warning" })
                                     </td>
                                     <td>
                                         <a href="@Url.Action("Edit", "Orders", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
@@ -258,16 +231,16 @@
         var initMaxPrice = url.searchParams.get("maxPrice");
 
         if (initMinPrice != null) {
-            $('input[name="minPrice"]').val(initMinPrice);
+            $('input[name="minPrice"]').val(@ViewBag.minPrice);
         }
         if (initMaxPrice != null) {
-            $('input[name="maxPrice"]').val(initMaxPrice);
+            $('input[name="maxPrice"]').val(@ViewBag.maxPrice);
         }
         $('select[name="pageSize"]').change(function () {
             $('form[name="search-form"]').submit();
         });
        
-        $('select[name="Status"]').change(function () {
+        $('select[name="OrdersStatus"]').change(function () {
             $('form[name="search-form"]').submit();
         });
         $('body').on("click", "i.iconSort", function () {

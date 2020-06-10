@@ -3,6 +3,7 @@
     ViewBag.Title = "Index";
     var k = 0;
     var h = 0;
+    var o = 0;
     Layout = "~/Views/Shared_Admin/_Layout.cshtml";
 }
 
@@ -44,6 +45,50 @@
                                                     <td>@i.label</td>
                                                     <td>@i.y</td>
                                                 </tr>
+                                                o = (int)(o + i.y);
+
+                                            }
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Tổng số lượng </th>
+                                                <th>@o </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <div class="col-2">
+                                    Chart Type:
+                                    <select id="chartType1" class="form-control" name="Chart Type">
+                                        <option value="line">Line</option>
+                                        <option value="column">Column</option>
+                                        <option value="bar">Bar</option>
+                                        <option value="pie">Pie</option>
+                                        <option value="doughnut">Doughnut</option>
+                                    </select>
+                                </div>
+                                <div id="chartContainer1" class="col-lg-6" style="height: 370px; width: 100%;"></div>
+                                <div class="col-lg-4">
+                                    <h4>Bảng dữ liệu thống kê số lượng khách mua hàng từng năm</h4>
+                                    <table class="table table-bordered mt-5">
+                                        <thead>
+                                            <tr>
+                                                <th>Thống kê</th>
+                                                <th>Số lượng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var i in Model.ModelData1)
+                                            {
+                                                <tr>
+                                                    <td>@i.label</td>
+                                                    <td>@i.y</td>
+                                                </tr>
                                                 k = (int)(k + i.y);
 
                                             }
@@ -58,46 +103,7 @@
                                     </table>
                                 </div>
                                 <br />
-
-                                <div class="col-lg-4 mt-5">
-                                    <h4 class="mt-5">Bảng dữ liệu thống kê giới tính khách hàng</h4>
-                                    <table class="table table-bordered mt-5">
-                                        <thead>
-                                            <tr>
-                                                <th>Thống kế</th>
-                                                <th>Số lượng</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var i in Model.ModelData2)
-                                            {
-                                                <tr>
-                                                    <td>@i.gender</td>
-                                                    <td>@i.z</td>
-                                                </tr>
-                                                h = (int)(h + i.z);
-                                            }
-
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Tổng số lượng </th>
-                                                <th>@h </th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                                <div id="chartContainer2" class="col-lg-6 mt-5" style="height: 370px; width: 50%;"></div>
-                                <div class="col-2">
-                                    Chart Type:
-                                    <select id="chartType2" class="form-control" name="Chart Type">
-                                        <option value="line">Line</option>
-                                        <option value="column">Column</option>
-                                        <option value="bar">Bar</option>
-                                        <option value="pie">Pie</option>
-                                        <option value="doughnut">Doughnut</option>
-                                    </select>
-                                </div>
+                                
                             </div>
 
                         </div>
@@ -142,42 +148,45 @@
             }]
         });
         chart.render();
-
-        var chart2 = new CanvasJS.Chart("chartContainer2", {
+        var chart1 = new CanvasJS.Chart("chartContainer1", {
             theme: "light2",
             animationEnabled: true,
             exportEnabled: true,
             title: {
-                text: "Thống kê giới tính khách hàng ",
-                margin: 10,
-               
+                text: "Thống kê số lượng  khách hàng mua từng năm"
             },
 
             axisY: {
                 title: "Số lượng",
-                gridThickness: 0,
-               
+                gridThickness: 0
             },
 
+            axisX: {
+                title: "Number of Nobel Prizes",
+                gridThickness: "{label}"
+            },
             data: [{
                 type: "pie",
                 toolTipContent: "<b>{label}:</b> {y} (#percent%)",
                 indexLabel: "{y}",
                 showInLegend: true,
                 legendText: "{label}",
-                dataPoints: @Html.Raw(ViewBag.DataPoints2)
+                dataPoints: @Html.Raw(ViewBag.DataPoints1)
             }]
         });
-        chart2.render();
+        chart1.render();
+
+        
         var chartType = document.getElementById('chartType');
         chartType.addEventListener( "change",  function(){
             chart.options.data[0].type = chartType.options[chartType.selectedIndex].value;
             chart.render();
         });
-        var chartType2 = document.getElementById('chartType2');
-        chartType2.addEventListener( "change",  function(){
-            chart2.options.data[0].type = chartType2.options[chartType2.selectedIndex].value;
-            chart2.render();
+       
+        var chartType1 = document.getElementById('chartType1');
+        chartType1.addEventListener( "change",  function(){
+            chart1.options.data[0].type = chartType1.options[chartType1.selectedIndex].value;
+            chart1.render();
         });
     }
 

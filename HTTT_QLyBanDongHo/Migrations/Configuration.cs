@@ -18,6 +18,7 @@ namespace HTTT_QLyBanDongHo.Migrations
         {
             return y - ((y * x) / 100);
         }
+
         protected override void Seed(HTTT_QLyBanDongHo.Models.QLBanDongHoDBContext context)
         {
             //  This method will be called after migrating to the latest version.
@@ -66,91 +67,92 @@ namespace HTTT_QLyBanDongHo.Migrations
 
             // // // ---------------------------------- Seeding Product  ---------------------------------- //
 
-            // Random random = new Random();
+            //     Random random = new Random();
+            //     int[] RandomDate =
+            //     {
+            //         0, -1, -2, -3, -7, -14, -30, -60, -180, -365, -400, -287, -700
+            //     };
+            //
             //
             // string[] RandomNameWatch =
-            // {
-            //     "Apple", "Rolex", "Casio", "Movado", "Orient", "Orient", "SEIKO", "Tissot", "Omega",
-            //     "SKAGEN", "Fossil","Kors","Ogival","Daniel Wellington","Anne Klein"
-            // };
-            // double[] RandomPrice =
-            // {
-            //     3110000,823000,3950000,6260000,823000,588000,658000,
-            //     3700000,8360000,10390000,
-            // };
-            // string[] RandomStatusProduct =
-            // {
-            //     "Kích hoạt","Chưa kích hoạt"
-            // };
-            // char randomChar = (char)random.Next('A', 'Z');
-            // string[] RandomImage =
-            // {
-            //     "image/upload/v1591626262/91_DW00100224-1-399x399_rjbjx4",
-            //     "image/upload/v1591626299/26_A3414.41B3Q-399x399_smlzkl",
-            //     "image/upload/v1591626262/91_DW00100224-1-399x399_rjbjx4",
-            //     "image/upload/v1591626037/112_SFQ810P1-399x399_kx7sht",
-            //     "image/upload/v1591625841/58_NH7524-55A-399x399_pi2kya",
-            //     "image/upload/v1591625812/65_NJ0110-18L-399x399_kawdwq",
-            //     "image/upload/v1591625780/BM6982-11H-399x399_h8cib1",
-            //     "image/upload/v1591624880/129_BH3000-09A-399x399_qfcl5h",
-            //     "image/upload/v1591515646/764709761__C4_90_E1_BB_92NG-H_E1_BB_92-CH_C4_A8NH-H_C3_83NG-7_hiri9d",
-            //     "image/upload/v1591625907/119_AU1080-20A-399x399_nn6jtk",
-            //     "image/upload/v1591625884/174_ES4313-1-399x399_gwezhg",
-            //     "image/upload/v1591625789/221_BM7300-50A-399x399_ryc18o",
-            //     "image/upload/v1591625800/164_NH8363-14X-399x399_arsxk1",
-            //     "image/upload/v1591621926/120_DW00100245-2-699x699_r4ujvf",
-            //     "image/upload/v1591427805/71-jqN9w12L._AC_UL1500__cftizd",
-            //     "image/upload/v1591626362/79_FS5452-399x399_ej8cyo",
-            //     "image/upload/v1591629120/K3M22T26-399x399_sjm5kf",
-            //     "image/upload/v1591629143/54_K5S341CZ-399x399_vearmq",
-            //     "image/upload/v1591629169/16_K4E2N111-399x399_eocvim",
-            //     "image/upload/v1591626342/22_ES3268-399x399_hqcamd",
-            //     "image/upload/v1591629143/54_K5S341CZ-399x399_vearmq",
-            //     "image/upload/v1591626176/K3M22T26-399x399_cntoue",
-            //     "image/upload/v1591629365/61O5Ob8g8sL._AC_UX522__oyu50a",
-            //     "image/upload/v1591629363/rolex-watch-126233-30_vr2vbg",
-            //     "image/upload/v1591629403/Rolex_1ct_blue_1_2_b970451f-0987-44fb-aeab-341b4f6dd40b_1024x1024_pxflex",
-            //     "image/upload/v1591629439/M228238-0042_upright_desk_meif6l",
-            //     "image/upload/v1591629477/116710BLNR_rxbcty",
-            //     "image/upload/v1591629517/989171832_o_uylger",
-            //     "image/upload/v1591629556/rolex_ksszv3",
-            //     "image/upload/v1591629598/watch_os_intelligence_one_carousel.jpg.large_a3kwqj",
-            //     "image/upload/v1591629639/bmw-i-remote-apple-watch-4.jpg_fflng7",
-            // };
-            //
-          
-            //
-            // for (int i = 1; i <= 500; i++)
-            // {
-            //     int indexName = random.Next(0, RandomNameWatch.Length);
-            //     int indexThumbnails = random.Next(RandomImage.Length);
-            //     int indexDate = random.Next(RandomDate.Length);
-            //     int indexStatusProduct = random.Next(RandomStatusProduct.Length);
-            //     var p = new Product()
             //     {
-            //         Name = RandomNameWatch[indexName] + " " + (char) random.Next('A', 'Z') + " "
-            //                + (char) random.Next('A', 'Z') + random.Next(1000, 9000) + "-" + random.Next(0, 1000) + " " +
-            //                (char) random.Next('A', 'Z'),
-            //         isBestSeller = random.Next(0, 2),
-            //         isSpecial = random.Next(0, 2),
-            //         isNew = random.Next(0, 2),
-            //         CreateAt = DateTime.Now.AddDays(RandomDate[indexDate]),
-            //         Status = RandomStatusProduct[indexStatusProduct],
-            //         ManufactureID = random.Next(1,11),
-            //         CategoryID = random.Next(1,3),
-            //         Price = random.Next(5,500)*100000,
-            //         Discount = (random.Next(0,4))*10,
-            //         Thumbnails = RandomImage[indexThumbnails]
+            //         "Apple", "Rolex", "Casio", "Movado", "Orient", "Orient", "SEIKO", "Tissot", "Omega",
+            //         "SKAGEN", "Fossil","Kors","Ogival","Daniel Wellington","Anne Klein"
             //     };
-            //     p.Description = "Mẫu " + p.Name +
-            //                     "với một vẻ ngoài dành cho những ai yêu thích vẻ hoài cổ với kiểu dáng mặt số vuông truyền thống, chi tiết chữ số được viết theo dạng chữ la mã kết hợp cùng mẫu dây đeo da đen có vân cổ điển lịch lãm.";
-            //     p.AfterPrice = + p.Price*0.5 + p.Price;
-            //
-            //     p.AfterPrice = p.AfterPrice - ((p.AfterPrice * p.Discount) / 100);
-            //
-            //
-            //     context.Products.AddOrUpdate(p);
-            // }
+            //     
+            //     string[] RandomStatusProduct =
+            //     {
+            //         "Kích hoạt","Chưa kích hoạt"
+            //     };
+            //     char randomChar = (char)random.Next('A', 'Z');
+            //     string[] RandomImage =
+            //     {
+            //         "image/upload/v1591626262/91_DW00100224-1-399x399_rjbjx4",
+            //         "image/upload/v1591626299/26_A3414.41B3Q-399x399_smlzkl",
+            //         "image/upload/v1591626262/91_DW00100224-1-399x399_rjbjx4",
+            //         "image/upload/v1591626037/112_SFQ810P1-399x399_kx7sht",
+            //         "image/upload/v1591625841/58_NH7524-55A-399x399_pi2kya",
+            //         "image/upload/v1591625812/65_NJ0110-18L-399x399_kawdwq",
+            //         "image/upload/v1591625780/BM6982-11H-399x399_h8cib1",
+            //         "image/upload/v1591624880/129_BH3000-09A-399x399_qfcl5h",
+            //         "image/upload/v1591515646/764709761__C4_90_E1_BB_92NG-H_E1_BB_92-CH_C4_A8NH-H_C3_83NG-7_hiri9d",
+            //         "image/upload/v1591625907/119_AU1080-20A-399x399_nn6jtk",
+            //         "image/upload/v1591625884/174_ES4313-1-399x399_gwezhg",
+            //         "image/upload/v1591625789/221_BM7300-50A-399x399_ryc18o",
+            //         "image/upload/v1591625800/164_NH8363-14X-399x399_arsxk1",
+            //         "image/upload/v1591621926/120_DW00100245-2-699x699_r4ujvf",
+            //         "image/upload/v1591427805/71-jqN9w12L._AC_UL1500__cftizd",
+            //         "image/upload/v1591626362/79_FS5452-399x399_ej8cyo",
+            //         "image/upload/v1591629120/K3M22T26-399x399_sjm5kf",
+            //         "image/upload/v1591629143/54_K5S341CZ-399x399_vearmq",
+            //         "image/upload/v1591629169/16_K4E2N111-399x399_eocvim",
+            //         "image/upload/v1591626342/22_ES3268-399x399_hqcamd",
+            //         "image/upload/v1591629143/54_K5S341CZ-399x399_vearmq",
+            //         "image/upload/v1591626176/K3M22T26-399x399_cntoue",
+            //         "image/upload/v1591629365/61O5Ob8g8sL._AC_UX522__oyu50a",
+            //         "image/upload/v1591629363/rolex-watch-126233-30_vr2vbg",
+            //         "image/upload/v1591629403/Rolex_1ct_blue_1_2_b970451f-0987-44fb-aeab-341b4f6dd40b_1024x1024_pxflex",
+            //         "image/upload/v1591629439/M228238-0042_upright_desk_meif6l",
+            //         "image/upload/v1591629477/116710BLNR_rxbcty",
+            //         "image/upload/v1591629517/989171832_o_uylger",
+            //         "image/upload/v1591629556/rolex_ksszv3",
+            //         "image/upload/v1591629598/watch_os_intelligence_one_carousel.jpg.large_a3kwqj",
+            //         "image/upload/v1591629639/bmw-i-remote-apple-watch-4.jpg_fflng7",
+            //     };
+            //     
+            //   
+            //     
+            //     for (int i = 1; i <= 400; i++)
+            //     {
+            //         int indexName = random.Next(0, RandomNameWatch.Length);
+            //         int indexThumbnails = random.Next(RandomImage.Length);
+            //         int indexDate = random.Next(RandomDate.Length);
+            //         int indexStatusProduct = random.Next(RandomStatusProduct.Length);
+            //         var p = new Product()
+            //         {
+            //             Name = RandomNameWatch[indexName] + " " + (char) random.Next('A', 'Z') + " "
+            //                    + (char) random.Next('A', 'Z') + random.Next(1000, 9000) + "-" + random.Next(0, 1000) + " " +
+            //                    (char) random.Next('A', 'Z'),
+            //             isBestSeller = random.Next(0, 2),
+            //             isSpecial = random.Next(0, 2),
+            //             isNew = random.Next(0, 2),
+            //             CreateAt = DateTime.Now.AddDays(RandomDate[indexDate]),
+            //             Status = RandomStatusProduct[indexStatusProduct],
+            //             ManufactureID = random.Next(1,11),
+            //             CategoryID = random.Next(1,3),
+            //             Price = random.Next(5,150)*100000,
+            //             Discount = (random.Next(0,4))*10,
+            //             Thumbnails = RandomImage[indexThumbnails]
+            //         };
+            //         p.Description = "Mẫu " + p.Name +
+            //                         "với một vẻ ngoài dành cho những ai yêu thích vẻ hoài cổ với kiểu dáng mặt số vuông truyền thống, chi tiết chữ số được viết theo dạng chữ la mã kết hợp cùng mẫu dây đeo da đen có vân cổ điển lịch lãm.";
+            //         p.AfterPrice = + p.Price*0.5 + p.Price;
+            //     
+            //         p.AfterPrice = p.AfterPrice - ((p.AfterPrice * p.Discount) / 100);
+            //     
+            //     
+            //         context.Products.AddOrUpdate(p);
+            //     }
 
             // context.Products.AddOrUpdate(
             //     new Product()
@@ -204,18 +206,20 @@ namespace HTTT_QLyBanDongHo.Migrations
             //     "California", "Florida", "New Jersey", "Indiana","Georgia","Ohio","Mississippi","Illinois","Alabama","Maine",
             //     "Missouri","Michigan","Minnesota","Oregon","Abu Dhabi","Ajman","Dubai","Fujairah","	Ras Al Khaimah","Sharjah",
             //     "Umm Al Quwain","Fukushima","Hiroshima","Hokkaido","Ishikawa","Kanagawa","Kyoto","Nagasaki","Okayama","Yamagata",
-            //     "Hakodate","Amur","Khabarovsk","Magadan"
+            //     "Hakodate","Amur","Khabarovsk","Magadan","New york","Kyoto","Seoul","Manchester","London","Marid","Osaka","Moscow","Berlin",
+            //     "Ha Noi","TP HCM","Da Nang"
             // };
             //     int[] RandomDate =
             //     {
-            //     0 , -1,-2,-3,-7,-14,-30,-60,-180,-365,-400,-287,-700,-1232,-1567,-2000,-20332
-            // };
+            //         0, -1, -2, -3, -7, -14, -30, -60, -180, -365, -400, -287, -700 , -800 , -30*2, -30*3,-30*4,-30*6,-600,-888
+            //     };
+            //     
             //     DateTime start = new DateTime(1950, 1, 1);
             //     DateTime end = new DateTime(2005, 1, 1);
             //
             //
             //
-            //     for (int i = 1; i <= 100; i++)
+            //     for (int i = 1; i <= 1000; i++)
             //     {
             //         int indexName = random.Next(0, RandomNames.Length);
             //         int indexLastName = random.Next(0, RandomLastName.Length);
@@ -234,7 +238,7 @@ namespace HTTT_QLyBanDongHo.Migrations
             //             Gender = RandomGender[indexGender],
             //             Email = RandomLastName[indexLastName]+RandomNames[indexName] +random.Next(10,1000)+ "@gmail.com",
             //             YearOld = DateTime.Now.Year - start.AddDays(random.Next(range)).Year,
-            //             CreateAt = DateTime.Now.AddYears(random.Next(-3,0)).AddDays(random.Next(-100,10)).AddHours(random.Next(0, 24)).AddMinutes(random.Next(2000, 5000)),
+            //             CreateAt = DateTime.Now.AddDays(RandomDate[indexDate]),
             //             CustomerTypeID = random.Next(1, 5),
             //         };
             //         context.Customers.AddOrUpdate(cus);
@@ -242,50 +246,52 @@ namespace HTTT_QLyBanDongHo.Migrations
             // }
 
             // // // ---------------------------------- Seeding Order  ---------------------------------- //
-            //  Random random = new Random();
-            //  int[] RandomDate =
-            //  {
-            //      0 , -1,-2,-3,-7,-14,-30,-60,-180,-365,-365*2,-365*3
-            //  };
-            // var ListCustomer = context.Customers.ToList();
-            // var listProduct = context.Products.ToList();
-            // var listOrderStatus = context.OrderStatus.ToList();
-            // var listPaymentType = context.PaymentTypes.ToList();
-            // for (int i = 1; i <= 10; i++)
-            // {
-            //     int indexDate = random.Next(RandomDate.Length);
-            //     int c = random.Next(0, ListCustomer.Count);
-            //     int os = random.Next(0, listOrderStatus.Count);
-            //     int pt = random.Next(0, listPaymentType.Count);
-            //     var order = new Order()
-            //     {
-            //         ID = "Order" + i,
-            //         Create_At = DateTime.Now.AddDays(RandomDate[indexDate]).AddHours(random.Next(0, 10))
-            //             .AddMinutes(random.Next(100, 300)),
-            //         OrderStatusID = listOrderStatus[os].ID,
-            //         CustomerID = ListCustomer[c].ID,
-            //         PaymentTypeID = listPaymentType[pt].PaymentTypeID,
-            //         Total_Price = 0,
-            //         Total_Quantity = 0
-            //     };
-            //     for (int j = 1; j <= random.Next(1,2); j++)
-            //     {
-            //         int p = random.Next(listProduct.Count);
-            //         int qr = random.Next(1,3);
-            //         var orderDetails = new OrderDetail()
-            //         {
-            //             OrderID = order.ID,
-            //             ProductID = listProduct[p].ID,
-            //             Quantity = qr,
-            //             UnitPrice = listProduct[p].AfterPrice
-            //         };
-            //         order.AddOrderDetails(orderDetails);
-            //         context.OrderDetails.Add(orderDetails);
-            //     }
-            //
-            //     order.Discount = 0;
-            //     context.Orders.AddOrUpdate(order);
-            // }
+             Random random = new Random();
+             int[] RandomDate =
+             {
+                 0 , -1,-2,-3,-7,-14,-30,-60,-180,-365,-365*2,-365*3
+             };
+             int[] RandomDateNow =
+             {
+                 0 , -1,-2,-3,-7,-14,-30,-60,-180
+             };
+            var ListCustomer = context.Customers.ToList();
+            var listProduct = context.Products.ToList();
+            var listOrderStatus = context.OrderStatus.ToList();
+            var listPaymentType = context.PaymentTypes.ToList();
+            for (int i = 1; i <= 1000; i++)
+            {
+                int indexDate = random.Next(RandomDateNow.Length);
+                int c = random.Next(0, ListCustomer.Count);
+                int os = random.Next(0, listOrderStatus.Count);
+                int pt = random.Next(0, listPaymentType.Count);
+                var order = new Order()
+                {
+                    ID = "Order" + i+ DateTime.Now.Millisecond+DateTime.Now.Year,
+                    Create_At = DateTime.Now.AddDays(RandomDateNow[indexDate]).AddMinutes(random.Next(-300,-100)),
+                    OrderStatusID = listOrderStatus[os].ID,
+                    CustomerID = ListCustomer[c].ID,
+                    PaymentTypeID = listPaymentType[pt].PaymentTypeID,
+                    Total_Price = 0,
+                    Total_Quantity = 0
+                };
+                for (int j = 1; j <= random.Next(1,2); j++)
+                {
+                    int p = random.Next(listProduct.Count);
+                    var orderDetails = new OrderDetail()
+                    {
+                        OrderID = order.ID,
+                        ProductID = listProduct[p].ID,
+                        Quantity = 1,
+                        UnitPrice = listProduct[p].AfterPrice
+                    };
+                    order.AddOrderDetails(orderDetails);
+                    context.OrderDetails.Add(orderDetails);
+                }
+            
+                order.Discount = 0;
+                context.Orders.AddOrUpdate(order);
+            }
         }
     }
 }

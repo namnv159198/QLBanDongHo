@@ -5,71 +5,122 @@
     Layout = "~/Views/Shared_Admin/_Layout.cshtml";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Order</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Customer.Name)
-        </dt>
+<div class="content">
+<div class="animated fadeIn">
+    <div class="row">
 
-        <dd>
-            @Html.DisplayFor(model => model.Customer.Name)
-        </dd>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title">Chi tiết hóa đơn : ID @Model.ID </strong>
+                </div>
+                <div class="card-body">
+                    <button type="button" class="btn  bg-primary text-light">
+                        <i class="fa fa-arrow-left"></i>
+                        @Html.ActionLink("Quay lại", "Index", null, new { @style = "color:white;" })
+                    </button>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderStatus.Status)
-        </dt>
+                    <hr />
 
-        <dd>
-            @Html.DisplayFor(model => model.OrderStatus.Status)
-        </dd>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td width="30%"> Tên khách hàng </td>
+                            <td> @Html.DisplayFor(model => model.Customer.Name)</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"> Tên số điện thoại </td>
+                            <td> @Html.DisplayFor(model => model.Customer.Phonenumber)</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"> Địa chỉ </td>
+                            <td> @Html.DisplayFor(model => model.Customer.Address)</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"> Email </td>
+                            <td> @Html.DisplayFor(model => model.Customer.Email)</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"> Tổng số sản phẩm </td>
+                            <td> @Html.DisplayFor(model => model.Total_Quantity)</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"> Tổng số tiền </td>
+                            <td>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Total_Quantity)
-        </dt>
+                                @{
+                                    var p = (double)Model.Total_Price;
+                                }
+                                @p.ToString("#,##0").Replace(',', '.') VNĐ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="30%"> Đặt lúc </td>
+                            <td> @Html.DisplayFor(model => model.Create_At)</td>
+                        </tr>
+                        <tr>
+                            <td width="30%"> Trạng thái</td>
+                            <td> @Html.DisplayFor(model => model.OrderStatus.Status)</td>
+                        </tr>
+                    </table>
 
-        <dd>
-            @Html.DisplayFor(model => model.Total_Quantity)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Total_Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Total_Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Payment_Type)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Payment_Type)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Discount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Discount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Create_At)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Create_At)
-        </dd>
-
-    </dl>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Mã sản phẩm </th>
+                                <th>Tên sản phẩm</th>
+                                <th>Ảnh</th>
+                                <th>Số lượng</th>
+                                <th>Giá </th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderDetails)
+                            {
+                                <tr>
+                                    <td>@item.ProductID</td>
+                                    <td>@item.Product.Name</td>
+                                    <td>
+                                        <img src="@item.GetDefaultThumbnails()" alt="Thumbnail" class="img-thumbnail" width="100" height="100" />
+                                    </td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.UnitPrice</td>
+                                    <td>
+                                        @{
+                                            var TotalPrice = String.Format("{0:N0}", item.UnitPrice * item.Quantity);
+                                        }
+                                        @TotalPrice VNĐ
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>Tổng tiền</th>
+                                <th></th>
+                                <th>
+                                    @{
+                                        var temp = Model.OrderDetails;
+                                        var total = String.Format("{0:N0}", temp.Sum(x => x.UnitPrice * x.Quantity));
+                                    }
+                                    @total VNĐ
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <button type="button" class="btn  bg-primary text-light">
+                        @Html.ActionLink("Sửa đơn hàng", "Edit", new { id = Model.ID }, new { @style = "color:white;" })
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+</div>
+
+
+
