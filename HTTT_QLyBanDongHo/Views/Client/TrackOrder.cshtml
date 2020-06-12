@@ -1,0 +1,238 @@
+﻿@model T1809E_Project_Sem3.Models.Order
+@{
+    ViewBag.Title = "TrackOrder";
+    Layout = "~/Views/Shared_Client/_Layout.cshtml";
+}
+
+<div class="breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-inner">
+            <ul class="list-inline list-unstyled">
+                <li><a href="home.html">Home</a></li>
+                <li class='active'>Track your orders</li>
+            </ul>
+        </div><!-- /.breadcrumb-inner -->
+    </div><!-- /.container -->
+</div><!-- /.breadcrumb -->
+@if ((string)TempData["status"] == "fail")
+{
+    <h1 style="text-align:center; font-style:italic">No Result Found!! Please Retry Again.</h1>
+}
+else if ((string)TempData["status"] == "success")
+{
+    <div class="body-content outer-top-xs">
+        <div class="container">
+            <div>
+                <div class="shopping-cart">
+                    <div class="shopping-cart-table ">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="cart-description item">Order ID</th>
+                                        <th class="cart-product-name item">Customer Name</th>
+                                        <th class="cart-sub-total item">Address</th>
+                                        <th class="cart-sub-total item">Phone Number</th>
+                                        <th class="cart-qty item">Email</th>
+                                        <th class="cart-sub-total item">Status</th>
+                                        <th class="cart-romove item">Total Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>@Html.DisplayFor(model => model.Id)</th>
+                                        <th>@Html.DisplayFor(model => model.CustomerName)</th>
+                                        <th>@Html.DisplayFor(model => model.Address)</th>
+                                        <th>@Html.DisplayFor(model => model.Phone)</th>
+                                        <th>@Html.DisplayFor(model => model.Email)</th>
+                                        <th>@Html.DisplayFor(model => model.Status)</th>
+                                        <th>@Html.DisplayFor(model => model.TotalPrice)</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="body-content outer-top-xs">
+        <div class="container">
+            <div>
+                <div class="shopping-cart">
+                    <div class="shopping-cart-table ">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="cart-product-name item">Product Name</th>
+                                        <th class="cart-qty item">Quantity</th>
+                                        <th class="cart-sub-total item">Price</th>
+                                        <th class="cart-sub-total item">Unit Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderDetails)
+                                    {
+                                        <tr>
+                                            
+                                            <td class="cart-product-name item">@item.Product.Name</td>
+                                            <td class="cart-product-edit">@item.Quantity</td>
+                                            <td class="cart-product-sub-total"><span class="cart-sub-total-price">@item.Product.Price</span></td>
+                                            <td class="cart-product-sub-total">
+                                                <span class="cart-sub-total-price">
+                                                    @{
+                                                        var TotalPrice = String.Format("{0:N0}", item.Product.Price * item.Quantity);
+                                                    }
+                                                    @TotalPrice $
+                                                </span>
+                                                
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Total Price</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th >
+                                                @{
+                                                    var temp = Model.OrderDetails;
+                                                    var total = String.Format("{0:N0}", temp.Sum(x => x.Product.Price * x.Quantity));
+                                                }
+                                                @total $
+                                            
+                                           
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="body-content">
+    <div class="container">
+        <div class="track-order-page">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="heading-title">Track your Order</h2>
+                    <span class="title-tag inner-top-ss">Please enter your Order ID in the box below and press Enter. This was given to you on your receipt and in the confirmation email you should have received. </span>
+                    @using (Html.BeginForm("TrackOrder", "Client", FormMethod.Get, new { @class = "register-form outer-top-xs" }))
+                    {
+                        <div class="form-group">
+                            <label class="info-title" for="exampleOrderId1">Order ID</label>
+                            <input type="text" class="form-control unicase-form-control text-input" id="OrderId" name="OrderId">
+                        </div>
+                        <div class="form-group">
+                            <label class="info-title" for="exampleBillingEmail1">Billing Email</label>
+                            <input type="email" class="form-control unicase-form-control text-input" id="OrderEmail" name="OrderEmail">
+                        </div>
+                        <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Track</button>
+                    }
+
+                </div>
+            </div><!-- /.row -->
+        </div><!-- /.sigin-in-->
+        <!-- ============================================== BRANDS CAROUSEL ============================================== -->
+        <div id="brands-carousel" class="logo-slider wow fadeInUp">
+
+            <div class="logo-slider-inner">
+                <div id="brand-slider" class="owl-carousel brand-slider custom-carousel owl-theme">
+                    <div class="item">
+                        <a href="#" class="image">
+                            <img data-echo="assets/images/brands/brand1.png" src="assets/images/blank.gif" alt="">
+                        </a>
+                    </div><!--/.item-->
+
+                    <div class="item">
+                        <a href="#" class="image">
+                            <img data-echo="assets/images/brands/brand2.png" src="assets/images/blank.gif" alt="">
+                        </a>
+                    </div><!--/.item-->
+
+                    <div class="item">
+                        <a href="#" class="image">
+                            <img data-echo="assets/images/brands/brand3.png" src="assets/images/blank.gif" alt="">
+                        </a>
+                    </div><!--/.item-->
+
+                    <div class="item">
+                        <a href="#" class="image">
+                            <img data-echo="assets/images/brands/brand4.png" src="assets/images/blank.gif" alt="">
+                        </a>
+                    </div><!--/.item-->
+
+                    <div class="item">
+                        <a href="#" class="image">
+                            <img data-echo="assets/images/brands/brand5.png" src="assets/images/blank.gif" alt="">
+                        </a>
+                    </div><!--/.item-->
+
+                    <div class="item">
+                        <a href="#" class="image">
+                            <img data-echo="assets/images/brands/brand6.png" src="assets/images/blank.gif" alt="">
+                        </a>
+                    </div><!--/.item-->
+
+                    <div class="item">
+                        <a href="#" class="image">
+                            <img data-echo="assets/images/brands/brand2.png" src="assets/images/blank.gif" alt="">
+                        </a>
+                    </div><!--/.item-->
+
+                    <div class="item">
+                        <a href="#" class="image">
+                            <img data-echo="assets/images/brands/brand4.png" src="assets/images/blank.gif" alt="">
+                        </a>
+                    </div><!--/.item-->
+
+                    <div class="item">
+                        <a href="#" class="image">
+                            <img data-echo="assets/images/brands/brand1.png" src="assets/images/blank.gif" alt="">
+                        </a>
+                    </div><!--/.item-->
+
+                    <div class="item">
+                        <a href="#" class="image">
+                            <img data-echo="assets/images/brands/brand5.png" src="assets/images/blank.gif" alt="">
+                        </a>
+                    </div><!--/.item-->
+                </div><!-- /.owl-carousel #logo-slider -->
+            </div><!-- /.logo-slider-inner -->
+
+        </div><!-- /.logo-slider -->
+        <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->
+    </div><!-- /.container -->
+</div><!-- /.body-content -->
+<section class="bottom-section">
+    <div class="container">
+        <!-- ============================================== NEWSLETTER ============================================== -->
+        <div class="newsletter wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <h3>Sign up to <strong>Newsletter</strong></h3>
+                    <div class="sidebar-widget-body">
+                        <p>Get <strong>40% Off</strong> on selected items!</p>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Subscribe to our newsletter">  <button class="btn btn-primary">Subscribe</button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- /.sidebar-widget-body -->
+    </div>
+    <!-- /.sidebar-widget -->
+    <!-- ============================================== NEWSLETTER: END ============================================== -->
+
+</section>
+

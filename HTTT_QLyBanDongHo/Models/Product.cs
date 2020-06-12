@@ -24,7 +24,7 @@ namespace HTTT_QLyBanDongHo.Models
 
         public Double? Price { get; set; }
 
-        public Double? AfterPrice { get; set; }
+        public Double AfterPrice { get; set; }
 
         [StringLength(255)]
         public string Thumbnails { get; set; }
