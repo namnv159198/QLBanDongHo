@@ -1,5 +1,5 @@
-﻿@model T1809E_Project_Sem3.Models.Product
-@using T1809E_Project_Sem3.Models
+﻿@model HTTT_QLyBanDongHo.Models.Product
+@using HTTT_QLyBanDongHo.Models
 
 @{
     ViewBag.Title = "Details";
@@ -12,7 +12,7 @@
             <ul class="list-inline list-unstyled">
                 <li><a href="#">Home</a></li>
 
-                <li class='active'>Details</li>
+                <li class='active'>Chi tiết sản phẩm</li>
             </ul>
         </div><!-- /.breadcrumb-inner -->
     </div><!-- /.container -->
@@ -49,10 +49,11 @@
 
                                         <div class="product-price">
                                             <span class="price">
-                                                @Model.Price
+                                                @String.Format("{0:N0}", (Model.AfterPrice))
+                                              
                                             </span>
 
-                                            <span class="price-before-discount">$800.00</span>
+                                            <span class="price-before-discount">@String.Format("{0:N0}", (Model.Price))</span>
 
                                         </div><!-- /.product-price -->
 
@@ -61,9 +62,9 @@
                                  
                                         <div class="action">
                                         
-                                                <li class="add-cart-button btn-group" title="@Model.Id">
-                                                    <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="Add Cart"> <i class="fa fa-shopping-cart"></i> </button>
-                                                    <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                                                <li class="add-cart-button btn-group" title="@Model.ID">
+                                                    <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="Thêm vào giỏ hàng"> <i class="fa fa-shopping-cart"></i> </button>
+                                                    <button class="btn btn-primary cart-btn" type="button">Thêm vào giỏ hàng</button>
 
                                       
                                         </div><!-- /.action -->
@@ -168,7 +169,7 @@
 
                                         <div class="col-sm-6">
                                             <div class="price-box">
-                                                <span class="price">$ @Model.Price</span>
+                                                <span class="price">@String.Format("{0:N0}", (Model.AfterPrice)) VNĐ</span>
                                             
                                             </div>
                                         </div>
@@ -200,22 +201,19 @@
                                         <div class="col-sm-2">
                                             <div class="cart-quantity">
                                                 <div class="quant-input">
-                                                    <div class="arrows">
-                                                        <div class="arrow plus gradient"><span class="ir"><i class="icon fa fa-sort-asc"></i></span></div>
-                                                        <div class="arrow minus gradient"><span class="ir"><i class="icon fa fa-sort-desc"></i></span></div>
-                                                    </div>
-                                                    <input type="text" value="1">
+                                              
+                                                    <input value="1" step="1" type="number" min="1" id="spinner" name="spinner">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <ul class="list-unstyled">
-                                            <li class="add-cart-button btn-group" title="@Model.Id">
+                                            <li class="add-cart-button btn-group" title="@Model.ID">
                                                 <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="Add Cart"> <i class="fa fa-shopping-cart"></i> </button>
-                                                <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                                                <button class="btn btn-primary cart-btn" type="button">Thêm vào giỏ hàng</button>
 
-                                            </li>
-
+                                                </li>
+                                            </ul>
                                     </div><!-- /.row -->
                                 </div><!-- /.quantity-container -->
 
@@ -237,8 +235,8 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <ul id="product-tabs" class="nav nav-tabs nav-tab-cell">
-                                <li class="active"><a data-toggle="tab" href="#description">DESCRIPTION</a></li>
-                                <li><a data-toggle="tab" href="#review">REVIEW</a></li>
+                                <li class="active"><a data-toggle="tab" href="#description">Mô tả</a></li>
+                                <li><a data-toggle="tab" href="#review">Đánh giá</a></li>
                                 <li><a data-toggle="tab" href="#tags">TAGS</a></li>
                             </ul><!-- /.nav-tabs #product-tabs -->
                         </div>
@@ -248,7 +246,9 @@
 
                                 <div id="description" class="tab-pane in active">
                                     <div class="product-tab">
-                                        <p class="text">A watch is a portable timepiece intended to be carried or worn by a person. It is designed to keep a consistent movement despite the motions caused by the person's activities. A wristwatch is designed to be worn around the wrist, attached by a watch strap or other type of bracelet, including metal bands, leather straps or any other kind of bracelet. A pocket watch is designed for a person to carry in a pocket, often attached to a chain. The study of timekeeping is known as horology.</p>
+                                        <p class="text">
+                                            @Model.Description
+                                        </p>
                                     </div>
                                 </div><!-- /.tab-pane -->
 
@@ -494,10 +494,14 @@
     <script type="text/javascript">
 
         $('.add-cart-button').click(function () {
+
+            var qty = $('input[name="spinner"]').val();
+            //alert(qty);
             var id = $(this).attr('title');
+        
             $.ajax({
                 type: "POST",
-                url: '/ShoppingCart/AddItem/' + id,
+                url: '/ShoppingCart/AddItem/' + id ,
                 data: "",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -505,7 +509,7 @@
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
-                        title: 'Add To Cart Successfuly!',
+                        title: 'Thêm vào giỏ hàng thành công!',
                         showConfirmButton: false,
                         timer: 1500
                     })

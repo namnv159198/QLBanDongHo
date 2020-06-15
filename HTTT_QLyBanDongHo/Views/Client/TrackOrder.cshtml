@@ -1,4 +1,4 @@
-﻿@model T1809E_Project_Sem3.Models.Order
+﻿@model HTTT_QLyBanDongHo.Models.Order
 @{
     ViewBag.Title = "TrackOrder";
     Layout = "~/Views/Shared_Client/_Layout.cshtml";
@@ -40,13 +40,13 @@ else if ((string)TempData["status"] == "success")
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th>@Html.DisplayFor(model => model.Id)</th>
-                                        <th>@Html.DisplayFor(model => model.CustomerName)</th>
-                                        <th>@Html.DisplayFor(model => model.Address)</th>
-                                        <th>@Html.DisplayFor(model => model.Phone)</th>
-                                        <th>@Html.DisplayFor(model => model.Email)</th>
-                                        <th>@Html.DisplayFor(model => model.Status)</th>
-                                        <th>@Html.DisplayFor(model => model.TotalPrice)</th>
+                                        <th>@Html.DisplayFor(model => model.ID)</th>
+                                        <th>@Html.DisplayFor(model => model.Customer.Name)</th>
+                                        <th>@Html.DisplayFor(model => model.Customer.Address)</th>
+                                        <th>@Html.DisplayFor(model => model.Customer.Phonenumber)</th>
+                                        <th>@Html.DisplayFor(model => model.Customer.Email)</th>
+                                        <th>@Html.DisplayFor(model => model.OrderStatus.Status)</th>
+                                        <th>@Html.DisplayFor(model => model.Total_Price)</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -101,7 +101,7 @@ else if ((string)TempData["status"] == "success")
                                                     var temp = Model.OrderDetails;
                                                     var total = String.Format("{0:N0}", temp.Sum(x => x.Product.Price * x.Quantity));
                                                 }
-                                                @total $
+                                                @total VNĐ
                                             
                                            
                                         </th>

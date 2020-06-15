@@ -12,7 +12,7 @@
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1 style="line-height:40px">Quản lý hóa đơn</h1>
+                        <h1 style="line-height:40px">Quản lý đơn hàng</h1>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">Danh sách hóa đơn</strong>
+                        <strong class="card-title">Danh sách đơn hàng</strong>
                     </div>
 
 
@@ -83,7 +83,22 @@
                         </div>
                     }
 
-                   
+                    @if (Model.Count() != 0)
+                    {
+
+                        <div class="row card-body">
+                            <div class="col-sm-4">
+                                @using (Html.BeginForm("CheckList", "Orders", FormMethod.Get, new { @name = "checklist-form" }))
+                                {
+                                    <input type="hidden" name="ListCategoryIDs" value="" />
+                                    <label class="text-uppercase"> Chuyển đổi trạng thái</label>
+                                    @Html.DropDownList("OrdersStatusCheckList", (IEnumerable<SelectListItem>)ViewBag.StatusListID, "Chọn", new { @class = "form-control" })
+                                }
+                            </div>
+                        </div>
+
+
+                    }
                     @if (!Model.Any())
                     {
                         <div style="font-style: italic; text-align: center; font-size: 1.2em;">
@@ -143,46 +158,46 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                <tr class="text-center">
+                                    <tr class="text-center">
 
-                                    <td>
-                                        <input type="checkbox" class="checkBox"
-                                               value="@item.ID" />
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Create_At)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Customer.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Customer.Address)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Customer.Phonenumber)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Total_Quantity)
-                                    </td>
-                                    <td>
-                                        @{
-                                            var p = (double)item.Total_Price;
-                                        }
-                                        @p.ToString("#,##0").Replace(',', '.') VNĐ
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.PaymentType.Type)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OrderStatus.Status, new { @class = "text-warning" })
-                                    </td>
-                                    <td>
-                                        <a href="@Url.Action("Edit", "Orders", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
-                                        <a href="@Url.Action("Details", "Orders", new {id = item.ID})" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a> |
+                                        <td>
+                                            <input type="checkbox" class="checkBox"
+                                                   value="@item.ID" />
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Create_At)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Customer.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Customer.Address)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Customer.Phonenumber)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Total_Quantity)
+                                        </td>
+                                        <td>
+                                            @{
+                                                var p = (double)item.Total_Price;
+                                            }
+                                            @p.ToString("#,##0").Replace(',', '.') VNĐ
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.PaymentType.Type)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.OrderStatus.Status, new { @class = "text-warning" })
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("Edit", "Orders", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
+                                            <a href="@Url.Action("Details", "Orders", new {id = item.ID})" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a> |
 
 
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
 
                                 }
                             </tbody>
@@ -239,9 +254,20 @@
         $('select[name="pageSize"]').change(function () {
             $('form[name="search-form"]').submit();
         });
-       
+
         $('select[name="OrdersStatus"]').change(function () {
             $('form[name="search-form"]').submit();
+        });
+        $('select[name="OrdersStatusCheckList"]').change(function () {
+            var selectedIDs = new Array();
+            $('input:checkbox.checkBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                    var listCheckedBoxId = selectedIDs.toString();
+                    $('input[name="ListCategoryIDs"]').val(listCheckedBoxId);
+                }
+            });
+            $('form[name="checklist-form"]').submit();
         });
         $('body').on("click", "i.iconSort", function () {
             var str = $(this).attr('name');
@@ -337,6 +363,18 @@
                 position: 'top-end',
                 icon: 'success',
                 title: 'Xóa thành công',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
+    }
+    else if ((string)TempData["message"] == "ChangeStatus")
+    {
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Chuyển đổi trạng thái thành công',
                 showConfirmButton: false,
                 timer: 1500
             })

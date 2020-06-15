@@ -146,9 +146,13 @@
                                                 </div>
                                                 <div class="col-xs-7">
                                                     <h3 class="name"><a href="/ShoppingCart">@cart.Product.Name</a></h3>
-                                                    <div class="price">@cart.Product.Price</div>
+                                                    <div class="price">
+
+
+                                                        @String.Format("{0:N0}", (cart.Product.Price)) VNĐ x @cart.Quantity
+                                                    </div>
                                                 </div>
-                                                <div class="col-xs-1 action"> <a href="#"><i class="fa fa-trash"></i></a> </div>
+                                          
                                             </div>
                                         }
                                     </div>
@@ -159,7 +163,7 @@
                                         var total = String.Format("{0:N0}", temp.Sum(x => x.Product.Price * x.Quantity));
                                     }
                                     <div class="clearfix cart-total">
-                                        <div class="pull-right"> <span class="text">Sub Total :</span><span class='price'>@total</span> </div>
+                                        <div class="pull-right"> <span class="text">Tổng tiền :</span><span class='price'>@total</span> </div>
                                         <div class="clearfix"></div>
                                         <a href="/ShoppingCart" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a>
                                     </div>

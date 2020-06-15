@@ -51,6 +51,39 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             return Json("success");
         }
+        public ActionResult AddItemQuantity(int? id,int quantity)
+        {
+            var existingProduct = db.Products.FirstOrDefault(m => m.ID == id);
+
+            if (existingProduct == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (Session[ShoppingCartSession] == null)
+            {
+                List<Cart> listCart = new List<Cart>
+                {
+                    new Cart(existingProduct,quantity)
+                };
+                Session[ShoppingCartSession] = listCart;
+            }
+            else
+            {
+                List<Cart> listCart = (List<Cart>)Session[ShoppingCartSession];
+                int checkExistingProduct = CheckExistingProduct(id);
+                if (checkExistingProduct == -1)
+                {
+                    listCart.Add(new Cart(existingProduct, quantity));
+                }
+                else
+                {
+                    listCart[checkExistingProduct].Quantity =+quantity;
+                }
+                Session[ShoppingCartSession] = listCart;
+            }
+            return Json("success");
+        }
         public ActionResult UpdateCart(int productID, int quantity)
         {
             var existingProduct = db.Products.FirstOrDefault(m => m.ID == productID);
@@ -68,6 +101,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                 }
             }
             Session[ShoppingCartSession] = listCart;
+            TempData["message"] = "UpdateSuccess";
             return Redirect("Index");
         }
         public ActionResult DeleteItem(int? productID)

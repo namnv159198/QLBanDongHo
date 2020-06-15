@@ -120,7 +120,8 @@ namespace HTTT_QLyBanDongHo.Controllers
 
             SelectList statusList = new SelectList(listOrderStatus, "Status", "Status");
             ViewBag.StatusList = statusList;
-
+            SelectList statusListID = new SelectList(listOrderStatus, "ID", "Status");
+            ViewBag.StatusListID = statusListID;
 
             // Set vào ViewBag
             ViewBag.PageSize = new List<SelectListItem>()
@@ -172,7 +173,25 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             return View(orders.ToPagedList(pageNumber, defaSize));
         }
-
+        public ActionResult CheckList(string ListCategoryIDs, int OrdersStatusCheckList)
+        {
+            {
+                if (ListCategoryIDs != null)
+                {
+                    string[] listID = ListCategoryIDs.Split(',');
+                    foreach (string c in listID)
+                    {
+                        Order obj = db.Orders.Find(c);
+                        obj.OrderStatusID = OrdersStatusCheckList;
+                    }
+                    db.SaveChanges();
+                    TempData["message"] = "ChangeStatus";
+                    return RedirectToAction("Index");
+                }
+                TempData["message"] = "CheckFail";
+                return RedirectToAction("Index");
+            }
+        }
         // GET: Orders/Details/5
         public ActionResult Details(string id)
         {
