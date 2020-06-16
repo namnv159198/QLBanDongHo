@@ -6,179 +6,180 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 <div class="body-content outer-top-xs">
-    <div class="container">
-        <div>
-            <div class="shopping-cart">
-                <div class="shopping-cart-table ">
-                    <div class="table-responsive">
-                        @if (Session["SHOPPING_CART"] == null)
-                        {
-                            <h3 style="text-align:center;"> No Item In Your Shopping Cart!!!</h3>
-                            <table class="table">
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="7">
-                                            <div class="shopping-cart-btn">
-                                                <span class="">
-                                                    <a href="../Client" class="btn btn-upper btn-primary outer-left-xs">Go To Home Page</a>
-                                                </span>
-                                            </div><!-- /.shopping-cart-btn -->
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        }
-                        else
-                        {
+<div class="container">
+    <div>
+        <div class="shopping-cart">
+            <div class="shopping-cart-table ">
+                <div class="table-responsive">
+                    @if (Session["SHOPPING_CART"] == null)
+                    {
+                        <h3 style="text-align:center;"> No Item In Your Shopping Cart!!!</h3>
+                        <table class="table">
+                            <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <div class="shopping-cart-btn">
+                                        <span class="">
+                                            <a href="../Client" class="btn btn-upper btn-primary outer-left-xs">Go To Home Page</a>
+                                        </span>
+                                    </div><!-- /.shopping-cart-btn -->
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    }
+                    else
+                    {
 
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="cart-description item">Ảnh</th>
-                                        <th class="cart-product-name item">Sản phẩm</th>
-                                        <th class="cart-sub-total item">Giá</th>
-                                        <th class="cart-qty item">Số lượng</th>
-                                        <th class="cart-sub-total item">Thành tiền</th>
-                                        <th class="cart-romove item">Xóa</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var cart in (List<Cart>)Session["SHOPPING_CART"])
-                                    {
-                                        <tr>
-                                            <td class="cart-image">
-                                                <a class="entry-thumbnail" href="@Url.Action("Details","Client",new { id = cart.Product.ID})">
-                                                    <img src="@cart.Product.GetDefaultThumbnails()" alt="">
-                                                </a>
-                                            </td>
-                                            <td class="cart-product-name-info">
-                                                <h5 class="cart-product-description"><a href="@Url.Action("Details","Client",new { id = cart.Product.ID})">@cart.Product.Name</a></h5>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th class="cart-description item">Ảnh</th>
+                                <th class="cart-product-name item">Sản phẩm</th>
+                                <th class="cart-sub-total item">Giá</th>
+                                <th class="cart-qty item">Số lượng</th>
+                                <th class="cart-sub-total item">Thành tiền</th>
+                                <th class="cart-romove item">Xóa</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var cart in (List<Cart>)Session["SHOPPING_CART"])
+                            {
+                                <tr>
+                                    <td class="cart-image">
+                                        <a class="entry-thumbnail" href="@Url.Action("Details","Client",new { id = cart.Product.ID})">
+                                            <img src="@cart.Product.GetDefaultThumbnails()" alt="">
+                                        </a>
+                                    </td>
+                                    <td class="cart-product-name-info">
+                                        <h5 class="cart-product-description"><a href="@Url.Action("Details","Client",new { id = cart.Product.ID})">@cart.Product.Name</a></h5>
 
-                                            </td>
-                                            <td>
-                                                @{
-                                                    var FormatPrice = String.Format("{0:N0}", (cart.Product.Price));
-                                                }
-                                                @FormatPrice VNĐ
-                                            </td>
-                                           
+                                    </td>
+                                    <td>
+                                        @{
+                                            var FormatPrice = String.Format("{0:N0}", (cart.Product.Price));
+                                        }
+                                        @FormatPrice VNĐ
+                                    </td>
 
-                                            <td class="cart-product-quantity">
-                                                <div class="" style="display:inline-block;">
-                                                    <form action="@Url.Action("UpdateCart")" method="get">
-                                                        <div class="quant-input">
-                                                            <input type="hidden" name="productID" value="@cart.Product.ID" />
 
-                                                        </div>
-                                                        <input  type="number" id="spinner" min="1" style="text-align: center; width: 50px;height:32px" step="1" name="quantity" value="@cart.Quantity" />
-                                                        <button class="btn btn-primary btn-sm ">Cập nhật</button>
-                                                    </form>
+                                    <td class="cart-product-quantity">
+                                        <div class="" style="display:inline-block;">
+                                            <form action="@Url.Action("UpdateCart")" method="get">
+                                                <div class="quant-input">
+                                                    <input type="hidden" name="productID" value="@cart.Product.ID" />
+
                                                 </div>
-                                            </td>
+                                                <input type="number" id="spinner" min="1" style="text-align: center; width: 50px;height:32px" step="1" name="quantity" value="@cart.Quantity" />
+                                                <button class="btn btn-primary btn-sm ">Cập nhật</button>
+                                            </form>
+                                        </div>
+                                    </td>
 
-                                            <td>
-                                                @{
-                                                    var TotalPrice = String.Format("{0:N0}", (cart.Product.Price * cart.Quantity));
-                                                }
-                                                @TotalPrice VNĐ
-                                            </td>
-                                            <td class="romove-item">
+                                    <td>
+                                        @{
+                                            var TotalPrice = String.Format("{0:N0}", (cart.Product.Price * cart.Quantity));
+                                        }
+                                        @TotalPrice VNĐ
+                                    </td>
+                                    <td class="romove-item">
 
-                                                <a href="#" title="cancel" class="icon" data-toggle="modal" data-target="#myModal_@cart.Product.ID"><i class="fa fa-trash-o"></i></a>
-                                                <div class="modal" id="myModal_@cart.Product.ID">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
+                                        <a href="#" title="cancel" class="icon" data-toggle="modal" data-target="#myModal_@cart.Product.ID"><i class="fa fa-trash-o"></i></a>
+                                        <div class="modal" id="myModal_@cart.Product.ID">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
 
-                                                            <!-- Modal Header -->
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title">Message</h4>
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Message</h4>
 
-                                                            </div>
-
-                                                            <!-- Modal body -->
-                                                            <div class="modal-body">
-                                                                <span>Bạn có chắc muốn xóa <span class="text-uppercase " style="font-weight:bold">@cart.Product.Name</span>  khỏi giỏ hàng ?</span>
-                                                            </div>
-
-                                                            <!-- Modal footer -->
-                                                            <div class="modal-footer">
-                                                                <!-- Cỏntroller -->
-                                                                @using (Html.BeginForm("DeleteItem", "ShoppingCart", new { productID = cart.Product.ID }))
-                                                                {
-                                                                    @Html.AntiForgeryToken()
-                                                                    <input type="submit" value="Xóa" class="btn btn-danger btn-danger" />
-                                                                    <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
-                                                                }
-                                                            </div>
-
-                                                        </div>
                                                     </div>
+
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+                                                        <span>Bạn có chắc muốn xóa <span class="text-uppercase " style="font-weight:bold">@cart.Product.Name</span>  khỏi giỏ hàng ?</span>
+                                                    </div>
+
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <!-- Cỏntroller -->
+                                                        @using (Html.BeginForm("DeleteItem", "ShoppingCart", new { productID = cart.Product.ID }))
+                                                        {
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="submit" value="Xóa" class="btn btn-danger btn-danger" />
+                                                            <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
+                                                        }
+                                                    </div>
+
                                                 </div>
-                                            </td>
+                                            </div>
+                                        </div>
+                                    </td>
 
-                                        </tr>
+                                </tr>
 
-                                    }
-                                </tbody>
+                            }
+                            </tbody>
 
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="7">
-                                            <div class="shopping-cart-btn">
-                                                <span class="">
-                                                    <a href="../../Client" class="btn btn-upper btn-primary outer-left-xs">Tiếp tục mua sắm</a>
-                                                    <a href="@Url.Action("UpdateCart")" class="btn btn-upper btn-primary pull-right outer-right-xs">Update shopping cart</a>
-                                                </span>
-                                            </div><!-- /.shopping-cart-btn -->
-                                        </td>
-                                    </tr>
-                                </tfoot>
+                            <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <div class="shopping-cart-btn">
+                                        <span class="">
+                                            <a href="../../Client" class="btn btn-upper btn-primary outer-left-xs">Tiếp tục mua sắm</a>
+                                            <a href="@Url.Action("UpdateCart")" class="btn btn-upper btn-primary pull-right outer-right-xs">Update shopping cart</a>
+                                        </span>
+                                    </div><!-- /.shopping-cart-btn -->
+                                </td>
+                            </tr>
+                            </tfoot>
 
-                            </table>
+                        </table>
 
-                        }
+                    }
 
+                </div>
+            </div>
+
+
+            @if (Session["SHOPPING_CART"] != null)
+            {
+                @RenderPage("SaveOrder.cshtml") 
+                <div class="col-md-4 col-sm-12">
+                    <div class="cart-shopping-total">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <div class="cart-sub-total">
+                                        Thành tiền<span class="inner-left-md">
+                                            @{
+                                                List<Cart> temp = (List<Cart>)Session["SHOPPING_CART"];
+                                                var total = String.Format("{0:N0}", temp.Sum(x => x.Product.Price * x.Quantity));
+                                                var subtotal = String.Format("{0:N0}", temp.Sum(x => (x.Product.Price - ((x.Product.Price * x.Product.Discount) / 100)) * x.Quantity));
+                                            }
+                                            $@total
+                                        </span>
+                                    </div>
+                                    <div class="cart-grand-total">
+                                        Tổng tiền đơn hàng<span class="inner-left-md">$@total</span>
+                                    </div>
+                                </th>
+                            </tr>
+                            </thead><!-- /thead -->
+                            <!-- /tbody -->
+                        </table><!-- /table -->
                     </div>
                 </div>
 
-
-                @if (Session["SHOPPING_CART"] != null)
-                {
-                    @*                     @RenderPage("SaveOrder.cshtml") *@
-                    <div class="col-md-4 col-sm-12">
-                        <div class="cart-shopping-total">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <div class="cart-sub-total">
-                                                Subtotal<span class="inner-left-md">
-                                                    @{
-                                                        List<Cart> temp = (List<Cart>)Session["SHOPPING_CART"];
-                                                        var total = String.Format("{0:N0}", temp.Sum(x => x.Product.Price * x.Quantity));
-                                                        var subtotal = String.Format("{0:N0}", temp.Sum(x => (x.Product.Price - ((x.Product.Price * x.Product.Discount) / 100)) * x.Quantity));
-                                                    }
-                                                    $@total
-                                                </span>
-                                            </div>
-                                            <div class="cart-grand-total">
-                                                Grand Total<span class="inner-left-md">$@subtotal</span>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead><!-- /thead -->
-                                <!-- /tbody -->
-                            </table><!-- /table -->
-                        </div>
-                    </div>
-
-                }
-
-            </div>
+            }
 
         </div>
-
+ 
     </div>
+      
+</div>
+
 </div>
 
 @if ((string)TempData["message"] == "Delele")

@@ -496,12 +496,12 @@
         $('.add-cart-button').click(function () {
 
             var qty = $('input[name="spinner"]').val();
-            //alert(qty);
+         
             var id = $(this).attr('title');
         
             $.ajax({
                 type: "POST",
-                url: '/ShoppingCart/AddItem/' + id ,
+                url: '/ShoppingCart/AddItemQuantity?id=' +id +'&quantity='+qty ,
                 data: "",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -524,6 +524,7 @@
                     })
                 }
             });
+      
         });
 
 

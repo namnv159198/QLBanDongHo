@@ -126,7 +126,7 @@ namespace HTTT_QLyBanDongHo.Controllers
         }
 
         [ValidateAntiForgeryToken]
-        public ActionResult Checkout(Order o)
+        public ActionResult Checkout(CheckoutModel o)
         {
             var random = new Random();
 
@@ -135,33 +135,43 @@ namespace HTTT_QLyBanDongHo.Controllers
 
             if (ModelState.IsValid)
             {
-                // Order order = new Order()
-                // {
-                //     ID = "Order" + DateTime.Now.Millisecond,
-                //     OrderStatusID = 1,
-                //     Create_At = DateTime.Now,
-                //     CustomerID = "Defautle",
-                //     Ad = o.Address,
-                //     Discount = 0,
-                //     Email = o.Email,
-                //     Phone = o.Phone,
-                //     TotalPrice = listCart.Sum(x => x.Product.Price * x.Quantity)
-                // };
-                //
-                // db.Orders.Add(order);
-                // db.SaveChanges();
-                //
-                // foreach (Cart cart in listCart)
-                // {
-                //     OrderDetails orderDetails = new OrderDetails()
-                //     {
-                //         OrderId = order.Id,
-                //         ProductId = cart.Product.Id,
-                //         Quantity = cart.Quantity,
-                //     };
-                //     db.OrderDetails.Add(orderDetails);
-                //     db.SaveChanges();
-                // }
+                Customer cus = new Customer()
+                {
+                    ID = "Customer" + DateTime.Now.Millisecond,
+                    Address = o.Address,
+                    Phonenumber = o.PhoneNumber,
+                    Name = o.Name,
+                    CustomerTypeID = 1,
+                    Email = o.Email
+                };
+                db.Customers.Add(cus);
+                db.SaveChanges();
+                Order order = new Order()
+                {
+                    ID = "Order" + DateTime.Now.Millisecond,
+                    OrderStatusID = 1,
+                    Create_At = DateTime.Now,
+                    CustomerID = cus.ID,
+                    Discount = 0,
+                    Total_Price = listCart.Sum(x => x.Product.Price * x.Quantity),
+                    PaymentTypeID = 1,
+                    Total_Quantity = listCart.Sum(x =>x.Quantity)
+                };
+                
+                db.Orders.Add(order);
+                db.SaveChanges();
+                
+                foreach (Cart cart in listCart)
+                {
+                    OrderDetail orderDetails = new OrderDetail()
+                    {
+                        OrderID = order.ID,
+                        ProductID = cart.Product.ID,
+                        Quantity = cart.Quantity,
+                    };
+                    db.OrderDetails.Add(orderDetails);
+                    db.SaveChanges();
+                }
 
                 Session.Remove(ShoppingCartSession);
                 TempData["message"] = "success";

@@ -3,7 +3,7 @@ namespace HTTT_QLyBanDongHo.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class SetUpEntity : DbMigration
+    public partial class Identity : DbMigration
     {
         public override void Up()
         {
@@ -56,7 +56,7 @@ namespace HTTT_QLyBanDongHo.Migrations
                     {
                         ID = c.String(nullable: false, maxLength: 255, unicode: false),
                         TotalQuantity = c.Int(name: "Total Quantity"),
-                        TotalPrice = c.Single(name: "Total Price"),
+                        TotalPrice = c.Double(name: "Total Price"),
                         Discount = c.Int(),
                         CreateAt = c.DateTime(name: "Create At"),
                         CustomerID = c.String(nullable: false, maxLength: 255, unicode: false),
@@ -75,16 +75,16 @@ namespace HTTT_QLyBanDongHo.Migrations
                 "dbo.OrderDetails",
                 c => new
                     {
-                        ProductID = c.Int(nullable: false),
                         OrderID = c.String(nullable: false, maxLength: 255, unicode: false),
+                        ProductID = c.Int(nullable: false),
                         Quantity = c.Int(),
-                        UnitPrice = c.Single(),
+                        UnitPrice = c.Double(),
                     })
-                .PrimaryKey(t => new { t.ProductID, t.OrderID })
+                .PrimaryKey(t => new { t.OrderID, t.ProductID })
                 .ForeignKey("dbo.Product", t => t.ProductID)
                 .ForeignKey("dbo.Order", t => t.OrderID)
-                .Index(t => t.ProductID)
-                .Index(t => t.OrderID);
+                .Index(t => t.OrderID)
+                .Index(t => t.ProductID);
             
             CreateTable(
                 "dbo.Product",
@@ -92,14 +92,14 @@ namespace HTTT_QLyBanDongHo.Migrations
                     {
                         ID = c.Int(nullable: false, identity: true),
                         Name = c.String(maxLength: 255),
-                        Price = c.Single(),
-                        AfterPrice = c.Single(),
+                        Price = c.Double(),
+                        AfterPrice = c.Double(nullable: false),
                         Thumbnails = c.String(maxLength: 255, unicode: false),
-                        Discount = c.Int(),
+                        Discount = c.Double(nullable: false),
                         isBestSeller = c.Int(),
                         isNew = c.Int(),
                         isSpecial = c.Int(),
-                        Description = c.String(maxLength: 255),
+                        Description = c.String(),
                         Status = c.String(maxLength: 255),
                         CreateAt = c.DateTime(),
                         ManufactureID = c.Int(nullable: false),
@@ -148,41 +148,10 @@ namespace HTTT_QLyBanDongHo.Migrations
                     })
                 .PrimaryKey(t => t.PaymentTypeID);
             
-            CreateTable(
-                "dbo.User",
-                c => new
-                    {
-                        ID = c.String(nullable: false, maxLength: 255, unicode: false),
-                        Name = c.String(maxLength: 255),
-                        Gender = c.String(maxLength: 255, unicode: false),
-                        Birthday = c.String(maxLength: 255, unicode: false),
-                        YearOld = c.Int(),
-                        Address = c.String(maxLength: 255),
-                        Status = c.String(maxLength: 255),
-                        RoleID = c.String(nullable: false, maxLength: 255, unicode: false),
-                        AccountID = c.String(nullable: false, maxLength: 255, unicode: false),
-                    })
-                .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Role", t => t.RoleID)
-                .ForeignKey("dbo.Account", t => t.AccountID)
-                .Index(t => t.RoleID)
-                .Index(t => t.AccountID);
-            
-            CreateTable(
-                "dbo.Role",
-                c => new
-                    {
-                        ID = c.String(nullable: false, maxLength: 255, unicode: false),
-                        RoleName = c.String(name: "Role Name", maxLength: 255),
-                    })
-                .PrimaryKey(t => t.ID);
-            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.User", "AccountID", "dbo.Account");
-            DropForeignKey("dbo.User", "RoleID", "dbo.Role");
             DropForeignKey("dbo.Customer", "AccountID", "dbo.Account");
             DropForeignKey("dbo.Order", "CustomerID", "dbo.Customer");
             DropForeignKey("dbo.Order", "PaymentTypeID", "dbo.PaymentType");
@@ -192,19 +161,15 @@ namespace HTTT_QLyBanDongHo.Migrations
             DropForeignKey("dbo.Product", "ManufactureID", "dbo.Manufacture");
             DropForeignKey("dbo.Product", "CategoryID", "dbo.Category");
             DropForeignKey("dbo.Customer", "CustomerTypeID", "dbo.CustomerType");
-            DropIndex("dbo.User", new[] { "AccountID" });
-            DropIndex("dbo.User", new[] { "RoleID" });
             DropIndex("dbo.Product", new[] { "CategoryID" });
             DropIndex("dbo.Product", new[] { "ManufactureID" });
-            DropIndex("dbo.OrderDetails", new[] { "OrderID" });
             DropIndex("dbo.OrderDetails", new[] { "ProductID" });
+            DropIndex("dbo.OrderDetails", new[] { "OrderID" });
             DropIndex("dbo.Order", new[] { "PaymentTypeID" });
             DropIndex("dbo.Order", new[] { "OrderStatusID" });
             DropIndex("dbo.Order", new[] { "CustomerID" });
             DropIndex("dbo.Customer", new[] { "AccountID" });
             DropIndex("dbo.Customer", new[] { "CustomerTypeID" });
-            DropTable("dbo.Role");
-            DropTable("dbo.User");
             DropTable("dbo.PaymentType");
             DropTable("dbo.OrderStatus");
             DropTable("dbo.Manufacture");

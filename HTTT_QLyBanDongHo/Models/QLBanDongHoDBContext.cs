@@ -1,3 +1,8 @@
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 namespace HTTT_QLyBanDongHo.Models
 {
     using System;
@@ -11,7 +16,7 @@ namespace HTTT_QLyBanDongHo.Models
             : base("name=QLBanDongHoDBContext")
         {
         }
-
+       
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
@@ -21,8 +26,7 @@ namespace HTTT_QLyBanDongHo.Models
         public virtual DbSet<OrderStatus> OrderStatus { get; set; }
         public virtual DbSet<PaymentType> PaymentTypes { get; set; }
         public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+       
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -49,10 +53,7 @@ namespace HTTT_QLyBanDongHo.Models
                 .WithRequired(e => e.Account)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Account>()
-                .HasMany(e => e.Users)
-                .WithRequired(e => e.Account)
-                .WillCascadeOnDelete(false);
+           
 
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.Products)
@@ -127,35 +128,7 @@ namespace HTTT_QLyBanDongHo.Models
                 .WithRequired(e => e.Product)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Role>()
-                .Property(e => e.ID)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Role>()
-                .HasMany(e => e.Users)
-                .WithRequired(e => e.Role)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<User>()
-                .Property(e => e.ID)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
-                .Property(e => e.Gender)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
-                .Property(e => e.Birthday)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
-                .Property(e => e.RoleID)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
-                .Property(e => e.AccountID)
-                .IsUnicode(false);
-
+           
             modelBuilder.Entity<OrderDetail>()
                 .Property(e => e.OrderID)
                 .IsUnicode(false);

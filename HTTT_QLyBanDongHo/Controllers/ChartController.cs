@@ -88,7 +88,6 @@ namespace HTTT_QLyBanDongHo.Controllers
                 }
             };
 
-            listSaleCustomerYears.Add("Năm 2018", k1);
             listSaleCustomerYears.Add("Năm 2019 ", k2);
             listSaleCustomerYears.Add("Năm 2020", k3);
             List<ChartModel.ChartModel.DataPoint> dataPoints1 = new List<ChartModel.ChartModel.DataPoint>();

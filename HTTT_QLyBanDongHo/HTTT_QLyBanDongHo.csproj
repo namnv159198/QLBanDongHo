@@ -195,39 +195,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202006071526150_SetUpEntity.cs" />
-    <Compile Include="Migrations\202006071526150_SetUpEntity.Designer.cs">
-      <DependentUpon>202006071526150_SetUpEntity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202006081447297_setUpProduct.cs" />
-    <Compile Include="Migrations\202006081447297_setUpProduct.Designer.cs">
-      <DependentUpon>202006081447297_setUpProduct.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202006081450492_UpdatePriceDouble.cs" />
-    <Compile Include="Migrations\202006081450492_UpdatePriceDouble.Designer.cs">
-      <DependentUpon>202006081450492_UpdatePriceDouble.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202006081638264_DiscountDouble.cs" />
-    <Compile Include="Migrations\202006081638264_DiscountDouble.Designer.cs">
-      <DependentUpon>202006081638264_DiscountDouble.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202006081739243_SetDoubleOrderDetails.cs" />
-    <Compile Include="Migrations\202006081739243_SetDoubleOrderDetails.Designer.cs">
-      <DependentUpon>202006081739243_SetDoubleOrderDetails.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202006081814227_UpdateOrder.cs" />
-    <Compile Include="Migrations\202006081814227_UpdateOrder.Designer.cs">
-      <DependentUpon>202006081814227_UpdateOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202006121344393_UpdateProduct.cs" />
-    <Compile Include="Migrations\202006121344393_UpdateProduct.Designer.cs">
-      <DependentUpon>202006121344393_UpdateProduct.cs</DependentUpon>
+    <Compile Include="Migrations\202006161324090_Identity.cs" />
+    <Compile Include="Migrations\202006161324090_Identity.Designer.cs">
+      <DependentUpon>202006161324090_Identity.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\CheckoutModel.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -239,8 +216,6 @@
     <Compile Include="Models\PaymentType.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\QLBanDongHoDBContext.cs" />
-    <Compile Include="Models\Role.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1303,26 +1278,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202006071526150_SetUpEntity.resx">
-      <DependentUpon>202006071526150_SetUpEntity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006081447297_setUpProduct.resx">
-      <DependentUpon>202006081447297_setUpProduct.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006081450492_UpdatePriceDouble.resx">
-      <DependentUpon>202006081450492_UpdatePriceDouble.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006081638264_DiscountDouble.resx">
-      <DependentUpon>202006081638264_DiscountDouble.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006081739243_SetDoubleOrderDetails.resx">
-      <DependentUpon>202006081739243_SetDoubleOrderDetails.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006081814227_UpdateOrder.resx">
-      <DependentUpon>202006081814227_UpdateOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202006121344393_UpdateProduct.resx">
-      <DependentUpon>202006121344393_UpdateProduct.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202006161324090_Identity.resx">
+      <DependentUpon>202006161324090_Identity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

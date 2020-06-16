@@ -1,4 +1,5 @@
-﻿using HTTT_QLyBanDongHo.Models;
+﻿using System.Collections.Generic;
+using HTTT_QLyBanDongHo.Models;
 
 namespace HTTT_QLyBanDongHo.Migrations
 {
@@ -51,7 +52,7 @@ namespace HTTT_QLyBanDongHo.Migrations
             //     new PaymentType() { PaymentTypeID = 3, Type = "Tiền mặt" },
             //     new PaymentType() { PaymentTypeID = 4, Type = "Mobile Banking" }
             // );
-
+            //
             // context.Manufactures.AddOrUpdate(
             //     new Manufacture() { ID = 1, Name = "Apple" ,Logo = "image/upload/v1591544955/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/kcKnMMA5i_xoxqxm.jpg" },
             //     new Manufacture() { ID = 2, Name = "Rolex", Logo = "image/upload/v1591545064/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/9e543bf8bd95d55d5989e1561cc85210_srnajh.jpg" },
@@ -143,26 +144,7 @@ namespace HTTT_QLyBanDongHo.Migrations
             //         context.Products.AddOrUpdate(p);
             //     }
 
-            // context.Products.AddOrUpdate(
-            //     new Product()
-            //     {
-            //         ID = 3,
-            //         Name = "Citizen BH3000-09A",
-            //         isBestSeller = 1,
-            //         isSpecial = 0,
-            //         isNew = 1,
-            //         CreateAt = DateTime.Now,
-            //         Description =
-            //             "Mẫu Citizen BH3000-09A với một vẻ ngoài dành cho những ai yêu thích vẻ hoài cổ với kiểu dáng mặt số vuông truyền thống, chi tiết chữ số được viết theo dạng chữ la mã kết hợp cùng mẫu dây đeo da đen có vân cổ điển lịch lãm.",
-            //         Status = "Kích hoạt",
-            //         ManufactureID = 2,
-            //         CategoryID = 2,
-            //         Price = 4600000,
-            //         Discount = 0,
-            //         AfterPrice = 6800000,
-            //         Thumbnails = "image/upload/v1591624880/129_BH3000-09A-399x399_qfcl5h"
-            //     }
-            // );
+           
 
             // // // ---------------------------------- Seeding Customer  ---------------------------------- //
             // Random random = new Random();
@@ -229,6 +211,7 @@ namespace HTTT_QLyBanDongHo.Migrations
             //             YearOld = DateTime.Now.Year - start.AddDays(random.Next(range)).Year,
             //             CreateAt = DateTime.Now.AddDays(RandomDate[indexDate]),
             //             CustomerTypeID = random.Next(1, 5),
+            //            
             //         };
             //         context.Customers.AddOrUpdate(cus);
             //     }
@@ -248,25 +231,41 @@ namespace HTTT_QLyBanDongHo.Migrations
             var listProduct = context.Products.ToList();
             var listOrderStatus = context.OrderStatus.ToList();
             var listPaymentType = context.PaymentTypes.ToList();
-            for (int i = 1; i <= 100; i++)
+            for (int i = 1; i <= 300; i++)
             {
-                int indexDate = random.Next(RandomDate.Length);
+                int indexDate = random.Next(RandomDateNow.Length);
                 int c = random.Next(0, ListCustomer.Count);
                 int os = random.Next(0, listOrderStatus.Count);
                 int pt = random.Next(0, listPaymentType.Count);
                 var order = new Order()
                 {
                     ID = "Order" + i+ DateTime.Now.Millisecond+DateTime.Now.Year,
-                    Create_At = DateTime.Now.AddDays(RandomDate[indexDate]).AddMinutes(random.Next(-300,-100)),
+                    Create_At = DateTime.Now.AddDays(RandomDateNow[indexDate]).AddMinutes(random.Next(-300,-100)),
                     OrderStatusID = listOrderStatus[os].ID,
                     CustomerID = ListCustomer[c].ID,
                     PaymentTypeID = listPaymentType[pt].PaymentTypeID,
                     Total_Price = 0,
-                    Total_Quantity = 0
-                };
+                    Total_Quantity = 0,
+                    Discount = 0
+            };
+
                 for (int j = 1; j <= random.Next(1,3); j++)
                 {
-                    int p = random.Next(listProduct.Count);
+                    List<int> unique = new List<int>();
+                    int p = 0;
+                    void randomP()
+                    {
+                        p = random.Next(listProduct.Count);
+                        foreach (var p1 in unique)
+                        {
+                            if (p1 == p)
+                            {
+                                randomP();
+                            }
+                        }
+                    }
+                    randomP();
+                    unique.Add(p);
                     var orderDetails = new OrderDetail()
                     {
                         OrderID = order.ID,
@@ -278,7 +277,7 @@ namespace HTTT_QLyBanDongHo.Migrations
                     context.OrderDetails.Add(orderDetails);
                 }
             
-                order.Discount = 0;
+               
                 context.Orders.AddOrUpdate(order);
             }
         }

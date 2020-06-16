@@ -21,7 +21,7 @@ namespace HTTT_QLyBanDongHo.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("QLBanDongHoDBContext", throwIfV1Schema: false)
         {
         }
 

@@ -7,13 +7,13 @@ namespace HTTT_QLyBanDongHo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class UpdateOrder : IMigrationMetadata
+    public sealed partial class Identity : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateOrder));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Identity));
         
         string IMigrationMetadata.Id
         {
-            get { return "202006081814227_UpdateOrder"; }
+            get { return "202006161324090_Identity"; }
         }
         
         string IMigrationMetadata.Source
