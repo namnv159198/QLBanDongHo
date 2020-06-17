@@ -6,34 +6,31 @@ namespace HTTT_QLyBanDongHo.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Account")]
-    public partial class Account
+    [Table("Email")]
+    public partial class Email
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Account()
+        public Email()
         {
             Customers = new HashSet<Customer>();
-            Users = new HashSet<User>();
         }
 
         [StringLength(255)]
         public string ID { get; set; }
 
         [StringLength(255)]
-        public string UserName { get; set; }
+        public string Subject { get; set; }
 
         [StringLength(255)]
-        public string Email { get; set; }
+        public string Content { get; set; }
 
         [StringLength(255)]
-        public string Password { get; set; }
+        public string Receiver { get; set; }
 
-        public DateTime? CreateAt { get; set; }
+        [Column("Create At")]
+        public DateTime? Create_At { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Customer> Customers { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
     }
 }

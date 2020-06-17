@@ -12,8 +12,8 @@
             <thead>
                 <tr>
                     <th>
-                        <span class="estimate-title">Customer Information.</span>
-                        <p>Provide your information to help us take care your order.</p>
+                        <span class="estimate-title">Thông tin chuyển phát đặt hàng</span>
+                        <p>Vui lòng điền cung cấp thông tin để đặt hàng .</p>
                     </th>
                 </tr>
             </thead><!-- /thead -->
@@ -21,7 +21,7 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <label class="info-title control-label">Customer Name</label>
+                            <label class="info-title control-label">Họ và tên</label>
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control unicase-form-control text-input" } })
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                         </div>
@@ -32,27 +32,74 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="info-title control-label">Phone Number</label>
+                            <label class="info-title control-label">Số điện thoại</label>
                             @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control unicase-form-control text-input" } })
                             @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
-                            <label class="info-title control-label">Address</label>
+                            <label class="info-title control-label">Địa chỉ</label>
                             @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control unicase-form-control text-input" } })
                             @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                         </div>
-                        <div class="cart-checkout-btn pull-right">
-                            <button type="submit" class="btn btn-primary checkout-btn">PROCCED TO CHEKOUT</button>
+                        <div class="form-group">
+                            <label class="info-title control-label">Giới tính &nbsp;</label>
+                            <input type="radio" class="ml-5" value="Nam" name="Gender" checked="checked"> Nam
+                            &nbsp;
+                            <input class="ml-4" type="radio" value="Nữ" name="Gender"> Nữ
+                        </div>
+
+
+                        <div class="cart-checkout-btn pull-left">
+                            <button type="submit" class="btn btn-primary checkout-btn">ĐẶT MUA</button>
 
                         </div>
                     </td>
-                    
-                </tr>
+
+            </tr>
             </tbody>
-            
+
         </table>
     </div>
-    
-    
-}
+
+    <div class="col-md-4 col-sm-12 estimate-ship-tax">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <span class="estimate-title">Phương thức thanh toán</span>
+                        <p>Vui lòng chọn phương thức thanh toán .</p>
+                    </th>
+                </tr>
+            </thead><!-- /thead -->
+            <tbody>
+                <tr>
+                    <td>
+
+                        <div class="form-group">
+                            <label class="info-title control-label">Tiền mặt &nbsp;</label>
+                            <input type="radio" class="mr-5" value="1" name="PayType">
+                        </div>
+                        <div class="form-group">
+                            <label class="info-title control-label">Ví điện tử &nbsp;</label>
+                            <input type="radio" class="mr-5" value="1" name="PayType">
+                        </div>
+                        <div class="form-group">
+                            <label class="info-title control-label">Mobile Banking &nbsp;</label>
+                            <input type="radio" class="mr-5" value="1" name="PayType">
+                        </div>
+                        <div class="form-group">
+                            <label class="info-title control-label">Chuyển khoản ATM &nbsp;</label>
+                            <input type="radio" class="mr-5" value="1" name="PayType">
+                        </div>
+                    </td>
+
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+        }
 

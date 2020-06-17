@@ -1,5 +1,3 @@
-using System.Configuration;
-
 namespace HTTT_QLyBanDongHo.Models
 {
     using System;
@@ -23,6 +21,5 @@ namespace HTTT_QLyBanDongHo.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
-       
     }
 }

@@ -15,10 +15,7 @@ namespace HTTT_QLyBanDongHo.Migrations
             AutomaticMigrationsEnabled = false;
         }
 
-        public double getAfterPrie(int x,double y)
-        {
-            return y - ((y * x) / 100);
-        }
+       
 
         protected override void Seed(HTTT_QLyBanDongHo.Models.QLBanDongHoDBContext context)
         {
@@ -54,24 +51,24 @@ namespace HTTT_QLyBanDongHo.Migrations
             // );
             //
             // context.Manufactures.AddOrUpdate(
-            //     new Manufacture() { ID = 1, Name = "Apple" ,Logo = "image/upload/v1591544955/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/kcKnMMA5i_xoxqxm.jpg" },
-            //     new Manufacture() { ID = 2, Name = "Rolex", Logo = "image/upload/v1591545064/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/9e543bf8bd95d55d5989e1561cc85210_srnajh.jpg" },
-            //     new Manufacture() { ID = 3, Name = "Patek Philippe", Logo = "image/upload/v1591545190/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/Patek_20Philippe_20_logo_e2hhsj.jpg" },
-            //     new Manufacture() { ID = 4, Name = "Omega", Logo = "image/upload/v1591545237/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/omega-vector_dgpcin.jpg" },
-            //     new Manufacture() { ID = 5, Name = "Tissot", Logo = "image/upload/v1591545360/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/b02346ae70c528b816475eb088a81906_ouxdbv.jpg" },
-            //     new Manufacture() { ID = 6, Name = "Calvin Klein", Logo = "image/upload/v1591545408/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/da16e1667e7e502a185d149ba8e21fc2.w1000.h1000_qziuqx.jpg" },
-            //     new Manufacture() { ID = 7, Name = "Movado", Logo = "image/upload/v1591545533/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/e4ba64c67262fd1cf3bd629832e373b2_vksk4p.jpg" },
-            //     new Manufacture() { ID = 8, Name = "SEIKO", Logo = "image/upload/v1591545557/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/og_poczsn.png" },
-            //     new Manufacture() { ID = 9, Name = "Citizen", Logo = "image/upload/v1591545570/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/citizen-eco-drive-logo_u7r4xx.jpg" },
-            //     new Manufacture() { ID = 10, Name = "Orient", Logo = "image/upload/v1591545585/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/0844a0abe5b2ea979f2bb37284dafd33_attn66.jpg" }
+            //     new Manufacture() { ID = 1, Name = "Apple" ,Logo = "image/upload/v1591544955/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/kcKnMMA5i_xoxqxm.jpg" ,Create_At = DateTime.Now},
+            //     new Manufacture() { ID = 2, Name = "Rolex", Logo = "image/upload/v1591545064/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/9e543bf8bd95d55d5989e1561cc85210_srnajh.jpg", Create_At = DateTime.Now },
+            //     new Manufacture() { ID = 3, Name = "Patek Philippe", Logo = "image/upload/v1591545190/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/Patek_20Philippe_20_logo_e2hhsj.jpg", Create_At = DateTime.Now },
+            //     new Manufacture() { ID = 4, Name = "Omega", Logo = "image/upload/v1591545237/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/omega-vector_dgpcin.jpg", Create_At = DateTime.Now },
+            //     new Manufacture() { ID = 5, Name = "Tissot", Logo = "image/upload/v1591545360/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/b02346ae70c528b816475eb088a81906_ouxdbv.jpg", Create_At = DateTime.Now },
+            //     new Manufacture() { ID = 6, Name = "Calvin Klein", Logo = "image/upload/v1591545408/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/da16e1667e7e502a185d149ba8e21fc2.w1000.h1000_qziuqx.jpg", Create_At = DateTime.Now },
+            //     new Manufacture() { ID = 7, Name = "Movado", Logo = "image/upload/v1591545533/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/e4ba64c67262fd1cf3bd629832e373b2_vksk4p.jpg", Create_At = DateTime.Now },
+            //     new Manufacture() { ID = 8, Name = "SEIKO", Logo = "image/upload/v1591545557/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/og_poczsn.png", Create_At = DateTime.Now },
+            //     new Manufacture() { ID = 9, Name = "Citizen", Logo = "image/upload/v1591545570/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/citizen-eco-drive-logo_u7r4xx.jpg", Create_At = DateTime.Now },
+            //     new Manufacture() { ID = 10, Name = "Orient", Logo = "image/upload/v1591545585/Nh%C3%A0%20s%E1%BA%A3n%20xu%E1%BA%A5t/0844a0abe5b2ea979f2bb37284dafd33_attn66.jpg", Create_At = DateTime.Now }
             // );
 
             // // // ---------------------------------- Seeding Product  ---------------------------------- //
-
+            
             //     Random random = new Random();
             //     int[] RandomDate =
             //     {
-            //         0, -1, -2, -3, -7, -14, -30, -60, -180, -365, -400, -287, -700
+            //         0, -1, -2, -3, -7, -14, -30, -60, -180, -365, -400, -287, -700, -750
             //     };
             //
             //
@@ -115,7 +112,7 @@ namespace HTTT_QLyBanDongHo.Migrations
             //     
             //   
             //     
-            //     for (int i = 1; i <= 400; i++)
+            //     for (int i = 1; i <= 500; i++)
             //     {
             //         int indexName = random.Next(0, RandomNameWatch.Length);
             //         int indexThumbnails = random.Next(RandomImage.Length);
@@ -135,37 +132,69 @@ namespace HTTT_QLyBanDongHo.Migrations
             //             CategoryID = random.Next(1,3),
             //             Price = random.Next(5,250)*100000,
             //             Discount = (random.Next(0,4))*10,
-            //             Thumbnails = RandomImage[indexThumbnails]
+            //             Thumbnails = RandomImage[indexThumbnails],
+            //             Quantity = random.Next(10,50),
+            //         
+            //             
             //         };
             //         p.Description = "Mẫu " + p.Name +
             //                         "với một vẻ ngoài dành cho những ai yêu thích vẻ hoài cổ với kiểu dáng mặt số vuông truyền thống, chi tiết chữ số được viết theo dạng chữ la mã kết hợp cùng mẫu dây đeo da đen có vân cổ điển lịch lãm.";
-            //         p.AfterPrice = (double) (p.Price*0.25 + p.Price);
+            //         p.AfterPrice =  (double) (p.Price - ((p.Price * p.Discount)/100));
+            //         p.Sales = random.Next(0, p.Quantity);
             //
-            //         context.Products.AddOrUpdate(p);
+            //         p.Remain = p.Quantity - p.Sales;
+            //         if (p.Remain == 0)
+            //         {
+            //             p.Note = "Hết hàng";
+            //         }
+            //         if (p.Remain < 10)
+            //         {
+            //             p.Note = "Sắp hết hàng";
+            //         }
+            //         if (p.Remain > 10 && p.Remain <= 30)
+            //         {
+            //             p.Note = "Đang bán tốt";
+            //         }
+            //         if (p.Remain > 30 && p.Remain <= 45)
+            //         {
+            //             p.Note = "Hàng đang tồn đọng !";
+            //         }
+            //         if (p.Remain > 45 )
+            //         {
+            //             p.Note = "Hàng đang ế !";
+            //         }
+            //
+            //     context.Products.AddOrUpdate(p);
             //     }
-
-           
+            //
+            //
 
             // // // ---------------------------------- Seeding Customer  ---------------------------------- //
             // Random random = new Random();
             //
             // string[] RandomLastName =
             // {
-            //     "Adams", "Adamson", "Wilson", "Burton", "Chapman", "Webb", "Allen", "Knight", "Young",
-            //     "Smith", "Griffiths","White","Hall","Cox","Webb","David","Bethany","Emily"
+            //     "Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ",
+            //     "Đặng", "Bùi","Đỗ","Hồ","Ngô","Dương","Lý","Trương","Lưu","Đoàn"
             // };
-            //
+            // string[] RandomMiddleName =
+            // {
+            //     "Văn", "Thị", "Quang", "Bảo", "Đức", "Công", "Tuấn", "Lê", "Bích", "Thu", "Thúy",
+            //     "Thùy", "Hoàng", "Quốc", "Ngọc", "Thái", "Thành", "Bích", "Anh", "Ánh", "Đình",
+            //     "Mỹ", "Xuân", "Việt"
+            // };
             // string[] RandomNames =
             // {
-            //     "abby", "abigail", "adele", "adrian" ,"john","dadwe",
-            //     "Rufus", "Bear", "Dakota", "Fido",
-            //     "Vanya", "Samuel", "Koani", "Volodya",
-            //     "Prince", "Yiska","Maggie", "Penny", "Saya", "Princess",
-            //     "Abby", "Laila", "Sadie", "Olivia",
-            //     "Starlight", "Talla","Adelaide","Aboli","Drusilla","Durra","Erin","Esperanza",
-            //     "Faye","Fayola","Frida","Ganesa","Gemma","Glenda","Jade","Ladonna","Keva","Oscar","Pandora","Peach","Philomena","Phoenix","Radley",
-            //     "Rose","Rosie","Rowan","Zel","Zelda","Zulema","Zoey","Xavia","Usha","Heulwen","Dragon","Tulen","Tran",
-            //     "Hoang","Long","Ngan"
+            //     "Anh", "An", "Linh", "Diệp" ,"Diệu","Đào",
+            //     "Cao", "Chinh", "Thanh", "Dung","Dũng",
+            //     "Bình", "Ba", "Bích", "Vân",
+            //     "Hương", "Thủy","Liên", "Quỳnh", "Quốc", "Bảo",
+            //     "Nam", "Ninh", "Dinh", "Hà",
+            //     "Hào", "Hiên","Hân","Ngọc","Phong","Phú","Thương","Toàn",
+            //     "Chiến","Thắng","Thu","Thiên","Lệ","Mạnh","Hằng","Liễu","Tú","Tuấn","Thuận","Đông","Thiết","Trang","Tran",
+            //     "Tùng","Nga","Quang","Quân","Chung","Trung","Trà","Tiên","Trinh","Nhi","Yến","Thảo","Giao",
+            //     "Hoàng","Long","Ngân", "Nga", "Chính", "Ánh", "Bách", "Thúy", "Kiều", "Liễu", "Vinh", "Hiếu",
+            //     "Hiệu", "Hằng", "Công", "Hùng", "Bạch", "Hạnh","Hường", "Việt", "Doanh"
             // };
             // string[] RandomGender =
             // {
@@ -174,12 +203,9 @@ namespace HTTT_QLyBanDongHo.Migrations
             // {
             //
             //     string[] RandomAddress = {
-            //     "California", "Florida", "New Jersey", "Indiana","Georgia","Ohio","Mississippi","Illinois","Alabama","Maine",
-            //     "Missouri","Michigan","Minnesota","Oregon","Abu Dhabi","Ajman","Dubai","Fujairah","	Ras Al Khaimah","Sharjah",
-            //     "Umm Al Quwain","Fukushima","Hiroshima","Hokkaido","Ishikawa","Kanagawa","Kyoto","Nagasaki","Okayama","Yamagata",
-            //     "Hakodate","Amur","Khabarovsk","Magadan","New york","Kyoto","Seoul","Manchester","London","Marid","Osaka","Moscow","Berlin",
-            //     "Ha Noi","TP HCM","Da Nang"
-            // };
+            //         "Hà Nội", "Hồ Chí Minh", "Hải Phòng", "Cần Thơ","Biên Hòa","Đà Nẵng","Nha Trang","Buôn Ma thuột","Huế"," Vinh",
+            //         "Vũng Tàu","Quy Nhơn","Long xuyên","Thái Nguyên","Nam Định","Rạch Giá","Thủ Dầu Một","Hạ Long","Phan Thiết","Khánh Hòa","Sầm Sơn","Sóc Trăng","Sơn La","Sông Công","Tam Điệp","Tam Kỳ","Tân An","Tây Ninh","Thanh Hoá","Trà Vinh","Tuy Hòa","Tuyên Quang","Uông Bí","Vị Thanh","Việt Trì"
+            //     };
             //     int[] RandomDate =
             //     {
             //         0, -1, -2, -3, -7, -14, -30, -60, -180, -365, -400, -287, -700 , -800 , -30*2, -30*3,-30*4,-30*6,-600,-888
@@ -193,6 +219,7 @@ namespace HTTT_QLyBanDongHo.Migrations
             //     for (int i = 1; i <= 1000; i++)
             //     {
             //         int indexName = random.Next(0, RandomNames.Length);
+            //         int indexMidName = random.Next(0, RandomMiddleName.Length);
             //         int indexLastName = random.Next(0, RandomLastName.Length);
             //         int indexAddress = random.Next(RandomAddress.Length);
             //         int randomPhone = random.Next(1000000, 9000000);
@@ -201,85 +228,94 @@ namespace HTTT_QLyBanDongHo.Migrations
             //         int indexDate = random.Next(RandomDate.Length);
             //         var cus = new Customer()
             //         {
-            //             ID = "Customer" + DateTime.Now.Millisecond + i +DateTime.Now.Hour,
-            //             Name = RandomNames[indexName]+" "+RandomLastName[indexLastName],
+            //             ID = "KH" + DateTime.Now.Millisecond + i +DateTime.Now.Hour,
+            //             Name = RandomLastName[indexLastName] + " " + RandomMiddleName[indexMidName] +" "+ RandomNames[indexName] ,
             //             Address = RandomAddress[indexAddress],
             //             Birthday = start.AddDays(random.Next(range)),
             //             Phonenumber = String.Concat("0", random.Next(9), random.Next(5), randomPhone),
             //             Gender = RandomGender[indexGender],
-            //             Email = RandomLastName[indexLastName]+RandomNames[indexName] +random.Next(10,1000)+ "@gmail.com",
-            //             YearOld = DateTime.Now.Year - start.AddDays(random.Next(range)).Year,
+            //             Email = RandomLastName[indexLastName].Substring(0,1) + RandomMiddleName[indexMidName].Substring(0, 1)+ RandomNames[indexName].Substring(0, 1) + random.Next(10,1000)+ "@gmail.com",
             //             CreateAt = DateTime.Now.AddDays(RandomDate[indexDate]),
-            //             CustomerTypeID = random.Next(1, 5),
-            //            
             //         };
+            //         cus.Age = DateTime.Now.Year - cus.Birthday.Value.Year;
+            //         if (cus.Age >= 25 && cus.Age <= 45)
+            //         {
+            //             cus.CustomerTypeID = 2;
+            //         }
+            //         else
+            //         {
+            //             cus.CustomerTypeID = random.Next(1, 5);
+            //         }
             //         context.Customers.AddOrUpdate(cus);
             //     }
             // }
 
             // // // ---------------------------------- Seeding Order  ---------------------------------- //
-             Random random = new Random();
-             int[] RandomDate =
-             {
-                 0 , -1,-2,-3,-7,-14,-30,-60,-180,-365,-365*2,-365*3
-             };
-             int[] RandomDateNow =
-             {
-                 0 , -1,-2,-3,-7,-14,-30,-60,-180
-             };
-            var ListCustomer = context.Customers.ToList();
-            var listProduct = context.Products.ToList();
-            var listOrderStatus = context.OrderStatus.ToList();
-            var listPaymentType = context.PaymentTypes.ToList();
-            for (int i = 1; i <= 300; i++)
-            {
-                int indexDate = random.Next(RandomDateNow.Length);
-                int c = random.Next(0, ListCustomer.Count);
-                int os = random.Next(0, listOrderStatus.Count);
-                int pt = random.Next(0, listPaymentType.Count);
-                var order = new Order()
-                {
-                    ID = "Order" + i+ DateTime.Now.Millisecond+DateTime.Now.Year,
-                    Create_At = DateTime.Now.AddDays(RandomDateNow[indexDate]).AddMinutes(random.Next(-300,-100)),
-                    OrderStatusID = listOrderStatus[os].ID,
-                    CustomerID = ListCustomer[c].ID,
-                    PaymentTypeID = listPaymentType[pt].PaymentTypeID,
-                    Total_Price = 0,
-                    Total_Quantity = 0,
-                    Discount = 0
-            };
-
-                for (int j = 1; j <= random.Next(1,3); j++)
-                {
-                    List<int> unique = new List<int>();
-                    int p = 0;
-                    void randomP()
-                    {
-                        p = random.Next(listProduct.Count);
-                        foreach (var p1 in unique)
-                        {
-                            if (p1 == p)
-                            {
-                                randomP();
-                            }
-                        }
-                    }
-                    randomP();
-                    unique.Add(p);
-                    var orderDetails = new OrderDetail()
-                    {
-                        OrderID = order.ID,
-                        ProductID = listProduct[p].ID,
-                        Quantity = 1,
-                        UnitPrice = listProduct[p].AfterPrice
-                    };
-                    order.AddOrderDetails(orderDetails);
-                    context.OrderDetails.Add(orderDetails);
-                }
+            //  Random random = new Random();
+            //  int[] RandomDate =
+            //  {
+            //      0 , -1,-2,-3,-7,-14,-30,-60,-180,-365,-365*2,-365*3
+            //  };
+            //  int[] RandomDateNow =
+            //  {
+            //      0 , -1,-2,-3,-7,-14,-30,-60,-180
+            //  };
+            // var ListCustomer = context.Customers.ToList();
+            // var listProduct = context.Products.ToList();
+            // var listOrderStatus = context.OrderStatus.ToList();
+            // var listPaymentType = context.PaymentTypes.ToList();
+            // for (int i = 1; i <= 300; i++)
+            // {
+            //     int indexDate = random.Next(RandomDate.Length);
+            //     int c = random.Next(0, ListCustomer.Count);
+            //     int os = random.Next(5, listOrderStatus.Count);
+            //     int pt = random.Next(0, listPaymentType.Count);
+            //     var order = new Order()
+            //     {
+            //         ID = "Order" + i+ DateTime.Now.Millisecond+DateTime.Now.Year,
+            //         Create_At = DateTime.Now.AddDays(RandomDate[indexDate]).AddMinutes(random.Next(-300,-100)),
+            //         OrderStatusID = listOrderStatus[os].ID,
+            //         CustomerID = ListCustomer[c].ID,
+            //         PaymentTypeID = listPaymentType[pt].PaymentTypeID,
+            //         Total_Price = 0,
+            //         Total_Quantity = 0,
+            //         Discount = 0
+            // };
+            //
+            //     for (int j = 1; j <= random.Next(1,3); j++)
+            //     {
+            //        int  p = random.Next(0,listProduct.Count);
+            //         // List<int> unique = new List<int>();
+            //         // int p = 0;
+            //         // void randomP()
+            //         // {
+            //         //     p = random.Next(listProduct.Count);
+            //         //     foreach (var p1 in unique)
+            //         //     {
+            //         //         if (p1 == p)
+            //         //         {
+            //         //             randomP();
+                    //         }
+                    //     }
+                    // }
+                    // randomP();
+                    // unique.Add(p);
+                //     var orderDetails = new OrderDetail()
+                //     {
+                //         OrderID = order.ID,
+                //         ProductID = listProduct[p].ID,
+                //         Quantity = 1,
+                //         UnitPrice = listProduct[p].AfterPrice
+                //     };
+                //     
+                //     order.AddOrderDetails(orderDetails);
+                //     context.OrderDetails.Add(orderDetails);
+                //  
+                // }
             
                
-                context.Orders.AddOrUpdate(order);
-            }
+            //     context.Orders.AddOrUpdate(order);
+            // }
         }
     }
 }

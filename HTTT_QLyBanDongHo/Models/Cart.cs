@@ -11,7 +11,7 @@ namespace HTTT_QLyBanDongHo.Models
         public Dictionary<int, Cart> Items { get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
-        public double TotalPrice { get; set; }
+        public double? TotalPrice { get; set; }
 
 
         public Cart(Product product, int quantity)

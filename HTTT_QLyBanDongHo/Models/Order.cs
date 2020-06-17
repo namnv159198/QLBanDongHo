@@ -1,5 +1,3 @@
-﻿using System.Configuration;
-
 namespace HTTT_QLyBanDongHo.Models
 {
     using System;
@@ -24,16 +22,14 @@ namespace HTTT_QLyBanDongHo.Models
         public int? Total_Quantity { get; set; }
 
         [Column("Total Price")]
-        public Double? Total_Price { get; set; }
+        public double? Total_Price { get; set; }
 
         public int? Discount { get; set; }
 
         [Column("Create At")]
         public DateTime? Create_At { get; set; }
 
- 
         [StringLength(255)]
-        
         public string CustomerID { get; set; }
 
         public int OrderStatusID { get; set; }
@@ -54,9 +50,9 @@ namespace HTTT_QLyBanDongHo.Models
             {
                 this.OrderDetails = new List<OrderDetail>();
             }
-            this.Total_Price += orderDetails.UnitPrice* orderDetails.Quantity;
-            this.Total_Quantity += orderDetails.Quantity;
+            this.Total_Price += orderDetails.UnitPrice * orderDetails.Quantity;
+            this.Total_Quantity +=  orderDetails.Quantity;
         }
-     
+
     }
 }

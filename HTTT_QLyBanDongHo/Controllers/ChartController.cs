@@ -18,11 +18,11 @@ namespace HTTT_QLyBanDongHo.Controllers
 
             var mymodel = new MultipleModelData();
 
-            var listAge = db.Customers.GroupBy(o => o.YearOld).Select(group => new
+            var listAge = db.Customers.GroupBy(o => o.Age).Select(group => new
             {
-                YearOld = group.Key,
+                Age = group.Key,
                 Total = group.Count()
-            }).OrderBy(x => x.YearOld);
+            }).OrderBy(x => x.Age);
 
 
 
@@ -34,16 +34,16 @@ namespace HTTT_QLyBanDongHo.Controllers
 
             foreach (var i in listAge)
             {
-                if (i.YearOld < 25)
+                if (i.Age < 25)
                 {
                     t1 += i.Total;
                 }
 
-                if (i.YearOld >= 25 && i.YearOld <= 40)
+                if (i.Age >= 25 && i.Age <= 40)
                 {
                     t2 += i.Total;
                 }
-                if (i.YearOld > 40)
+                if (i.Age > 40)
                 {
                     t3 += i.Total;
                 }

@@ -1,8 +1,3 @@
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-
 namespace HTTT_QLyBanDongHo.Models
 {
     using System;
@@ -16,22 +11,23 @@ namespace HTTT_QLyBanDongHo.Models
             : base("name=QLBanDongHoDBContext")
         {
         }
-       
+
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerType> CustomerTypes { get; set; }
+        public virtual DbSet<Email> Emails { get; set; }
         public virtual DbSet<Manufacture> Manufactures { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderStatus> OrderStatus { get; set; }
         public virtual DbSet<PaymentType> PaymentTypes { get; set; }
         public virtual DbSet<Product> Products { get; set; }
-       
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<Account>()
                 .Property(e => e.ID)
                 .IsUnicode(false);
@@ -53,7 +49,10 @@ namespace HTTT_QLyBanDongHo.Models
                 .WithRequired(e => e.Account)
                 .WillCascadeOnDelete(false);
 
-           
+            modelBuilder.Entity<Account>()
+                .HasMany(e => e.Users)
+                .WithRequired(e => e.Account)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.Products)
@@ -81,13 +80,18 @@ namespace HTTT_QLyBanDongHo.Models
                 .WithRequired(e => e.Customer)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Customer>()
+                .HasMany(e => e.Emails)
+                .WithMany(e => e.Customers)
+                .Map(m => m.ToTable("Email_Customer").MapLeftKey("CustomerID").MapRightKey("EmailID"));
+
             modelBuilder.Entity<CustomerType>()
                 .HasMany(e => e.Customers)
                 .WithRequired(e => e.CustomerType)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Manufacture>()
-                .Property(e => e.Logo)
+            modelBuilder.Entity<Email>()
+                .Property(e => e.ID)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Manufacture>()
@@ -128,11 +132,38 @@ namespace HTTT_QLyBanDongHo.Models
                 .WithRequired(e => e.Product)
                 .WillCascadeOnDelete(false);
 
-           
+            modelBuilder.Entity<Role>()
+                .Property(e => e.ID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Role>()
+                .HasMany(e => e.Users)
+                .WithRequired(e => e.Role)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.ID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.Gender)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.Birthday)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.RoleID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.AccountID)
+                .IsUnicode(false);
+
             modelBuilder.Entity<OrderDetail>()
                 .Property(e => e.OrderID)
                 .IsUnicode(false);
         }
-
     }
 }

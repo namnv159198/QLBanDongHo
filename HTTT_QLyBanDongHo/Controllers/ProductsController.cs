@@ -28,6 +28,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             SelectList Categorylist = new SelectList(listOrderStatus, "ID", "Name");
             ViewBag.Categorylist = Categorylist;
 
+
             var products = db.Products.Include(p => p.Category).Include(p => p.Manufacture);
             products = products.AsQueryable();
             ViewBag.TotalEnity = products.Count();
@@ -199,7 +200,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                         product.Thumbnails = string.Join(",", thumbnails);
                     }
 
-                    product.AfterPrice = product.AfterPrice - ((product.AfterPrice * product.Discount) / 100); 
+                    product.AfterPrice = (double) (product.AfterPrice - ((product.AfterPrice * product.Discount) / 100)); 
                     product.CreateAt = DateTime.Now;
                     db.Products.Add(product);
                     db.SaveChanges();
@@ -253,7 +254,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                 {
                     product.Thumbnails = string.Join(",", thumbnails);
                 }
-                product.AfterPrice = product.AfterPrice - ((product.AfterPrice * product.Discount) / 100);
+                product.AfterPrice = (double) (product.AfterPrice - ((product.AfterPrice * product.Discount) / 100));
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["message"] = "Edit";

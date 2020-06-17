@@ -72,11 +72,11 @@
                                     <td>   @Html.Raw(Model.Description)  </td>
                                 </tr>
                                 <tr>
-                                    <td width="30%"> Giá nhập</td>
+                                    <td width="30%"> Giá </td>
                                     <td> @Html.DisplayFor(model => model.Price)</td>
                                 </tr>
                                 <tr>
-                                    <td width="30%"> Giá bán</td>
+                                    <td width="30%"> Giá bán (@Model.Discount)</td>
                                     <td>
                                         @{
                                             var p = (double)Model.AfterPrice;

@@ -10,7 +10,7 @@
     <div class="container">
         <div class="breadcrumb-inner">
             <ul class="list-inline list-unstyled">
-                <li><a href="#">Home</a></li>
+                <li><a href="@Url.Action("Index")">Home</a></li>
 
                 <li class='active'>Chi tiết sản phẩm</li>
             </ul>
@@ -148,17 +148,31 @@
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <div class="stock-box">
-                                                <span class="label">Availability :</span>
+                                                <span class="label">Còn lại :</span>
+
                                             </div>
                                         </div>
                                         <div class="col-sm-9">
                                             <div class="stock-box">
-                                                <span class="value">In Stock</span>
+                                                <span class="value">@Model.Remain</span>
+                                                @if (Model.Remain < 10)
+                                                {
+                                                    <span class="text-danger"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(@Model.Note)</span>
+                                                }
                                             </div>
                                         </div>
                                     </div><!-- /.row -->
                                 </div><!-- /.stock-container -->
-
+                                <div class="rating-reviews m-t-20">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="">Giảm : </div>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="sale-offer-tag text-danger"><span style="font-size: 30px;">20%</span></div>
+                                        </div>
+                                    </div><!-- /.row -->
+                                </div><!-- /.rating-reviews -->
                                 <div class="description-container m-t-20">
                                     @Model.Description
                                 </div><!-- /.description-container -->
@@ -169,8 +183,10 @@
 
                                         <div class="col-sm-6">
                                             <div class="price-box">
-                                                <span class="price">@String.Format("{0:N0}", (Model.AfterPrice)) VNĐ</span>
-                                            
+
+                                                <span class="" style="text-decoration: line-through; color: #d3d3d3;font-size:25px">@String.Format("{0:N0}", (Model.Price)) VNĐ</span>
+                                                <br />
+                                                <span class="" style="font-size: 25px; color:red">@String.Format("{0:N0}", (Model.AfterPrice)) VNĐ</span>
                                             </div>
                                         </div>
 
@@ -195,13 +211,13 @@
                                     <div class="row">
 
                                         <div class="col-sm-2">
-                                            <span class="label">Qty :</span>
+                                            <span class="label">Số lượng : </span>
                                         </div>
 
                                         <div class="col-sm-2">
                                             <div class="cart-quantity">
                                                 <div class="quant-input">
-                                              
+
                                                     <input value="1" step="1" type="number" min="1" id="spinner" name="spinner">
                                                 </div>
                                             </div>
@@ -212,8 +228,8 @@
                                                 <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="Add Cart"> <i class="fa fa-shopping-cart"></i> </button>
                                                 <button class="btn btn-primary cart-btn" type="button">Thêm vào giỏ hàng</button>
 
-                                                </li>
-                                            </ul>
+                                            </li>
+                                        </ul>
                                     </div><!-- /.row -->
                                 </div><!-- /.quantity-container -->
 

@@ -38,11 +38,11 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             if (minOld.HasValue)
             {
-                customers = customers.Where(s => s.YearOld >= (double?)minOld);
+                customers = customers.Where(s => s.Age >= (double?)minOld);
             }
             if (maxOld.HasValue)
             {
-                customers = customers.Where(s => s.YearOld <= (double?)maxOld);
+                customers = customers.Where(s => s.Age <= (double?)maxOld);
             }
            
             if (string.IsNullOrEmpty(sortOrder) || sortOrder.Equals("date-asc"))
@@ -136,10 +136,10 @@ namespace HTTT_QLyBanDongHo.Controllers
                     customers = customers.OrderByDescending(p => p.Email);
                     break;
                 case "old-asc":
-                    customers = customers.OrderBy(p => p.YearOld);
+                    customers = customers.OrderBy(p => p.Age);
                     break;
                 case "old-desc":
-                    customers = customers.OrderByDescending(p => p.YearOld);
+                    customers = customers.OrderByDescending(p => p.Age);
                     break;
                 case "name-asc":
                     customers = customers.OrderBy(p => p.Name);
@@ -227,7 +227,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             {
                 customer.ID = "Cus" + DateTime.Now.Millisecond;
                 customer.CreateAt = DateTime.Now;
-                customer.YearOld = DateTime.Now.Year - customer.Birthday.Value.Year;
+                customer.Age = DateTime.Now.Year - customer.Birthday.Value.Year;
                 db.Customers.Add(customer);
                 db.SaveChanges();
                 TempData["message"] = "Create";
@@ -267,7 +267,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             {
                 if (customer.Birthday != null)
                 {
-                    customer.YearOld = DateTime.Now.Year - customer.Birthday.Value.Year;
+                    customer.Age = DateTime.Now.Year - customer.Birthday.Value.Year;
                     db.Entry(customer).State = EntityState.Modified;
                     db.SaveChanges();
                     TempData["message"] = "Edit";

@@ -50,12 +50,15 @@ namespace HTTT_QLyBanDongHo.Controllers
 
             return View();
         }
-        public ActionResult Shop(string searchString, int? page,int? category, string currentFilter ,int? pageSize)
+        public ActionResult Shop(string searchString, int? page,int? category, string currentFilter ,int? pageSize, string sort)
         {
+
             var listCategory = db.Categories.ToList();
             SelectList Categorylist = new SelectList(listCategory, "ID", "Name");
             ViewBag.Categorylist = Categorylist;
+
             var product = db.Products.Include(p => p.Category).Include(p => p.Manufacture);
+            ViewBag.TotalEnity = product.Count();
             product = product.AsQueryable();
             if (searchString != null)
             {
@@ -75,7 +78,45 @@ namespace HTTT_QLyBanDongHo.Controllers
             {
                 product = product.Where(s => s.Name.Contains(searchString));
             }
+
+            ViewBag.Sort = new List<SelectListItem>()
+            {
+                new SelectListItem() { Value="price-asc", Text= "Giá tăng dần" },
+                new SelectListItem() { Value="price-desc", Text= "Giá giảm dần" },
+                new SelectListItem() { Value="name-asc", Text= "Giá tăng dần A-Z" },
+                new SelectListItem() { Value="name-desc", Text= "Tên giảm dần A-Z" },
+
+            };
+            ViewBag.PageSize = new List<SelectListItem>()
+            {
+                new SelectListItem() { Value="5", Text= "5" },
+                new SelectListItem() { Value="10", Text= "10" },
+                new SelectListItem() { Value="15", Text= "15" },
+                new SelectListItem() { Value="25", Text= "25" },
+                new SelectListItem() { Value="50", Text= "50" },
+                new SelectListItem() { Value = product.ToList().Count().ToString(), Text= "All" },
+            };
+
+            switch (sort)
+            {
+                case "name-asc":
+                    product = product.OrderBy(p => p.Name);
+                    break;
+                case "name-desc":
+                    product = product.OrderByDescending(p => p.Name);
+                    break;
+                case "price-asc":
+                    product = product.OrderBy(p => p.AfterPrice);
+                    break;
+                case "price-desc":
+                    product = product.OrderByDescending(p => p.AfterPrice);
+                    break;
+                default:
+                    product = product.OrderByDescending(p => p.CreateAt);
+                    break;
+            }
             int pageNumber = (page ?? 1);
+
             if (!product.Any())
             {
                 TempData["message"] = "NotFound";

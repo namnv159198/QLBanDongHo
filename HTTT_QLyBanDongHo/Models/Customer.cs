@@ -13,6 +13,7 @@ namespace HTTT_QLyBanDongHo.Models
         public Customer()
         {
             Orders = new HashSet<Order>();
+            Emails = new HashSet<Email>();
         }
 
         [StringLength(255)]
@@ -34,16 +35,15 @@ namespace HTTT_QLyBanDongHo.Models
         public string Gender { get; set; }
 
         [Column(TypeName = "date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
 
-        public int? YearOld { get; set; }
+        public int? Age { get; set; }
 
         public DateTime? CreateAt { get; set; }
 
         public int CustomerTypeID { get; set; }
 
+ 
         [StringLength(255)]
         public string AccountID { get; set; }
 
@@ -53,5 +53,8 @@ namespace HTTT_QLyBanDongHo.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Email> Emails { get; set; }
     }
 }

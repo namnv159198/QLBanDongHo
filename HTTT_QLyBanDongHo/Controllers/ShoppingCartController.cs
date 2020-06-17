@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -142,7 +143,8 @@ namespace HTTT_QLyBanDongHo.Controllers
                     Phonenumber = o.PhoneNumber,
                     Name = o.Name,
                     CustomerTypeID = 1,
-                    Email = o.Email
+                    Email = o.Email,
+                    Gender = o.Gender
                 };
                 db.Customers.Add(cus);
                 db.SaveChanges();
@@ -169,9 +171,16 @@ namespace HTTT_QLyBanDongHo.Controllers
                         ProductID = cart.Product.ID,
                         Quantity = cart.Quantity,
                     };
+
+                    var p = db.Products.Find(cart.Product.ID);
+                    p.Sales += cart.Quantity;
+                    p.Remain = p.Quantity - p.Sales;
+                    db.Entry(p).State = EntityState.Modified;
                     db.OrderDetails.Add(orderDetails);
                     db.SaveChanges();
                 }
+
+
 
                 Session.Remove(ShoppingCartSession);
                 TempData["message"] = "success";

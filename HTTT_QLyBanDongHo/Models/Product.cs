@@ -22,14 +22,14 @@ namespace HTTT_QLyBanDongHo.Models
         [StringLength(255)]
         public string Name { get; set; }
 
-        public Double? Price { get; set; }
+        public double? Price { get; set; }
 
-        public Double AfterPrice { get; set; }
+        public double AfterPrice { get; set; }
 
         [StringLength(255)]
         public string Thumbnails { get; set; }
 
-        public double Discount { get; set; }
+        public int? Discount { get; set; }
 
         public int? isBestSeller { get; set; }
 
@@ -37,17 +37,27 @@ namespace HTTT_QLyBanDongHo.Models
 
         public int? isSpecial { get; set; }
 
-        [StringLength(maximumLength:1000000)]
+        [StringLength(255)]
         public string Description { get; set; }
 
         [StringLength(255)]
         public string Status { get; set; }
-        [DataType(DataType.Date)]
+
         public DateTime? CreateAt { get; set; }
 
         public int ManufactureID { get; set; }
 
         public int CategoryID { get; set; }
+
+        public int Quantity { get; set; }
+
+        public int? Remain { get; set; }
+
+        public int? Sales { get; set; }
+
+        [StringLength(255)]
+        public string Note { get; set; }
+
 
         public virtual Category Category { get; set; }
 
@@ -108,5 +118,6 @@ namespace HTTT_QLyBanDongHo.Models
             }
             return idThumbnail.ToArray();
         }
+      
     }
 }
