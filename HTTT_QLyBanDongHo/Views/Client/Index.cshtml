@@ -109,12 +109,12 @@
                                                             <span class="price">
 
                                                                 @{
-                                                                    var pd = (double)item.Price;
+                                                                    var pd = (double)item.AfterPrice;
                                                                 }
                                                                 @pd.ToString("#,##0").Replace(',', '.') VNĐ
                                                             </span> <span class="price-before-discount">
                                                                 @{
-                                                                    var p = (double)item.AfterPrice;
+                                                                    var p = (double)item.Price;
                                                                 }
                                                                 @p.ToString("#,##0").Replace(',', '.') VNĐ
 
@@ -199,12 +199,12 @@
                                                             <span class="price">
 
                                                                 @{
-                                                                    var pd = (double)item.Price;
+                                                                    var pd = (double)item.AfterPrice;
                                                                 }
                                                                 @pd.ToString("#,##0").Replace(',', '.') VNĐ
                                                             </span> <span class="price-before-discount">
                                                                 @{
-                                                                    var p = (double)item.AfterPrice;
+                                                                    var p = (double)item.Price;
                                                                 }
                                                                 @p.ToString("#,##0").Replace(',', '.') VNĐ
 

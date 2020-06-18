@@ -1,4 +1,4 @@
-namespace HTTT_QLyBanDongHo.Models
+﻿namespace HTTT_QLyBanDongHo.Models
 {
     using System;
     using System.Collections.Generic;
@@ -19,9 +19,11 @@ namespace HTTT_QLyBanDongHo.Models
         public string ID { get; set; }
 
         [StringLength(255)]
+        [Display(Name = "Tiêu đề")]
         public string Subject { get; set; }
 
-        [StringLength(255)]
+        [StringLength(10000000)]
+        [Display(Name = "Nội dung")]
         public string Content { get; set; }
 
         [StringLength(255)]

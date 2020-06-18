@@ -19,7 +19,7 @@ namespace HTTT_QLyBanDongHo.Controllers
         public static string DeActiveStatus = "Chưa kích hoạt";
 
         // GET: Products
-        public ActionResult Index(string sortOrder,int? category, int? page, string Status, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize,decimal? minPrice, decimal? maxPrice)
+        public ActionResult Index(string sortOrder,int? category, int? page, string Status, string searchString, string currentFilter, DateTime? start, DateTime? end, int? pageSize,decimal? minPrice, decimal? maxPrice,string FilterPrice)
         {
             ViewBag.Active = ActiveStatus;
             ViewBag.DeActive = DeActiveStatus;
@@ -33,6 +33,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             products = products.AsQueryable();
             ViewBag.TotalEnity = products.Count();
             int defaSize = (pageSize ?? 5);
+
             if (searchString != null)
             {
                 page = 1;
@@ -47,17 +48,20 @@ namespace HTTT_QLyBanDongHo.Controllers
             {
                 products = products.Where(s => s.Name.Contains(searchString));
             }
+
             if (category.HasValue)
             {
                 products = products.Where(s => s.Category.ID == category);
             }
             if (minPrice.HasValue)
             {
-                products = products.Where(s => s.AfterPrice >= (double?) minPrice);
+                products = products.Where(s => s.AfterPrice >= (double?) minPrice*100000);
+                ViewBag.minPrice = minPrice * 100000;
             }
             if (maxPrice.HasValue)
             {
-                products = products.Where(s => s.AfterPrice <= (double?) maxPrice);
+                products = products.Where(s => s.AfterPrice <= (double?) maxPrice * 100000);
+                ViewBag.maxPrice = maxPrice * 100000;
             }
             if (!String.IsNullOrEmpty(Status))
             {
@@ -87,8 +91,18 @@ namespace HTTT_QLyBanDongHo.Controllers
                 ViewBag.ColerSortIconUp = "#black";
                 ViewBag.ColerSortIconDown = "#e0d2d2";
             }
-
-
+            else if (sortOrder.Equals("price-desc"))
+            {
+                ViewBag.DateSort = "price-asc";
+                ViewBag.ColerSortIconUp = "#e0d2d2";
+                ViewBag.ColerSortIconDown = "black";
+            }
+            else if (sortOrder.Equals("price-asc"))
+            {
+                ViewBag.DateSort = "price-asc";
+                ViewBag.ColerSortIconUp = "#black";
+                ViewBag.ColerSortIconDown = "#e0d2d2";
+            }
             if (start != null)
             {
                 var startDate = start.GetValueOrDefault().Date;
@@ -110,7 +124,36 @@ namespace HTTT_QLyBanDongHo.Controllers
                 new SelectListItem() { Value="50", Text= "50" },
                 new SelectListItem() { Value = products.ToList().Count().ToString(), Text= "All" },
             };
-            
+            ViewBag.FilterPrice = new List<SelectListItem>()
+            {
+                new SelectListItem() { Value="1tr", Text= "dưới 1tr" },
+                new SelectListItem() { Value="1-5tr", Text= "từ 1tr - 5tr" },
+                new SelectListItem() { Value="5-10tr", Text= "từ 5tr - 10tr" },
+                new SelectListItem() { Value="10-20tr", Text= "từ 10tr - 20tr" },
+                new SelectListItem() { Value="20tr", Text= "Hơn 20tr" },
+                new SelectListItem() { Value = products.ToList().Count().ToString(), Text= "All" },
+            };
+            switch (FilterPrice)
+            {
+                case "1tr":
+                    products = products.Where(s => s.AfterPrice <=  1000000);
+                    break;
+                case "1-5tr":
+                    products = products.Where(s => s.AfterPrice >= 1000000 && s.AfterPrice <= 5000000);
+                    break;
+                case "5-10tr":
+                    products = products.Where(s => s.AfterPrice >= 5000000 && s.AfterPrice <= 10000000);
+                    break;
+                case "10-20tr":
+                    products = products.Where(s => s.AfterPrice >= 10000000 && s.AfterPrice <= 20000000);
+                    break;
+                case "20tr":
+                    products = products.Where(s => s.AfterPrice >= 20000000 );
+                    break;
+                default:
+                    products = products.OrderByDescending(p => p.CreateAt);
+                    break;
+            }
             switch (sortOrder)
             {
                 case "name-asc":
@@ -118,6 +161,12 @@ namespace HTTT_QLyBanDongHo.Controllers
                     break;
                 case "name-desc":
                     products = products.OrderByDescending(p => p.Name);
+                    break;
+                case "price-asc":
+                    products = products.OrderBy(p => p.AfterPrice);
+                    break;
+                case "price-desc":
+                    products = products.OrderByDescending(p => p.AfterPrice);
                     break;
                 case "date-asc":
                     products = products.OrderBy(p => p.CreateAt);

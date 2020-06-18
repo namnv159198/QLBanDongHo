@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using HTTT_QLyBanDongHo.Models;
@@ -52,7 +53,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             return Json("success");
         }
-        public ActionResult AddItemQuantity(int? id,int quantity)
+        public ActionResult AddItemQuantity(int? id, int quantity)
         {
             var existingProduct = db.Products.FirstOrDefault(m => m.ID == id);
 
@@ -79,7 +80,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                 }
                 else
                 {
-                    listCart[checkExistingProduct].Quantity =+quantity;
+                    listCart[checkExistingProduct].Quantity = +quantity;
                 }
                 Session[ShoppingCartSession] = listCart;
             }
@@ -150,19 +151,19 @@ namespace HTTT_QLyBanDongHo.Controllers
                 db.SaveChanges();
                 Order order = new Order()
                 {
-                    ID = "Order" + DateTime.Now.Millisecond,
+                    ID = "Order" + DateTime.Now.Millisecond+DateTime.Now.Year,
                     OrderStatusID = 1,
                     Create_At = DateTime.Now,
                     CustomerID = cus.ID,
                     Discount = 0,
-                    Total_Price = listCart.Sum(x => x.Product.Price * x.Quantity),
+                    Total_Price = listCart.Sum(x => x.Product.AfterPrice * x.Quantity),
                     PaymentTypeID = 1,
-                    Total_Quantity = listCart.Sum(x =>x.Quantity)
+                    Total_Quantity = listCart.Sum(x => x.Quantity)
                 };
-                
+
                 db.Orders.Add(order);
                 db.SaveChanges();
-                
+
                 foreach (Cart cart in listCart)
                 {
                     OrderDetail orderDetails = new OrderDetail()
@@ -180,6 +181,37 @@ namespace HTTT_QLyBanDongHo.Controllers
                     db.SaveChanges();
                 }
 
+                var senderEmail = new MailAddress("namkun159198@gmail.com", "BoxShop");
+                var receiverEmail = new MailAddress(o.Email, "Receiver");
+                var password = "0963404604";
+                var sub = "[ BoxShop ] : Đơn hàng mới  #" +order.ID;
+                var body = "";
+                foreach (Cart cart in listCart)
+                {
+                    body += " Sản phẩm : " + cart.Product.Name + " - " + "Số lượng : " + cart.Quantity + " - " + "Giá : " + String.Format("{0:N0}", (cart.Product.Price)) +" VNĐ "+ " - " +"Thành tiền : " + String.Format("{0:N0}", (cart.Product.Price * cart.Quantity)) + " VNĐ ";
+                    body += "\n";
+                }
+
+                body += "Tổng đơn hàng : " + String.Format("{0:N0}", (listCart.Sum(x => x.Product.Price * x.Quantity))) + " VNĐ " +"\n";
+                body += "Giao nhận : Giao hàng miễn phí" +"\n";
+                body += "Phương thức thanh toán : Trả tiền mặt khi nhận hàng";
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(senderEmail.Address, password)
+                };
+                using (var mess = new MailMessage(senderEmail, receiverEmail)
+                {
+                    Subject = sub,
+                    Body = body
+                })
+                {
+                    smtp.Send(mess);
+                }
 
 
                 Session.Remove(ShoppingCartSession);
@@ -187,7 +219,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                 return Redirect("../Client/Index");
             }
             return View("Index");
-                
+
         }
         private int CheckExistingProduct(int? id)
         {
