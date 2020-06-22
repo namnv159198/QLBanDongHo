@@ -16,7 +16,9 @@
                     <div class="card-header" style="background-color:white">
                         <div class="row">
                             <div class="card-body row ">
+                                <div class="col-sm-2 mt-4">
 
+                                </div>
                                 <div id="chartContainer3" style="height: 300px; width: 100%; margin-bottom:100px"></div>
 
 
@@ -25,6 +27,15 @@
                                     @using (Html.BeginForm("RevenueChart", "Chart", FormMethod.Get, new { @name = "search-form" }))
                                     {
                                         @Html.DropDownList("YearChart", (IEnumerable<SelectListItem>)ViewBag.listYear, "Chọn", new { @class = "form-control" })
+                                    }
+                                </div>
+                                <div class="col-2 mt-4">
+                                    @using (Html.BeginForm("ExportToExcel", "chart", FormMethod.Get, new { @name = "export-form" }))
+                                    {
+                                        <input name="ex" value="" hidden/>
+                                        <button class="exportExcel form-control btn btn-success fa-border" value="" type="submit">
+                                            Xuất Excel <i class="fa fa-print" aria-hidden="true"></i>
+                                        </button>
                                     }
                                 </div>
                                 <div id="chartContainer2" style="height: 300px; width: 100%; margin-bottom: 100px"></div>
@@ -71,7 +82,7 @@
                                 </div>
                             </div>
 
-                        </div>
+                            </div>
 
                     </div>
                 </div>
@@ -212,8 +223,26 @@
 </script>
 @section scripts{
     <script>
+        var url_string = location.href;
+        var url = new URL(url_string);
+        var initMinPrice = url.searchParams.get("YearChart");
+        if (initMinPrice == null) {
+            initMinPrice = 2020;
+        }
         $('select[name="YearChart"]').change(function () {
             $('form[name="search-form"]').submit();
+        });
+        $('body').on('click', '.exportExcel', function () {
+            $('input[name="ex"]').val(initMinPrice);
+            $('form[name="export-form"]').submit();
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Xuất Excel thành công',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        
         });
     </script>
 

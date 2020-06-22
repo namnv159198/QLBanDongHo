@@ -194,6 +194,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="ChartModel\ChartModel.cs" />
+    <Compile Include="ChartModel\ExportExcelModel.cs" />
     <Compile Include="ChartModel\ModelData.cs" />
     <Compile Include="ChartModel\ModelData2.cs" />
     <Compile Include="ChartModel\ModelData3.cs" />

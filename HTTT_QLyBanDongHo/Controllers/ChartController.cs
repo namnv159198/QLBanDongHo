@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using HTTT_QLyBanDongHo.ChartModel;
 using HTTT_QLyBanDongHo.Models;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 
 namespace HTTT_QLyBanDongHo.Controllers
 {
@@ -368,64 +370,157 @@ namespace HTTT_QLyBanDongHo.Controllers
             return View(mymodel);
         }
 
-        // public ActionResult RevenueChartAll()
-        // {
-        //     List<ChartModel.ChartModel.DataPoint3> dataPoints7 = new List<ChartModel.ChartModel.DataPoint3>();
-        //     List<ChartModel.ChartModel.DataPoint3> dataPoints8 = new List<ChartModel.ChartModel.DataPoint3>();
-        //     List<ChartModel.ChartModel.DataPoint3> dataPoints9 = new List<ChartModel.ChartModel.DataPoint3>();
-        //     List<ChartModel.ChartModel.DataPoint3> dataPoints20 = new List<ChartModel.ChartModel.DataPoint3>();
-        //
-        //
-        //
-        //     var R2017 = db.Orders.Where(x => x.Create_At.Value.Year < 2018).GroupBy(o => o.Create_At.Value.Month).Select(group => new
-        //     {
-        //         createAt = group.Key,
-        //         Revenue = group.Sum(o => o.Total_Price)
-        //     }).OrderBy(x => x.createAt);
-        //     var R2018 = db.Orders.Where(x => x.Create_At.Value.Year == 2018).GroupBy(o => o.Create_At.Value.Month).Select(group => new
-        //     {
-        //         createAt = group.Key,
-        //         Revenue = group.Sum(o => o.Total_Price)
-        //     }).OrderBy(x => x.createAt);
-        //
-        //     var R2019 = db.Orders.Where(x => x.Create_At.Value.Year == 2019).GroupBy(o => o.Create_At.Value.Month).Select(group => new
-        //     {
-        //         createAt = group.Key,
-        //         Revenue = group.Sum(o => o.Total_Price)
-        //     }).OrderBy(x => x.createAt);
-        //
-        //     var R2020 = db.Orders.Where(x => x.Create_At.Value.Year == 2020).GroupBy(o => o.Create_At.Value.Month).Select(group => new
-        //     {
-        //         createAt = group.Key,
-        //         Revenue = group.Sum(o => o.Total_Price)
-        //     }).OrderBy(x => x.createAt);
-        //
-        //
-        //     foreach (var l in R2017)
-        //     {
-        //         dataPoints7.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
-        //     }
-        //     foreach (var l in R2018)
-        //     {
-        //         dataPoints8.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
-        //     }
-        //     foreach (var l in R2019)
-        //     {
-        //         dataPoints9.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
-        //     }
-        //     foreach (var l in R2020)
-        //     {
-        //         dataPoints20.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
-        //     }
-        //     ViewBag.DataPoints7 = JsonConvert.SerializeObject(dataPoints7);
-        //     ViewBag.DataPoints8 = JsonConvert.SerializeObject(dataPoints8);
-        //     ViewBag.DataPoints9 = JsonConvert.SerializeObject(dataPoints9);
-        //     ViewBag.DataPoints20 = JsonConvert.SerializeObject(dataPoints20);
-        //     return View();
-        // }
+        
+        public void ExportToExcel(string ex)
+        {
+            var expE = new List<ExportExcelModel>();
+            ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
+            int rowStart = 8;
+            switch (ex)
+            {
+                case "2017":
+                    var R2017 = db.Orders.Where(x => x.Create_At.Value.Year == 2017).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+                    {
+                        createAt = group.Key,
+                        Revenue = group.Sum(o => o.Total_Price),
+                        totalQuanity = group.Sum(o=>o.Total_Quantity),
+                        totalRemain = group.Sum(o => o.OrderDetails.Sum(x=>x.Product.Remain)),
+                    }).OrderBy(x => x.createAt);
+
+                  
+                    foreach (var i in R2017)
+                    {
+                        var e = new ExportExcelModel();
+                        e.Month = i.createAt;
+                        e.TotalQuantity = (int) i.totalQuanity;
+                        e.Revenue = (double) i.Revenue;
+                      expE.Add(e);
+                    }
+
+                    ExportVoid(expE, Convert.ToInt32(ex));
+                    break;
+                case "2018":
+                    var R2018 = db.Orders.Where(x => x.Create_At.Value.Year == 2018).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+                    {
+                        createAt = group.Key,
+                        Revenue = group.Sum(o => o.Total_Price),
+                        totalQuanity = group.Sum(o => o.Total_Quantity),
+                        totalRemain = group.Sum(o => o.OrderDetails.Sum(x => x.Product.Remain)),
+                    }).OrderBy(x => x.createAt);
+
+                 
+                    foreach (var i in R2018)
+                    {
+                        var e = new ExportExcelModel();
+                        e.Month = i.createAt;
+                        e.TotalQuantity = (int)i.totalQuanity;
+                        e.Revenue = (double)i.Revenue;
+                        expE.Add(e);
+                    }
+
+                    ExportVoid(expE, Convert.ToInt32(ex));
+
+                    break;
+                case "2019":
+                    var R2019 = db.Orders.Where(x => x.Create_At.Value.Year == 2019).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+                    {
+                        createAt = group.Key,
+                        Revenue = group.Sum(o => o.Total_Price),
+                        totalQuanity = group.Sum(o => o.Total_Quantity),
+                        totalRemain = group.Sum(o => o.OrderDetails.Sum(x => x.Product.Remain)),
+                    }).OrderBy(x => x.createAt);
 
 
+                    foreach (var i in R2019)
+                    {
+                        var e = new ExportExcelModel();
+                        e.Month = i.createAt;
+                        e.TotalQuantity = (int)i.totalQuanity;
+                        e.Revenue = (double)i.Revenue;
+                        expE.Add(e);
+                    }
 
+                    ExportVoid(expE, Convert.ToInt32(ex));
+
+                    break;
+                case "2020":
+                    var R2020 = db.Orders.Where(x => x.Create_At.Value.Year == 2020).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+                    {
+                        createAt = group.Key,
+                        Revenue = group.Sum(o => o.Total_Price),
+                        totalQuanity = group.Sum(o => o.Total_Quantity),
+                        totalRemain = group.Sum(o => o.OrderDetails.Sum(x => x.Product.Remain)),
+                    }).OrderBy(x => x.createAt);
+
+
+                    foreach (var i in R2020)
+                    {
+                        var e = new ExportExcelModel();
+                        e.Month = i.createAt;
+                        e.TotalQuantity = (int)i.totalQuanity;
+                        e.Revenue = (double)i.Revenue;
+                        expE.Add(e);
+                    }
+
+                    ExportVoid(expE, Convert.ToInt32(ex));
+
+                    break;
+
+            }
+            
+
+            
+        }
+
+        public void ExportVoid(List<ExportExcelModel> e,int year)
+        {
+            ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
+            int rowStart = 8;
+
+           
+            ws.Cells["A2"].Value = "Danh sách doanh thu năm " + year;
+
+            ws.Cells["H3"].Value = "Tổng số  doanh thu ";
+            ws.Cells["I3"].Value = String.Format("{0:N0}", (e.Sum(x=>x.Revenue))) + "VNĐ"; 
+
+            ws.Cells["A3"].Value = "Ngày xuất";
+            ws.Cells["B3"].Value = string.Format("{0:dd/MM/yyyy HH:mm}", DateTimeOffset.Now);
+
+            ws.Cells["A7"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            ws.Cells["B7"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            ws.Cells["C7"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            ws.Cells["A7"].Value = "Tháng";
+            ws.Cells["B7"].Value = "Số lượng bán";
+
+            ws.Cells["C7"].Value = "Doanh thu";
+
+            foreach (var i in e)
+            {
+                if (i.Revenue >= 4000000000)
+                {
+                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    ws.Row(rowStart).Style.Fill.BackgroundColor
+                        .SetColor(ColorTranslator.FromHtml(string.Format("yellow")));
+                }
+                ws.Cells[string.Format("A{0}", rowStart)].Value = i.Month;
+                ws.Cells[string.Format("B{0}", rowStart)].Value = i.TotalQuantity;
+                ws.Cells[string.Format("C{0}", rowStart)].Value = String.Format("{0:N0}", (i.Revenue)) + "VNĐ";
+
+                rowStart++;
+            }
+
+
+            ws.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=DoanhThuNam"+year+".xlsx");
+            Response.BinaryWrite(pck.GetAsByteArray());
+            Response.End();
+        }
+
+        
     }
 }
 
