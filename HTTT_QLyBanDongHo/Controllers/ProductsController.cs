@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HTTT_QLyBanDongHo.Models;
+using OfficeOpenXml;
 using PagedList;
 
 namespace HTTT_QLyBanDongHo.Controllers
@@ -115,6 +117,13 @@ namespace HTTT_QLyBanDongHo.Controllers
                 endDate = endDate.Date + new TimeSpan(23, 59, 59);
                 products = products.Where(p => p.CreateAt <= endDate);
             }
+           
+            ViewBag.StatusListID = new List<SelectListItem>()
+            {
+                new SelectListItem() { Value="Kích hoạt", Text= "Kích hoạt" },
+                new SelectListItem() { Value="Chưa kích hoạt", Text= "Chưa kích hoạt" },
+            }; ;
+
             ViewBag.PageSize = new List<SelectListItem>()
             {
                 new SelectListItem() { Value="5", Text= "5" },
@@ -187,10 +196,96 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             return View(products.ToPagedList(pageNumber, defaSize));
         }
-        public ActionResult CheckList(string ListCategoryIDs)
+
+        public void ExportToExcel()
+        {
+            var Products = db.Products.ToList();
+            ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
+
+            ws.Cells["A2"].Value = "Danh sách sản phẩm";
+
+            ws.Cells["H2"].Value = "Tổng số sản phẩm ";
+            ws.Cells["I2"].Value = Products.Count();
+
+            ws.Cells["H3"].Value = "Tổng số  lượng sản phẩm ";
+            ws.Cells["I3"].Value = String.Format("{0:N0}", Products.Sum(x => x.Quantity)) ;
+
+            ws.Cells["H4"].Value = "Đã bán ";
+            ws.Cells["I4"].Value = String.Format("{0:N0}", Products.Sum(x => x.Sales));
+
+            ws.Cells["H5"].Value = "Tồn kho";
+            ws.Cells["I5"].Value = String.Format("{0:N0}", Products.Sum(x => x.Remain));
+
+            ws.Cells["A3"].Value = "Ngày xuất";
+            ws.Cells["B3"].Value = string.Format("{0:dd/MM/yyyy HH:mm}", DateTimeOffset.Now);
+
+            ws.Cells["A7"].Value = "Mã sản phẩm";
+            ws.Cells["B7"].Value = "Tên sản phẩm";
+            ws.Cells["C7"].Value = "Giá";
+            ws.Cells["D7"].Value = "Giá bán";
+            ws.Cells["E7"].Value = "Giảm giá";
+            ws.Cells["F7"].Value = "Số lượng";
+            ws.Cells["G7"].Value = "Đã bán";
+            ws.Cells["H7"].Value = "Còn lại";
+            ws.Cells["I7"].Value = "Trạng thái";
+            ws.Cells["K7"].Value = "Nhà sản xuất";
+            ws.Cells["L7"].Value = "Loại danh mục";
+            ws.Cells["M7"].Value = "Ngày tạo";
+            ws.Cells["N7"].Value = "Ghi chú";
+
+            int rowStart = 8;
+            foreach (var i in Products)
+            {
+                if (i.Remain <= 10 )
+                {
+                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    ws.Row(rowStart).Style.Fill.BackgroundColor
+                        .SetColor(ColorTranslator.FromHtml(string.Format("yellow")));
+                }
+
+
+                ws.Cells[string.Format("A{0}", rowStart)].Value = i.ID;
+                ws.Cells[string.Format("B{0}", rowStart)].Value = i.Name;
+                ws.Cells[string.Format("C{0}", rowStart)].Value = String.Format("{0:N0}", (i.Price)) + "VNĐ";
+                if ( i.CreateAt == null || i.Note == null)
+                {
+
+                    ws.Cells[string.Format("M{0}", rowStart)].Value = "Chưa có";
+                    ws.Cells[string.Format("N{0}", rowStart)].Value = "Chưa có";
+                }
+                else
+                {
+                    ws.Cells[string.Format("M{0}", rowStart)].Value = i.CreateAt.Value.ToString("dd/MM/yyyy");
+                    ws.Cells[string.Format("N{0}", rowStart)].Value = i.Note;
+                }
+
+                ws.Cells[string.Format("D{0}", rowStart)].Value = String.Format("{0:N0}", (i.AfterPrice)) +"VNĐ";
+                ws.Cells[string.Format("E{0}", rowStart)].Value = i.Discount;
+                ws.Cells[string.Format("F{0}", rowStart)].Value = i.Quantity;
+                ws.Cells[string.Format("G{0}", rowStart)].Value = i.Sales;
+                ws.Cells[string.Format("H{0}", rowStart)].Value = i.Remain;
+                ws.Cells[string.Format("I{0}", rowStart)].Value = i.Status;
+                ws.Cells[string.Format("K{0}", rowStart)].Value = i.Manufacture.Name;
+                ws.Cells[string.Format("L{0}", rowStart)].Value = i.Category.Name;
+         
+                rowStart++;
+            }
+
+
+            ws.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=DanhSachSanPham.xlsx");
+            Response.BinaryWrite(pck.GetAsByteArray());
+            Response.End();
+
+        }
+
+        public ActionResult CheckList(string ListCategoryIDs, string ProductsStatusCheckList)
         {
             {
-                if (ListCategoryIDs != null)
+                if (ListCategoryIDs != null && ProductsStatusCheckList == null)
                 {
                     string[] listID = ListCategoryIDs.Split(',');
                     foreach (string c in listID)
@@ -198,9 +293,26 @@ namespace HTTT_QLyBanDongHo.Controllers
                         Product obj = db.Products.Find(Convert.ToInt32(c));
                         db.Products.Remove(obj);
                     }
+
                     db.SaveChanges();
                     TempData["message"] = "Delete";
                     return RedirectToAction("Index");
+                }
+                if (ListCategoryIDs != null && ProductsStatusCheckList!= null)
+                {
+                    string[] listID = ListCategoryIDs.Split(',');
+                    if (listID.Any())
+                    {
+                        foreach (string c in listID)
+                        {
+                            Product obj = db.Products.Find(Convert.ToInt32(c));
+                            obj.Status = ProductsStatusCheckList;
+                        }
+
+                        db.SaveChanges();
+                        TempData["message"] = "ChangeStatus";
+                        return RedirectToAction("Index");
+                    }
                 }
                 TempData["message"] = "CheckFail";
                 return RedirectToAction("Index");

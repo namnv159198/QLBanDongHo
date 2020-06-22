@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HTTT_QLyBanDongHo.Models;
+using OfficeOpenXml;
 using PagedList;
 
 namespace HTTT_QLyBanDongHo.Controllers
@@ -173,6 +175,85 @@ namespace HTTT_QLyBanDongHo.Controllers
             }
             return View(orders.ToPagedList(pageNumber, defaSize));
         }
+
+
+        public void ExportToExcel()
+        {
+            var order = db.Orders.ToList();
+            ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
+
+            ws.Cells["A2"].Value = "Danh sách sản phẩm";
+
+            ws.Cells["H2"].Value = "Tổng số đơn hàng ";
+            ws.Cells["I2"].Value = order.Count();
+
+            ws.Cells["H3"].Value = "Tổng số  doanh thu ";
+            ws.Cells["I3"].Value = String.Format("{0:N0}", order.Sum(x => x.Total_Price)) + "VNĐ";
+
+            ws.Cells["H4"].Value = "Tổng số sản phẩm đã bán ";
+            ws.Cells["I4"].Value = String.Format("{0:N0}", order.Sum(x => x.Total_Quantity));
+
+           
+
+            ws.Cells["A3"].Value = "Ngày xuất";
+            ws.Cells["B3"].Value = string.Format("{0:dd/MM/yyyy HH:mm}", DateTimeOffset.Now);
+
+            ws.Cells["A7"].Value = "Mã đơn hàng";
+            ws.Cells["B7"].Value = "Tên khách hàng";
+            ws.Cells["C7"].Value = "Email";
+            ws.Cells["D7"].Value = "Địa chỉ";
+            ws.Cells["E7"].Value = "Số điện thoại";
+            ws.Cells["F7"].Value = "Giới tính";
+            ws.Cells["G7"].Value = "Sản phẩm";
+            ws.Cells["H7"].Value = "Tổng số lượng";
+            ws.Cells["I7"].Value = "Tổng tiền";
+            ws.Cells["K7"].Value = "Phương thức thanh toán";
+            ws.Cells["L7"].Value = "Trạng thái";
+            ws.Cells["M7"].Value = "Ngày tạo";
+           
+
+            int rowStart = 8;
+            foreach (var i in order)
+            {
+                if (i.Total_Price >= 20000000)
+                {
+                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    ws.Row(rowStart).Style.Fill.BackgroundColor
+                        .SetColor(ColorTranslator.FromHtml(string.Format("yellow")));
+                }
+
+
+                ws.Cells[string.Format("A{0}", rowStart)].Value = i.ID;
+                ws.Cells[string.Format("B{0}", rowStart)].Value = i.Customer.Name;
+                ws.Cells[string.Format("C{0}", rowStart)].Value = i.Customer.Email;
+                ws.Cells[string.Format("D{0}", rowStart)].Value = i.Customer.Address;
+                ws.Cells[string.Format("E{0}", rowStart)].Value = i.Customer.Phonenumber;
+                ws.Cells[string.Format("F{0}", rowStart)].Value = i.Customer.Gender;
+                foreach (var item in i.OrderDetails)
+                {
+                    ws.Cells[string.Format("G{0}", rowStart)].Value += item.Product.Name + "(" + item.Quantity +":"+  String.Format("{0:N0}", item.Product.AfterPrice) +") ,";
+                }
+
+                ws.Cells[string.Format("H{0}", rowStart)].Value = String.Format("{0:N0}", (i.Total_Quantity));
+                ws.Cells[string.Format("I{0}", rowStart)].Value = String.Format("{0:N0}", (i.Total_Price));
+                ws.Cells[string.Format("K{0}", rowStart)].Value = i.PaymentType.Type;
+                ws.Cells[string.Format("L{0}", rowStart)].Value = i.OrderStatus.Status;
+                ws.Cells[string.Format("M{0}", rowStart)].Value = i.Create_At.Value.ToString("dd/MM/yyyy");
+
+                rowStart++;
+            }
+
+
+            ws.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=DanhSachDoanhThuDonHang.xlsx");
+            Response.BinaryWrite(pck.GetAsByteArray());
+            Response.End();
+
+        }
+
         public ActionResult CheckList(string ListCategoryIDs, int OrdersStatusCheckList)
         {
             {
@@ -264,6 +345,10 @@ namespace HTTT_QLyBanDongHo.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (order.Discount != null)
+                {
+                    order.Total_Price = order.Total_Price - ((order.Total_Price * order.Discount) / 100);
+                }
                 db.Entry(order).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["message"] = "Edit";

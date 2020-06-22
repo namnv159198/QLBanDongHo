@@ -69,7 +69,7 @@
                                 <label class="text-uppercase"> Lọc theo thời gian</label>
                                 <input type="text" name="daterange" value="" class="form-control  " />
                             </div>
-                            
+
                             <div class="col-sm-1">
                                 <label class="text-uppercase"> Show  </label>
                                 @Html.DropDownList("pageSize", null, null, new { @class = "form-control", style = "width: 70px;" })
@@ -91,7 +91,7 @@
                                 </div>
 
                             </div>
-
+                           
 
 
                         </div>
@@ -101,7 +101,7 @@
                     {
 
                         <div class="row card-body">
-                            <div class="col-sm-4">
+                            <div class="col-sm-10">
                                 <button type="button" id="delete" value="delete" data-toggle="modal" data-target="#myModal_delete" class="btn btn-sm btn-danger rounded-0"><i class="fa fa-trash-o"></i>&nbsp; Xóa</button>
                                 <div class="modal" id="myModal_delete">
                                     <div class="modal-dialog">
@@ -125,7 +125,7 @@
                                                 {
                                                     <input type="hidden" name="ListCategoryIDs" value="" />
                                                     <input type="submit" value="Delete" class="btn btn-default btn-danger" />
-                                                    <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
+                                                    <input type="button"  class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
                                                 }
 
 
@@ -135,6 +135,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-2" >
+                                @using (Html.BeginForm("ExportToExcel", "Customers"))
+                                {
+                                    <button class="exportExcel form-control btn btn-success fa-border" type="submit">
+                                        Xuất Excel <i class="fa fa-print" aria-hidden="true"></i>
+                                    </button>
+                                    }
+                                </div>
                         </div>
 
 
@@ -181,7 +189,8 @@
                                         <i class="fa fa-arrow-up iconSort" name="phone-asc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconUp"></i>
                                     </th>
                                     <th>
-                                        Địa chỉ </th>
+                                        Địa chỉ
+                                    </th>
                                     <th>
                                         Ngày tạo
                                         <i class="fa fa-arrow-down iconSort" name="date-desc" aria-hidden="true" style="float: right; margin-right: 4px; color: @ViewBag.ColerSortIconDown"></i>
@@ -194,74 +203,74 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                <tr class="text-center">
-                                    <td>
-                                        <input type="checkbox" class="checkBox"
-                                               value="@item.ID" />
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Email)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.YearOld)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Phonenumber)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Address)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CreateAt)
-                                    </td>
-                                    <td>
-                                        <a href="@Url.Action("Edit", "Customers", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
-                                        <a href="@Url.Action("Details", "Customers", new {id = item.ID})" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a> |
-                                        <button type="button" class="btn btn-sm btn-danger  " data-toggle="modal" data-target="#myModal_@item.ID">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
+                                    <tr class="text-center">
+                                        <td>
+                                            <input type="checkbox" class="checkBox"
+                                                   value="@item.ID" />
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Email)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Age)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Phonenumber)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Address)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CreateAt)
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("Edit", "Customers", new {id = item.ID})" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a> |
+                                            <a href="@Url.Action("Details", "Customers", new {id = item.ID})" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a> |
+                                            <button type="button" class="btn btn-sm btn-danger  " data-toggle="modal" data-target="#myModal_@item.ID">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
 
 
 
 
-                                        <!-- Modal delete -->
-                                        <div class="modal" id="myModal_@item.ID">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
+                                            <!-- Modal delete -->
+                                            <div class="modal" id="myModal_@item.ID">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
 
-                                                    <!-- Modal Header -->
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title">Thông báo</h4>
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Thông báo</h4>
+
+                                                        </div>
+
+                                                        <!-- Modal body -->
+                                                        <div class="modal-body">
+                                                            <span>Bạn có chắc muốn xóa</span> <span class="text-uppercase" style="text-decoration: underline; font-weight: bold">@item.Name </span> ?
+                                                        </div>
+
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <!-- Cỏntroller -->
+                                                            @using (Html.BeginForm("Delete", "Customers", new { id = item.ID }))
+                                                            {
+                                                                @Html.AntiForgeryToken()
+                                                                <input type="submit" value="Xóa" class="btn btn-default btn-danger" />
+                                                                <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
+                                                            }
+
+
+                                                        </div>
 
                                                     </div>
-
-                                                    <!-- Modal body -->
-                                                    <div class="modal-body">
-                                                        <span>Bạn có chắc muốn xóa</span> <span class="text-uppercase" style="text-decoration: underline; font-weight: bold">@item.Name </span> ?
-                                                    </div>
-
-                                                    <!-- Modal footer -->
-                                                    <div class="modal-footer">
-                                                        <!-- Cỏntroller -->
-                                                        @using (Html.BeginForm("Delete", "Customers", new { id = item.ID }))
-                                                        {
-                                                            @Html.AntiForgeryToken()
-                                                            <input type="submit" value="Xóa" class="btn btn-default btn-danger" />
-                                                            <input type="button" class=" btn btn-default " data-dismiss="modal" value="Hủy bỏ" />
-                                                        }
-
-
-                                                    </div>
-
                                                 </div>
                                             </div>
-                                        </div>
 
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
 
                                 }
                             </tbody>
@@ -304,48 +313,58 @@
 
 @section scripts{
     <script type="text/javascript">
-        var url_string = location.href;
-        var url = new URL(url_string);
-        var initMinPrice = url.searchParams.get("minOld");
-        var initMaxPrice = url.searchParams.get("maxOld");
+    var url_string = location.href;
+    var url = new URL(url_string);
+    var initMinPrice = url.searchParams.get("minOld");
+    var initMaxPrice = url.searchParams.get("maxOld");
 
-        if (initMinPrice != null) {
-            $('input[name="minOld"]').val(initMinPrice);
-        }
-        if (initMaxPrice != null) {
-            $('input[name="maxOld"]').val(initMaxPrice);
-        }
-        $('select[name="pageSize"]').change(function () {
-            $('form[name="search-form"]').submit();
-        });
-        $('select[name="Status"]').change(function () {
-            $('form[name="search-form"]').submit();
-        });
-        $('body').on("click", "i.iconSort", function () {
-            var str = $(this).attr('name');
-            $('input[name="sortOrder"]').val(str);
-            $('form[name="search-form"]').submit();
-        });
-        $(document).ready(function () {
+    if (initMinPrice != null) {
+        $('input[name="minOld"]').val(initMinPrice);
+    }
+    if (initMaxPrice != null) {
+        $('input[name="maxOld"]').val(initMaxPrice);
+    }
+    $('select[name="pageSize"]').change(function () {
+        $('form[name="search-form"]').submit();
+    });
+    $('select[name="Status"]').change(function () {
+        $('form[name="search-form"]').submit();
+    });
+    $('body').on("click", "i.iconSort", function () {
+        var str = $(this).attr('name');
+        $('input[name="sortOrder"]').val(str);
+        $('form[name="search-form"]').submit();
+    });
+    $(document).ready(function () {
 
-            $("#checkAll").click(function () {
-                $(".checkBox").prop('checked',
-                    $(this).prop('checked'));
+        $("#checkAll").click(function () {
+            $(".checkBox").prop('checked',
+                $(this).prop('checked'));
+        });
+
+        $("#delete").click(function () {
+            var selectedIDs = new Array();
+            $('input:checkbox.checkBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                    var listCheckedBoxId = selectedIDs.toString();
+                    $('input[name="ListCategoryIDs"]').val(listCheckedBoxId);
+                }
             });
 
-            $("#delete").click(function () {
-                var selectedIDs = new Array();
-                $('input:checkbox.checkBox').each(function () {
-                    if ($(this).prop('checked')) {
-                        selectedIDs.push($(this).val());
-                        var listCheckedBoxId = selectedIDs.toString();
-                        $('input[name="ListCategoryIDs"]').val(listCheckedBoxId);
-                    }
-                });
-
-            });
         });
-
+    });
+    $('body').on('click', '.exportExcel', function () {
+       
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Xuất Excel thành công',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        
+        });
 
     </script>
 
@@ -420,6 +439,7 @@
             })
         </script>
     }
+   
 }
 
 

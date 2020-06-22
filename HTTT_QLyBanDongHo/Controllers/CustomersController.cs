@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HTTT_QLyBanDongHo.Models;
+using OfficeOpenXml;
 using PagedList;
 
 namespace HTTT_QLyBanDongHo.Controllers
@@ -173,6 +175,69 @@ namespace HTTT_QLyBanDongHo.Controllers
             return View(customers.ToPagedList(pageNumber, defaSize));
         }
 
+        public void ExportToExcel()
+        {
+            var customer = db.Customers.ToList();
+            ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
+
+            ws.Cells["A2"].Value = "Danh sách khách hàng";
+
+            ws.Cells["A3"].Value = "Ngày xuất";
+            ws.Cells["B3"].Value = string.Format("{0:dd/MM/yyyy HH:mm}", DateTimeOffset.Now);
+
+            ws.Cells["A6"].Value = "Mã khách hàng";
+            ws.Cells["B6"].Value = "Tên khách hàng";
+            ws.Cells["C6"].Value = "Tuổi";
+            ws.Cells["D6"].Value = "Ngày sinh";
+            ws.Cells["E6"].Value = "Số điện thoại";
+            ws.Cells["F6"].Value = "Địa chỉ";
+            ws.Cells["G6"].Value = "Địa chỉ email";
+            ws.Cells["H6"].Value = "Loại khách hàng";
+            ws.Cells["I6"].Value = "Ngày tạo";
+
+            int rowStart = 7;
+            foreach (var i in customer)
+            {
+                if (i.CustomerTypeID == 3 || i.Birthday == null )
+                {
+                    ws.Row(rowStart).Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    ws.Row(rowStart).Style.Fill.BackgroundColor
+                        .SetColor(ColorTranslator.FromHtml(string.Format("yellow")));
+                }
+
+              
+                ws.Cells[string.Format("A{0}", rowStart)].Value = i.ID;
+                ws.Cells[string.Format("B{0}", rowStart)].Value = i.Name;
+                ws.Cells[string.Format("C{0}", rowStart)].Value = i.Age;
+                if (i.Birthday == null || i.CreateAt == null)
+                {
+                   
+                    ws.Cells[string.Format("D{0}", rowStart)].Value = "Chưa có";
+                    ws.Cells[string.Format("I{0}", rowStart)].Value = "Chưa có";
+                }
+                else
+                {
+                    ws.Cells[string.Format("D{0}", rowStart)].Value = i.Birthday.Value.ToString("dd/MM/yyyy");
+                    ws.Cells[string.Format("I{0}", rowStart)].Value = i.CreateAt.Value.ToString("dd/MM/yyyy");
+                }
+               
+                ws.Cells[string.Format("E{0}", rowStart)].Value = i.Phonenumber;
+                ws.Cells[string.Format("F{0}", rowStart)].Value = i.Address;
+                ws.Cells[string.Format("G{0}", rowStart)].Value = i.Email;
+                ws.Cells[string.Format("H{0}", rowStart)].Value = i.CustomerType.Type;
+               
+                rowStart++;
+            }
+
+            ws.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=DanhSachKhachHang.xlsx");
+            Response.BinaryWrite(pck.GetAsByteArray());
+            Response.End();
+          
+        }
         public ActionResult CheckList(string ListCategoryIDs)
         {
             {
@@ -188,8 +253,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                     TempData["message"] = "Delete";
                     return RedirectToAction("Index");
                 }
-                TempData["message"] = "CheckFail";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", TempData["message"] = "CheckFail");
             }
         }
 

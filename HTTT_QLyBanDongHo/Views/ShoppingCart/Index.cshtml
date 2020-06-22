@@ -156,7 +156,7 @@
                                             @{
                                                 List<Cart> temp = (List<Cart>)Session["SHOPPING_CART"];
                                                 var total = String.Format("{0:N0}", temp.Sum(x => x.Product.Price * x.Quantity));
-                                                var subtotal = String.Format("{0:N0}", temp.Sum(x => (x.Product.Price - ((x.Product.Price * x.Product.Discount) / 100)) * x.Quantity));
+                                                var subtotal = String.Format("{0:N0}", temp.Sum(x => (x.Product.AfterPrice - ((x.Product.AfterPrice * x.Product.Discount) / 100)) * x.Quantity));
                                             }
                                             $@total
                                         </span>

@@ -50,7 +50,7 @@ namespace HTTT_QLyBanDongHo.Controllers
 
             return View();
         }
-        public ActionResult Shop(string searchString, int? page,int? category, string currentFilter ,int? pageSize, string sort)
+        public ActionResult Shop(string searchString, string FilterPrice,int? page,int? category, string currentFilter ,int? pageSize, string sort)
         {
 
             var listCategory = db.Categories.ToList();
@@ -83,7 +83,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             {
                 new SelectListItem() { Value="price-asc", Text= "Giá tăng dần" },
                 new SelectListItem() { Value="price-desc", Text= "Giá giảm dần" },
-                new SelectListItem() { Value="name-asc", Text= "Giá tăng dần A-Z" },
+                new SelectListItem() { Value="name-asc", Text= "Tên tăng dần A-Z" },
                 new SelectListItem() { Value="name-desc", Text= "Tên giảm dần A-Z" },
 
             };
@@ -96,7 +96,36 @@ namespace HTTT_QLyBanDongHo.Controllers
                 new SelectListItem() { Value="50", Text= "50" },
                 new SelectListItem() { Value = product.ToList().Count().ToString(), Text= "All" },
             };
-
+            ViewBag.FilterPrice = new List<SelectListItem>()
+            {
+                new SelectListItem() { Value="1tr", Text= "dưới 1tr" },
+                new SelectListItem() { Value="1-5tr", Text= "từ 1tr - 5tr" },
+                new SelectListItem() { Value="5-10tr", Text= "từ 5tr - 10tr" },
+                new SelectListItem() { Value="10-20tr", Text= "từ 10tr - 20tr" },
+                new SelectListItem() { Value="20tr", Text= "Hơn 20tr" },
+                new SelectListItem() { Value = product.ToList().Count().ToString(), Text= "All" },
+            };
+            switch (FilterPrice)
+            {
+                case "1tr":
+                    product = product.Where(s => s.AfterPrice <= 1000000);
+                    break;
+                case "1-5tr":
+                    product = product.Where(s => s.AfterPrice >= 1000000 && s.AfterPrice <= 5000000);
+                    break;
+                case "5-10tr":
+                    product = product.Where(s => s.AfterPrice >= 5000000 && s.AfterPrice <= 10000000);
+                    break;
+                case "10-20tr":
+                    product = product.Where(s => s.AfterPrice >= 10000000 && s.AfterPrice <= 20000000);
+                    break;
+                case "20tr":
+                    product = product.Where(s => s.AfterPrice >= 20000000);
+                    break;
+                default:
+                    product = product.OrderByDescending(p => p.CreateAt);
+                    break;
+            }
             switch (sort)
             {
                 case "name-asc":
@@ -137,6 +166,17 @@ namespace HTTT_QLyBanDongHo.Controllers
             if (OrderId != null || OrderEmail != null )
             {
                 Order order = db.Orders.Find(OrderId);
+                TempData["status"] = "fail";
+                if (order != null)
+                {
+                    TempData["status"] = "success";
+                    return View(order);
+                }
+                return View();
+            }
+            if (OrderId == null || OrderEmail != null)
+            {
+                Order order = db.Orders.Find(OrderEmail);
                 TempData["status"] = "fail";
                 if (order != null)
                 {

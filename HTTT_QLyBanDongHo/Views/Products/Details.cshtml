@@ -73,15 +73,15 @@
                                 </tr>
                                 <tr>
                                     <td width="30%"> Giá </td>
-                                    <td> @Html.DisplayFor(model => model.Price)</td>
+                                    <td> @String.Format("{0:N0}", Model.Price) VNĐ</td>
                                 </tr>
                                 <tr>
-                                    <td width="30%"> Giá bán (@Model.Discount)</td>
+                                    <td width="30%"> Giá bán (@Model.Discount %)</td>
                                     <td>
                                         @{
                                             var p = (double)Model.AfterPrice;
                                         }
-                                        @p.ToString("#,##0").Replace(',', '.')
+                                        @p.ToString("#,##0").Replace(',', '.') VNĐ
                                     </td>
                                 </tr>
                                 <tr>
@@ -89,29 +89,47 @@
                                     <td> @Html.DisplayFor(model => model.Discount) %</td>
                                 </tr>
                                 <tr>
+                                    <td width="30%"> Số lượng</td>
+                                    <td>
+                                        Tổng số lượng: <span class="text-success">
+
+                                            @Html.DisplayFor(model => model.Quantity)
+                                        </span> |
+
+                                        Đã bán: <span class="text-success">
+
+                                            @Html.DisplayFor(model => model.Sales)
+                                        </span> |
+                                        Còn lại: <span class="text-success">
+
+                                            @Html.DisplayFor(model => model.Remain)
+                                        </span> |
+
+                                </tr>
+                                <tr>
                                     <td width="30%"> Loại trạng thái</td>
                                     <td>
-                                                Sản phẩm bán chạy : <span class="text-success">
-                                                @if (Model.isBestSeller == 0)
-                                                {
-                                                    <span>Không</span>
-                                                }
-                                                @if (Model.isBestSeller == 1)
-                                                {
-                                                    <span>Có</span>
-                                                }
+                                        Sản phẩm bán chạy : <span class="text-success">
+                                            @if (Model.isBestSeller == 0)
+                                            {
+                                                <span>Không</span>
+                                            }
+                                            @if (Model.isBestSeller == 1)
+                                            {
+                                                <span>Có</span>
+                                            }
 
-                                                </span> |
-                                            Sản phẩm mới :<span class="text-success">
-                                                                @if (Model.isNew == 0)
-                                                                {
-                                                                    <span>Không</span>
-                                                                }
-                                                                @if (Model.isNew == 1)
-                                                                {
-                                                                    <span>Có</span>
-                                                                }
-                                                            </span>|
+                                        </span> |
+                                        Sản phẩm mới :<span class="text-success">
+                                            @if (Model.isNew == 0)
+                                            {
+                                                <span>Không</span>
+                                            }
+                                            @if (Model.isNew == 1)
+                                            {
+                                                <span>Có</span>
+                                            }
+                                        </span>|
                                         Sản phẩm đặc biết :<span class="text-success">
                                             @if (Model.isSpecial == 0)
                                             {
@@ -119,10 +137,10 @@
                                             }
                                             @if (Model.isSpecial == 1)
                                             {
-                                                           <span>Có</span>
+                                                <span>Có</span>
                                             }
-                                            
-</span>
+
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -150,6 +168,10 @@
                                 <tr>
                                     <td width="30%"> Ngày tạo</td>
                                     <td> @Html.DisplayFor(model => model.CreateAt) </td>
+                                </tr>
+                                <tr>
+                                    <td width="30%"> Chú thích</td>
+                                    <td class="text-warning"> @Html.DisplayFor(model => model.Note) </td>
                                 </tr>
                             </table>
 

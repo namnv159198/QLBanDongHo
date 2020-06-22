@@ -37,7 +37,6 @@ namespace HTTT_QLyBanDongHo.Models
 
         public int? isSpecial { get; set; }
 
-        [StringLength(255)]
         public string Description { get; set; }
 
         [StringLength(255)]

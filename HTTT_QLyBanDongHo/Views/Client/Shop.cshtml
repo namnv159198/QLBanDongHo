@@ -33,30 +33,42 @@
                 @using (Html.BeginForm("Shop", "Client", FormMethod.Get, new { @name = "search-form" }))
                 {
 
-                    <div class="col-md-11" style="margin-bottom: 4%;">
-                        <div class="col-md-3">
-                            <div class="lbl-cnt">
-                                <div class="fld inline">
-                                    @Html.DropDownList("Category", (IEnumerable<SelectListItem>)ViewBag.Categorylist, "Chọn danh mục", new { @class = "form-control" })
-                                </div>
-                                <!-- /.fld -->
+                <div class="col-md-11" style="margin-bottom: 4%;">
+                    <div class="col-md-3">
+                        <div class="lbl-cnt">
+                            <div class="fld inline">
+                                @Html.DropDownList("Category", (IEnumerable<SelectListItem>)ViewBag.Categorylist, "Chọn danh mục", new { @class = "form-control" })
                             </div>
+                            <!-- /.fld -->
                         </div>
-                        <div class="col-md-9">
-
-                            <div class="input-group m-bot15">
-                                <span class="input-group-btn">
-                                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Tên sản phẩm. . . " })
-                                    <button class="btn btn-default" type="submit" style="height:34px"> Tìm <i class="fa fa-search"></i></button>
-
-                                </span>
-
-
+                    </div>
+                    <div class="col col-sm-3 col-md-3 no-padding">
+                        <div class="lbl-cnt">
+                            <div class="fld inline">
+                                <div class="dropdown dropdown-small dropdown-med dropdown-white inline">
+                                    @Html.DropDownList("FilterPrice", (IEnumerable<SelectListItem>)ViewBag.FilterPrice, "Chọn giá", new { @class = "form-control" })
+                                </div>
                             </div>
+                            <!-- /.fld -->
+                        </div>
+                        <!-- /.lbl-cnt -->
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="input-group m-bot15">
+                            <span class="input-group-btn">
+                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Tên sản phẩm. . . " })
+                                <button class="btn btn-default" type="submit" style="height:34px"> Tìm <i class="fa fa-search"></i></button>
+
+                            </span>
+
 
                         </div>
 
                     </div>
+
+
+                </div>
 
                     <div class="page-title"><h2>Electronics</h2></div>
 
@@ -79,7 +91,6 @@
                                         <div class="fld inline">
                                             <div class="dropdown dropdown-small dropdown-med dropdown-white inline">
                                                 @Html.DropDownList("Sort", (IEnumerable<SelectListItem>)ViewBag.Sort, "Chọn sắp xếp", new { @class = "form-control" })
-
                                             </div>
                                         </div>
                                         <!-- /.fld -->
@@ -291,6 +302,9 @@
             $('form[name="search-form"]').submit();
         });
         $('select[name="pageSize"]').change(function () {
+            $('form[name="search-form"]').submit();
+        });
+        $('select[name="FilterPrice"]').change(function () {
             $('form[name="search-form"]').submit();
         });
     </script>

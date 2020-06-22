@@ -251,71 +251,69 @@ namespace HTTT_QLyBanDongHo.Migrations
             // }
 
             // // // ---------------------------------- Seeding Order  ---------------------------------- //
-            //  Random random = new Random();
-            //  int[] RandomDate =
-            //  {
-            //      0 , -1,-2,-3,-7,-14,-30,-60,-180,-365,-365*2,-365*3
-            //  };
-            //  int[] RandomDateNow =
-            //  {
-            //      0 , -1,-2,-3,-7,-14,-30,-60,-180
-            //  };
-            // var ListCustomer = context.Customers.ToList();
-            // var listProduct = context.Products.ToList();
-            // var listOrderStatus = context.OrderStatus.ToList();
-            // var listPaymentType = context.PaymentTypes.ToList();
-            // for (int i = 1; i <= 300; i++)
-            // {
-            //     int indexDate = random.Next(RandomDate.Length);
-            //     int c = random.Next(0, ListCustomer.Count);
-            //     int os = random.Next(5, listOrderStatus.Count);
-            //     int pt = random.Next(0, listPaymentType.Count);
-            //     var order = new Order()
-            //     {
-            //         ID = "Order" + i+ DateTime.Now.Millisecond+DateTime.Now.Year,
-            //         Create_At = DateTime.Now.AddDays(RandomDate[indexDate]).AddMinutes(random.Next(-300,-100)),
-            //         OrderStatusID = listOrderStatus[os].ID,
-            //         CustomerID = ListCustomer[c].ID,
-            //         PaymentTypeID = listPaymentType[pt].PaymentTypeID,
-            //         Total_Price = 0,
-            //         Total_Quantity = 0,
-            //         Discount = 0
-            // };
-            //
-            //     for (int j = 1; j <= random.Next(1,3); j++)
-            //     {
-            //        int  p = random.Next(0,listProduct.Count);
-            //         // List<int> unique = new List<int>();
-            //         // int p = 0;
-            //         // void randomP()
-            //         // {
-            //         //     p = random.Next(listProduct.Count);
-            //         //     foreach (var p1 in unique)
-            //         //     {
-            //         //         if (p1 == p)
-            //         //         {
-            //         //             randomP();
+             Random random = new Random();
+             
+            
+             int[] RandomDateNow =
+             {
+                 0 , -1,-2,-3,-7,-14,-30,-60,-180
+             };
+            var ListCustomer = context.Customers.ToList();
+            var listProduct = context.Products.ToList();
+            var listOrderStatus = context.OrderStatus.ToList();
+            var listPaymentType = context.PaymentTypes.ToList();
+            for (int i = 1; i <= 100; i++)
+            {
+                // int indexDate = random.Next(RandomDate.Length);
+                int c = random.Next(0, ListCustomer.Count);
+                int os = random.Next(5, listOrderStatus.Count);
+                int pt = random.Next(0, listPaymentType.Count);
+                var order = new Order()
+                {
+                    ID = "Order" + i+ DateTime.Now.Millisecond+DateTime.Now.Year,
+                    Create_At = DateTime.Now.AddDays(random.Next(-6*30,0)).AddHours(random.Next(-10,-1)).AddMinutes(random.Next(-300,-100)),
+                    OrderStatusID = listOrderStatus[os].ID,
+                    CustomerID = ListCustomer[c].ID,
+                    PaymentTypeID = listPaymentType[pt].PaymentTypeID,
+                    Total_Price = 0,
+                    Total_Quantity = 0,
+                    Discount = 0
+            };
+            
+                for (int j = 1; j <= random.Next(1,4); j++)
+                {
+                    int p = random.Next(0, listProduct.Count);
+                    // List<int> unique = new List<int>();
+                    // int p = 0;
+                    // void randomP()
+                    // {
+                    //     p = random.Next(listProduct.Count);
+                    //     foreach (var p1 in unique)
+                    //     {
+                    //         if (p1 == p)
+                    //         {
+                    //             randomP();
                     //         }
                     //     }
                     // }
                     // randomP();
                     // unique.Add(p);
-                //     var orderDetails = new OrderDetail()
-                //     {
-                //         OrderID = order.ID,
-                //         ProductID = listProduct[p].ID,
-                //         Quantity = 1,
-                //         UnitPrice = listProduct[p].AfterPrice
-                //     };
-                //     
-                //     order.AddOrderDetails(orderDetails);
-                //     context.OrderDetails.Add(orderDetails);
-                //  
-                // }
+                    var orderDetails = new OrderDetail()
+                    {
+                        OrderID = order.ID,
+                        ProductID = listProduct[p].ID,
+                        Quantity = 1,
+                        UnitPrice = listProduct[p].AfterPrice
+                    };
+                    
+                    order.AddOrderDetails(orderDetails);
+                    context.OrderDetails.Add(orderDetails);
+                 
+                }
             
                
-            //     context.Orders.AddOrUpdate(order);
-            // }
+                context.Orders.AddOrUpdate(order);
+            }
         }
     }
 }

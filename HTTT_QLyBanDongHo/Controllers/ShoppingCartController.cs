@@ -139,13 +139,14 @@ namespace HTTT_QLyBanDongHo.Controllers
             {
                 Customer cus = new Customer()
                 {
-                    ID = "Customer" + DateTime.Now.Millisecond,
+                    ID = "KH" + DateTime.Now.Millisecond,
                     Address = o.Address,
                     Phonenumber = o.PhoneNumber,
                     Name = o.Name,
                     CustomerTypeID = 1,
                     Email = o.Email,
-                    Gender = o.Gender
+                    Gender = o.Gender,
+                    CreateAt = DateTime.Now
                 };
                 db.Customers.Add(cus);
                 db.SaveChanges();
@@ -157,7 +158,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                     CustomerID = cus.ID,
                     Discount = 0,
                     Total_Price = listCart.Sum(x => x.Product.AfterPrice * x.Quantity),
-                    PaymentTypeID = 1,
+                    PaymentTypeID = o.TypePayment,
                     Total_Quantity = listCart.Sum(x => x.Quantity)
                 };
 

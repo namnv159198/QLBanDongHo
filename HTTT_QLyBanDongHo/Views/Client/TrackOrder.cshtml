@@ -9,14 +9,14 @@
         <div class="breadcrumb-inner">
             <ul class="list-inline list-unstyled">
                 <li><a href="home.html">Home</a></li>
-                <li class='active'>Track your orders</li>
+                <li class='active'>Kiểm tra đơn hàng </li>
             </ul>
         </div><!-- /.breadcrumb-inner -->
     </div><!-- /.container -->
 </div><!-- /.breadcrumb -->
 @if ((string)TempData["status"] == "fail")
 {
-    <h1 style="text-align:center; font-style:italic">No Result Found!! Please Retry Again.</h1>
+    <h1 style="text-align:center; font-style:italic">Không tìm thấy đơn hàng, vui lòng nhập lại mã đơn hàng !</h1>
 }
 else if ((string)TempData["status"] == "success")
 {
@@ -30,12 +30,12 @@ else if ((string)TempData["status"] == "success")
                                 <thead>
                                     <tr>
                                         <th class="cart-description item">Order ID</th>
-                                        <th class="cart-product-name item">Customer Name</th>
-                                        <th class="cart-sub-total item">Address</th>
-                                        <th class="cart-sub-total item">Phone Number</th>
+                                        <th class="cart-product-name item">Tên khách hàng</th>
+                                        <th class="cart-sub-total item">Địa chỉ</th>
+                                        <th class="cart-sub-total item">SĐT</th>
                                         <th class="cart-qty item">Email</th>
-                                        <th class="cart-sub-total item">Status</th>
-                                        <th class="cart-romove item">Total Price</th>
+                                        <th class="cart-sub-total item">Trạng thái</th>
+                                        <th class="cart-romove item">Tổng tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -46,7 +46,7 @@ else if ((string)TempData["status"] == "success")
                                         <th>@Html.DisplayFor(model => model.Customer.Phonenumber)</th>
                                         <th>@Html.DisplayFor(model => model.Customer.Email)</th>
                                         <th>@Html.DisplayFor(model => model.OrderStatus.Status)</th>
-                                        <th>@Html.DisplayFor(model => model.Total_Price)</th>
+                                        <th>@String.Format("{0:N0}", Model.Total_Price) VNĐ</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -65,45 +65,48 @@ else if ((string)TempData["status"] == "success")
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="cart-product-name item">Product Name</th>
-                                        <th class="cart-qty item">Quantity</th>
-                                        <th class="cart-sub-total item">Price</th>
-                                        <th class="cart-sub-total item">Unit Price</th>
+                                        <th class="cart-product-name item">Tên sản phẩm</th>
+                                        <th class="cart-product-name item">Ảnh</th>
+                                        <th class="cart-qty item">Số lượng</th>
+                                        <th class="cart-sub-total item">Giá</th>
+                                        <th class="cart-sub-total item">Thành tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model.OrderDetails)
                                     {
-                                        <tr>
-                                            
-                                            <td class="cart-product-name item">@item.Product.Name</td>
-                                            <td class="cart-product-edit">@item.Quantity</td>
-                                            <td class="cart-product-sub-total"><span class="cart-sub-total-price">@item.Product.Price</span></td>
-                                            <td class="cart-product-sub-total">
-                                                <span class="cart-sub-total-price">
-                                                    @{
-                                                        var TotalPrice = String.Format("{0:N0}", item.Product.Price * item.Quantity);
-                                                    }
-                                                    @TotalPrice $
-                                                </span>
-                                                
-                                            </td>
-                                        </tr>
+                                    <tr>
+
+                                        <td class="cart-product-name item">@item.Product.Name</td>
+                                        <td class="cart-product-name item">  <img src="@item.GetDefaultThumbnails()" alt="Thumbnail" class="img-thumbnail" width="100" height="100" /></td>
+                                        <td class="cart-product-edit">@item.Quantity</td>
+                                        <td class="cart-product-sub-total"><span class="cart-sub-total-price"> @String.Format("{0:N0}",item.Product.AfterPrice) VNĐ</span></td>
+                                        <td class="cart-product-sub-total">
+                                            <span class="cart-sub-total-price" >
+                                                @{
+                                                    var TotalPrice = String.Format("{0:N0}", item.Product.AfterPrice * item.Quantity);
+                                                }
+                                                @TotalPrice VNĐ
+                                            </span>
+
+                                        </td>
+                                    </tr>
                                     }
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Total Price</th>
                                         <th></th>
                                         <th></th>
-                                        <th >
-                                                @{
-                                                    var temp = Model.OrderDetails;
-                                                    var total = String.Format("{0:N0}", temp.Sum(x => x.Product.Price * x.Quantity));
-                                                }
-                                                @total VNĐ
-                                            
-                                           
+                                        <th></th>
+                                        <th>Tổng hóa đơn</th>
+                                        <th style="font-size:20px">
+                                            @{
+                                                var temp = Model.OrderDetails;
+                                                var total = String.Format("{0:N0}", temp.Sum(x => x.Product.AfterPrice * x.Quantity));
+                                            }
+                                            @total VNĐ
+
+
                                         </th>
                                     </tr>
                                 </tfoot>
@@ -120,16 +123,16 @@ else if ((string)TempData["status"] == "success")
         <div class="track-order-page">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="heading-title">Track your Order</h2>
+                    <h2 class="heading-title">Kiểm tra đơn hàng</h2>
                     <span class="title-tag inner-top-ss">Please enter your Order ID in the box below and press Enter. This was given to you on your receipt and in the confirmation email you should have received. </span>
                     @using (Html.BeginForm("TrackOrder", "Client", FormMethod.Get, new { @class = "register-form outer-top-xs" }))
                     {
                         <div class="form-group">
-                            <label class="info-title" for="exampleOrderId1">Order ID</label>
+                            <label class="info-title" for="exampleOrderId1">Mã đơn hàng</label>
                             <input type="text" class="form-control unicase-form-control text-input" id="OrderId" name="OrderId">
                         </div>
                         <div class="form-group">
-                            <label class="info-title" for="exampleBillingEmail1">Billing Email</label>
+                            <label class="info-title" for="exampleBillingEmail1">Email thông tin đơn hàng</label>
                             <input type="email" class="form-control unicase-form-control text-input" id="OrderEmail" name="OrderEmail">
                         </div>
                         <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Track</button>

@@ -5,9 +5,9 @@ using System.Web;
 
 namespace HTTT_QLyBanDongHo.ChartModel
 {
-    public class ModelData2
+    public class ModelData3
     {
-        public string label { get; set; }
-        public double y { get; set; }
+        public int date { get; set; }
+        public double? y { get; set; }
     }
 }

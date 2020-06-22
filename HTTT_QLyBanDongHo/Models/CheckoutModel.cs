@@ -19,7 +19,9 @@ namespace HTTT_QLyBanDongHo.Models
         [Required]
         [DataType(DataType.EmailAddress)]
         public String Email { get; set; }
-
+        [Required]
+        public int TypePayment { get; set; }
+        [Required]
         public string Gender { get; set; }
     }
 }

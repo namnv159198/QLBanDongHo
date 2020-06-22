@@ -10,6 +10,6 @@ namespace HTTT_QLyBanDongHo.ChartModel
         public IEnumerable<ModelData> ModelData { get; set; }
         public IEnumerable<ModelData> ModelData1 { get; set; }
         public IEnumerable<ModelData2> ModelData2 { get; set; }
-       
+        public IEnumerable<ModelData3> ModelData3 { get; set; }
     }
 }

@@ -4,7 +4,7 @@
         <div id="main-menu" class="main-menu collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="index.html"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
+                    <a href="@Url.Action("Index","Admin")"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
                 </li>
 
 
@@ -94,6 +94,7 @@
                     <ul class="sub-menu children dropdown-menu">
                         <li><i class="menu-icon fa fa-fort-awesome"></i><a href="@Url.Action("CustomerChart","Chart")">Khách hàng </a></li>
                         <li><i class="menu-icon ti-themify-logo"></i><a href="@Url.Action("ProductChart","Chart")">Sản phẩm </a></li>
+                        <li><i class="menu-icon ti-themify-logo"></i><a href="@Url.Action("RevenueChart","Chart")">Doanh thu </a></li>
                     </ul>
                 </li>
             </ul>

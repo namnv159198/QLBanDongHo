@@ -1,0 +1,222 @@
+﻿@model HTTT_QLyBanDongHo.ChartModel.MultipleModelData
+@{
+    ViewBag.Title = "RevenueChart";
+    var k = 0;
+    double h = 0;
+    Layout = "~/Views/Shared_Admin/_Layout.cshtml";
+}
+
+
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header" style="background-color:white">
+                        <div class="row">
+                            <div class="card-body row ">
+
+                                <div id="chartContainer3" style="height: 300px; width: 100%; margin-bottom:100px"></div>
+
+
+                                <div class="col-2">
+                                    Chọn năm:
+                                    @using (Html.BeginForm("RevenueChart", "Chart", FormMethod.Get, new { @name = "search-form" }))
+                                    {
+                                        @Html.DropDownList("YearChart", (IEnumerable<SelectListItem>)ViewBag.listYear, "Chọn", new { @class = "form-control" })
+                                    }
+                                </div>
+                                <div id="chartContainer2" style="height: 300px; width: 100%; margin-bottom: 100px"></div>
+
+                                <div class="col-lg-4 mt-5">
+                                    <h4 class="mt-5">Thống kê doanh thu các năm</h4>
+                                    <table class="table table-bordered mt-5">
+                                        <thead>
+                                            <tr>
+                                                <th>Năm</th>
+                                                <th>Doanh thu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var i in Model.ModelData1)
+                                            {
+                                                <tr>
+                                                    <td>@i.label</td>
+                                                    <td>@String.Format("{0:N0}", i.y) VNĐ</td>
+                                                </tr>
+
+                                                h = (double)(h + i.y);
+                                            }
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Tổng số lượng </th>
+                                                <th>@String.Format("{0:N0}", h) VNĐ </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div id="chartContainer1" class="col-lg-6 mt-5" style="height: 370px; width: 50%;"></div>
+                                <div class="col-2">
+                                    Chart Type:
+                                    <select id="chartType1" class="form-control" name="Chart Type">
+                                        <option value="line">Line</option>
+                                        <option value="column">Column</option>
+                                        <option value="bar">Bar</option>
+                                        <option value="pie">Pie</option>
+                                        <option value="doughnut">Doughnut</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+
+    var url_string = location.href;
+    var url = new URL(url_string);
+    var initMinPrice = url.searchParams.get("YearChart");
+    if (initMinPrice == null) {
+        initMinPrice = 2020;
+    }
+
+//    if (initMinPrice != null) {
+//        $("[name$='chartSelect']").attr("#chartContainer3").val("chartContainer2");
+//    }
+    window.onload = function () {
+
+
+        var chart1 = new CanvasJS.Chart("chartContainer1", {
+            theme: "light2",
+            animationEnabled: true,
+            exportEnabled: true,
+            title: {
+                text: "Thống kê tổng doanh thu trong các năm ",
+                margin: 10,
+
+            },
+
+            axisY: {
+                title: "Doanh thu",
+                gridThickness: 0,
+
+            },
+
+            data: [{
+                type: "column",
+                toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                indexLabel: "{y}",
+                showInLegend: true,
+                legendText: "{label}",
+                dataPoints: @Html.Raw(ViewBag.DataPoints1)
+            }]
+        });
+        chart1.render();
+
+        var chart2 = new CanvasJS.Chart("chartContainer2",
+            {
+                title: {
+                    text: "Doanh thu trong năm " + initMinPrice
+                },
+                axisX:{
+//                    valueFormatString: "MMM" ,
+                    labelAngle: -50
+                },
+                axisY: {
+                    valueFormatString: "#,###"
+                },
+
+                data: [
+                    {
+                        type: "line",
+                        lineThickness: 2,
+                        color: "rgba(0,75,141,0.7)",
+                        toolTipContent: "<b>Tháng {label}:</b> {y} VNĐ",
+                        dataPoints: @Html.Raw(ViewBag.DataPoints2)
+                    }
+
+                ]
+            });
+
+        chart2.render();
+
+
+        var chart3 = new CanvasJS.Chart("chartContainer3", {
+            animationEnabled: true,
+            title: {
+                text: "Doanh thu tổng hợp"
+            },
+            axisY: {
+                includeZero: false
+            },
+            toolTip: {
+                shared: true
+            },
+            data: [{
+                type: "line",
+                name: "2017",
+                lineThickness: 2,
+                showInLegend: true,
+                dataPoints: @Html.Raw(ViewBag.DataPoints7)
+            }, {
+                type: "line",
+                name: "2018",
+                lineThickness: 2,
+                showInLegend: true,
+                dataPoints: @Html.Raw(ViewBag.DataPoints8)
+            },{
+                type: "line",
+                name: "2019",
+                lineThickness: 2,
+                showInLegend: true,
+                dataPoints: @Html.Raw(ViewBag.DataPoints9)
+            }, {
+                type: "line",
+                lineThickness: 2,
+                name: "2020",
+                showInLegend: true,
+                dataPoints: @Html.Raw(ViewBag.DataPoints20)
+            }]
+        });
+        chart3.render();
+
+
+
+
+
+        var chartType1 = document.getElementById('chartType1');
+        chartType1.addEventListener( "change",  function(){
+            chart1.options.data[0].type = chartType1.options[chartType1.selectedIndex].value;
+            chart1.render();
+        });
+        var chartType2 = document.getElementById('chartType1');
+        chartType2.addEventListener( "change",  function(){
+            chart1.options.data[0].type = chartType2.options[chartType1.selectedIndex].value;
+            chart1.render();
+        });
+    }
+
+
+</script>
+@section scripts{
+    <script>
+        $('select[name="YearChart"]').change(function () {
+            $('form[name="search-form"]').submit();
+        });
+    </script>
+
+}
+
+

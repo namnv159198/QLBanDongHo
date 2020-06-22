@@ -73,6 +73,7 @@ namespace HTTT_QLyBanDongHo.Controllers
             Dictionary<String, Double> listSaleCustomerYears = new Dictionary<string, double>();
             foreach (var i in db.Customers)
             {
+
                 if (i.CreateAt.Value.Year == 2018)
                 {
                     k1 = k1 + 1;
@@ -86,6 +87,7 @@ namespace HTTT_QLyBanDongHo.Controllers
                 {
                     k3 = k3 + 1;
                 }
+
             };
 
             listSaleCustomerYears.Add("Năm 2019 ", k2);
@@ -106,11 +108,11 @@ namespace HTTT_QLyBanDongHo.Controllers
 
             mymodel.ModelData1 = listTableSaleCustomerYears;
             mymodel.ModelData = listTableDataAge;
-    
+
 
 
             ViewBag.DataPoints1 = JsonConvert.SerializeObject(dataPoints1);
-       
+
             ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
 
             return View(mymodel);
@@ -123,9 +125,9 @@ namespace HTTT_QLyBanDongHo.Controllers
 
             var mymodel = new MultipleModelData();
 
-            
 
-        
+
+
             Double t1 = 0;
             Double t2 = 0;
             Double t3 = 0;
@@ -180,44 +182,29 @@ namespace HTTT_QLyBanDongHo.Controllers
             mymodel.ModelData = listTableDataPriceProduct;
             ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
 
-            //-------------------------------------------- Discount Product Statical ---------------------------------------
-           
+            //-------------------------------------------- Quantity Product Statical ---------------------------------------
 
-            Double k1 = 0;
-            Double k2 = 0;
-            Double k3 = 0;
-            Double k4 = 0;
-         
-            Dictionary<String, Double> listDiscountPercent = new Dictionary<string, double>();
 
-            foreach (var i in db.Products.ToList())
-            {
-                if (i.CreateAt.Value.Year  == 2018 )
-                {
-                    k1 = k1 + 1;
-                }
+            int k1 = 0;
+            int k2 = 0;
+            int k3 = 0;
 
-                if (i.CreateAt.Value.Year == 2019)
-                {
-                    k2 = k2 + 1;
-                }
-                if (i.CreateAt.Value.Year == 2020)
-                {
-                    k3 = k3 + 1;
-                }
-              
 
-            }
-            List<ModelData> listTableDataDiscount = new List<ModelData>();
+            Dictionary<String, int> listQuantityPercent = new Dictionary<string, int>();
 
-            listDiscountPercent.Add("Năm 2018", k1);
-            listDiscountPercent.Add("Năm 2019 ", k2);
-            listDiscountPercent.Add("Năm 2020", k3);
+            int totalQuantity = db.Products.Sum(x => x.Quantity);
+            int totalRemain = db.Products.Sum(x => (int)x.Remain);
+
+            List<ModelData> listTableDataQuantity = new List<ModelData>();
+
+            listQuantityPercent.Add("Số lượng nhập ", totalQuantity);
+            listQuantityPercent.Add("Số lượng tồn kho", totalRemain);
+            listQuantityPercent.Add("Số lượng bán ra", totalQuantity - totalRemain);
 
             List<ChartModel.ChartModel.DataPoint> dataPoints1 = new List<ChartModel.ChartModel.DataPoint>();
 
 
-            foreach (var i in listDiscountPercent)
+            foreach (var i in listQuantityPercent)
             {
                 dataPoints1.Add(new ChartModel.ChartModel.DataPoint(i.Key, (double)i.Value));
                 var k = new ModelData()
@@ -225,21 +212,220 @@ namespace HTTT_QLyBanDongHo.Controllers
                     label = i.Key,
                     y = i.Value
                 };
-                listTableDataDiscount.Add(k);
+                listTableDataQuantity.Add(k);
             }
 
 
 
-
-
-            
             ViewBag.DataPoints1 = JsonConvert.SerializeObject(dataPoints1);
-            mymodel.ModelData1 = listTableDataDiscount;
-           
+            mymodel.ModelData1 = listTableDataQuantity;
+
 
             return View(mymodel);
         }
 
+        public ActionResult RevenueChart(int? YearChart)
+        {
+            var listyear = db.Orders.Select(x => x.Create_At.Value.Year).Distinct();
+
+            SelectList listYearSelect = new SelectList(listyear, "Year");
+            ViewBag.listYear = listYearSelect;
+
+            var mymodel = new MultipleModelData();
+            double t1 = 0;
+            double t2 = 0;
+            double t3 = 0;
+            double t4 = 0;
+
+            if (!YearChart.HasValue)
+            {
+                YearChart = 2020;
+            }
+
+
+            var RevenueYearNow = db.Orders.Where(x => x.Create_At.Value.Year == YearChart).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+            {
+                createAt = group.Key,
+                Revenue = group.Sum(o => o.Total_Price)
+            }).OrderBy(x => x.createAt);
+            List<ChartModel.ChartModel.DataPoint3> dataPoints2 = new List<ChartModel.ChartModel.DataPoint3>();
+            List<ModelData3> listTableDataRevenueNow = new List<ModelData3>();
+
+            foreach (var l in RevenueYearNow)
+            {
+                dataPoints2.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
+                var k1 = new ModelData3()
+                {
+                    date = l.createAt,
+                    y = l.Revenue
+                };
+                listTableDataRevenueNow.Add(k1);
+            }
+
+            //-------------------------------------------- Revenue Year Statical ---------------------------------------
+
+            Dictionary<String, double> listRevenuePercent = new Dictionary<string, double>();
+
+            foreach (var i in db.Orders.ToList())
+            {
+                if (i.Create_At.Value.Year == 2017)
+                {
+                    t1 += (double)i.Total_Price;
+                }
+                if (i.Create_At.Value.Year == 2018)
+                {
+                    t2 += (double)i.Total_Price;
+                }
+
+                if (i.Create_At.Value.Year == 2019)
+                {
+                    t3 += (double)i.Total_Price;
+                }
+
+                if (i.Create_At.Value.Year == 2020)
+                {
+                    t4 += (double)i.Total_Price;
+                }
+            }
+
+            List<ModelData> listTableDataRevenue = new List<ModelData>();
+
+            listRevenuePercent.Add("Năm 2017", t1);
+            listRevenuePercent.Add("Năm 2018", t2);
+            listRevenuePercent.Add("Năm 2019 ", t3);
+            listRevenuePercent.Add("Năm 2020", t4);
+
+            List<ChartModel.ChartModel.DataPoint> dataPoints1 = new List<ChartModel.ChartModel.DataPoint>();
+
+            foreach (var l in listRevenuePercent)
+            {
+                dataPoints1.Add(new ChartModel.ChartModel.DataPoint(l.Key, (double)l.Value));
+                var k = new ModelData()
+                {
+                    label = l.Key,
+                    y = l.Value
+                };
+                listTableDataRevenue.Add(k);
+            }
+
+            List<ChartModel.ChartModel.DataPoint3> dataPoints7 = new List<ChartModel.ChartModel.DataPoint3>();
+            List<ChartModel.ChartModel.DataPoint3> dataPoints8 = new List<ChartModel.ChartModel.DataPoint3>();
+            List<ChartModel.ChartModel.DataPoint3> dataPoints9 = new List<ChartModel.ChartModel.DataPoint3>();
+            List<ChartModel.ChartModel.DataPoint3> dataPoints20 = new List<ChartModel.ChartModel.DataPoint3>();
+
+
+
+            var R2017 = db.Orders.Where(x => x.Create_At.Value.Year == 2017).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+            {
+                createAt = group.Key,
+                Revenue = group.Sum(o => o.Total_Price)
+            }).OrderBy(x => x.createAt);
+            var R2018 = db.Orders.Where(x => x.Create_At.Value.Year == 2018).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+            {
+                createAt = group.Key,
+                Revenue = group.Sum(o => o.Total_Price)
+            }).OrderBy(x => x.createAt);
+
+            var R2019 = db.Orders.Where(x => x.Create_At.Value.Year == 2019).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+            {
+                createAt = group.Key,
+                Revenue = group.Sum(o => o.Total_Price)
+            }).OrderBy(x => x.createAt);
+
+            var R2020 = db.Orders.Where(x => x.Create_At.Value.Year == 2020).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+            {
+                createAt = group.Key,
+                Revenue = group.Sum(o => o.Total_Price)
+            }).OrderBy(x => x.createAt);
+
+
+            foreach (var l in R2017)
+            {
+                dataPoints7.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
+            }
+            foreach (var l in R2018)
+            {
+                dataPoints8.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
+            }
+            foreach (var l in R2019)
+            {
+                dataPoints9.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
+            }
+            foreach (var l in R2020)
+            {
+                dataPoints20.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
+            }
+            ViewBag.DataPoints7 = JsonConvert.SerializeObject(dataPoints7);
+            ViewBag.DataPoints8 = JsonConvert.SerializeObject(dataPoints8);
+            ViewBag.DataPoints9 = JsonConvert.SerializeObject(dataPoints9);
+            ViewBag.DataPoints20 = JsonConvert.SerializeObject(dataPoints20);
+
+
+            ViewBag.DataPoints1 = JsonConvert.SerializeObject(dataPoints1);
+            ViewBag.DataPoints2 = JsonConvert.SerializeObject(dataPoints2);
+            mymodel.ModelData1 = listTableDataRevenue;
+            mymodel.ModelData3 = listTableDataRevenueNow;
+            return View(mymodel);
+        }
+
+        // public ActionResult RevenueChartAll()
+        // {
+        //     List<ChartModel.ChartModel.DataPoint3> dataPoints7 = new List<ChartModel.ChartModel.DataPoint3>();
+        //     List<ChartModel.ChartModel.DataPoint3> dataPoints8 = new List<ChartModel.ChartModel.DataPoint3>();
+        //     List<ChartModel.ChartModel.DataPoint3> dataPoints9 = new List<ChartModel.ChartModel.DataPoint3>();
+        //     List<ChartModel.ChartModel.DataPoint3> dataPoints20 = new List<ChartModel.ChartModel.DataPoint3>();
+        //
+        //
+        //
+        //     var R2017 = db.Orders.Where(x => x.Create_At.Value.Year < 2018).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+        //     {
+        //         createAt = group.Key,
+        //         Revenue = group.Sum(o => o.Total_Price)
+        //     }).OrderBy(x => x.createAt);
+        //     var R2018 = db.Orders.Where(x => x.Create_At.Value.Year == 2018).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+        //     {
+        //         createAt = group.Key,
+        //         Revenue = group.Sum(o => o.Total_Price)
+        //     }).OrderBy(x => x.createAt);
+        //
+        //     var R2019 = db.Orders.Where(x => x.Create_At.Value.Year == 2019).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+        //     {
+        //         createAt = group.Key,
+        //         Revenue = group.Sum(o => o.Total_Price)
+        //     }).OrderBy(x => x.createAt);
+        //
+        //     var R2020 = db.Orders.Where(x => x.Create_At.Value.Year == 2020).GroupBy(o => o.Create_At.Value.Month).Select(group => new
+        //     {
+        //         createAt = group.Key,
+        //         Revenue = group.Sum(o => o.Total_Price)
+        //     }).OrderBy(x => x.createAt);
+        //
+        //
+        //     foreach (var l in R2017)
+        //     {
+        //         dataPoints7.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
+        //     }
+        //     foreach (var l in R2018)
+        //     {
+        //         dataPoints8.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
+        //     }
+        //     foreach (var l in R2019)
+        //     {
+        //         dataPoints9.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
+        //     }
+        //     foreach (var l in R2020)
+        //     {
+        //         dataPoints20.Add(new ChartModel.ChartModel.DataPoint3(l.createAt, (double)l.Revenue));
+        //     }
+        //     ViewBag.DataPoints7 = JsonConvert.SerializeObject(dataPoints7);
+        //     ViewBag.DataPoints8 = JsonConvert.SerializeObject(dataPoints8);
+        //     ViewBag.DataPoints9 = JsonConvert.SerializeObject(dataPoints9);
+        //     ViewBag.DataPoints20 = JsonConvert.SerializeObject(dataPoints20);
+        //     return View();
+        // }
+
+
+
     }
-   
 }
+
